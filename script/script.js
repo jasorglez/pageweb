@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const form = document.getElementById('demoForm');
   if (!form) return;
+  const btn = form.querySelector('button[type="submit"]');
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -67,12 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
     show('error-role',    !roleVal);
     if (!roleVal) {
       document.getElementById('floatingSelectGrid2').focus();
-      btn.disabled = false; btn.textContent = orig;
       return;
     }
     if (!nameVal || !phoneVal || !emailVal || !emailOk || !companyVal) return;
 
-    const btn = form.querySelector('button[type="submit"]');
     const orig = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'Verificando...';
@@ -119,7 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
       form.reset();
-      if (prefixDisplay) prefixDisplay.value = '';
+      if (prefixDisplay) prefixDisplay.value = '+52';
+      if (countrySelect) countrySelect.value = '+52';
       btn.textContent = '✅ ¡Solicitud enviada!';
       btn.style.background = '#0d6efd';
       setTimeout(() => { btn.textContent = orig; btn.disabled = false; btn.style.background = ''; }, 4000);
