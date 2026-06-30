@@ -106,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
         to: ['jsoriano@bi2.mx', 'jsorglez@gmail.com'],
         replyTo: email,
         message: {
-          subject: `Nueva solicitud de ERP - ${name} (${company})`,
+          subject: `Nueva solicitud de demo - ${name} (${company})`,
           html: `
-            <h2 style="color:#0b1f33">Nueva solicitud de ERP</h2>
+            <h2 style="color:#0b1f33">Nueva solicitud de demo</h2>
             <table style="border-collapse:collapse;width:100%;max-width:560px;font-family:Arial,sans-serif">
               <tr><td style="padding:10px;background:#0b1f33;color:#fff;font-weight:700" colspan="2">Datos del prospecto</td></tr>
               <tr><td style="padding:10px;border-bottom:1px solid #e5e7eb">Nombre</td><td style="padding:10px;border-bottom:1px solid #e5e7eb">${name}</td></tr>
