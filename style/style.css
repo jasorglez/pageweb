@@ -23,18 +23,18 @@
 }
 
 :root {
-  --bg: #f4f7fb;
+  --bg: #f7fbff;
   --surface: #ffffff;
   --surface-2: #f7fbff;
-  --nav: rgba(255, 255, 255, 0.9);
-  --text: #0f172a;
-  --muted: #5c6b80;
-  --line: rgba(15, 23, 42, 0.08);
-  --brand: #0b5cab;
-  --brand-dark: #083d73;
-  --brand-soft: #e8f1fb;
-  --accent: #17a34a;
-  --accent-soft: #dff7e7;
+  --nav: rgba(255, 255, 255, 0.96);
+  --text: #10233c;
+  --muted: #5d6e84;
+  --line: rgba(16, 35, 60, 0.09);
+  --brand: #0d5ea8;
+  --brand-dark: #07386e;
+  --brand-soft: #deecfb;
+  --accent: #24c466;
+  --accent-soft: #e2f8ea;
   --shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
   --radius: 24px;
 }
@@ -49,10 +49,7 @@ body {
   padding-top: 80px;
   font-family: "Mulish", system-ui, sans-serif;
   color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(11, 92, 171, 0.12), transparent 25%),
-    radial-gradient(circle at top right, rgba(23, 163, 74, 0.12), transparent 25%),
-    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f5f9fe 100%);
 }
 
 a {
@@ -90,16 +87,22 @@ a {
   color: var(--brand);
 }
 
+.hero-section {
+  padding: 3.2rem 0 2.6rem;
+  background: linear-gradient(135deg, #0b4f94 0%, #0a3f7a 58%, #0a5f9b 100%);
+  color: #fff;
+}
+
 .btn-primary {
-  background: linear-gradient(135deg, var(--brand), #1670cf);
-  border-color: var(--brand);
-  box-shadow: 0 14px 30px rgba(11, 92, 171, 0.2);
+  background: linear-gradient(135deg, var(--accent), #58d98c);
+  border-color: var(--accent);
+  box-shadow: 0 14px 30px rgba(36, 196, 102, 0.22);
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(135deg, var(--brand-dark), var(--brand));
-  border-color: var(--brand-dark);
+  background: linear-gradient(135deg, #1caf5a, var(--accent));
+  border-color: #1caf5a;
 }
 
 .btn-outline-primary {
@@ -115,6 +118,8 @@ a {
 
 .hero-section {
   padding: 3.2rem 0 2.6rem;
+  background: linear-gradient(135deg, #0b4f94 0%, #0a3f7a 58%, #0a5f9b 100%);
+  color: #fff;
 }
 
 .hero-grid {
@@ -150,6 +155,7 @@ a {
   font-size: clamp(2.6rem, 5vw, 4.7rem);
   line-height: 1.02;
   max-width: 13ch;
+  color: #fff;
 }
 
 .hero-lead,
@@ -171,6 +177,7 @@ a {
   line-height: 1.8;
   max-width: 64ch;
   margin: 1.35rem 0 0;
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .hero-actions {
@@ -190,7 +197,7 @@ a {
   align-items: center;
   gap: 0.65rem;
   font-weight: 600;
-  color: #1f2937;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .hero-points i {
@@ -322,7 +329,7 @@ a {
 .section-dark,
 .video-section,
 .demo-section {
-  background: linear-gradient(180deg, #0b2b4f 0%, #081f39 100%);
+  background: linear-gradient(180deg, #0d4f95 0%, #0a3f7a 100%);
 }
 
 .section-heading {
@@ -398,8 +405,8 @@ a {
   align-items: flex-start;
   padding: 1.2rem;
   color: #fff;
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .module-link {
@@ -483,6 +490,32 @@ a {
   padding: 5rem 0;
 }
 
+.video-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.video-channel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.video-channel-link i {
+  color: #ff5b5b;
+  font-size: 1.1rem;
+}
+
 .video-card-shell {
   max-width: 980px;
   margin: 0 auto;
@@ -492,6 +525,13 @@ a {
   position: relative;
   display: block;
   overflow: hidden;
+}
+
+.video-card-embed iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
 }
 
 .video-thumb {
@@ -507,6 +547,10 @@ a {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(4, 9, 18, 0.08), rgba(4, 9, 18, 0.45));
+}
+
+.video-card-embed::before {
+  display: none;
 }
 
 .video-play {
@@ -730,6 +774,10 @@ a {
 @media (max-width: 767.98px) {
   body {
     padding-top: 74px;
+  }
+
+  .video-section-head {
+    flex-direction: column;
   }
 
   .hero-copy h1 {

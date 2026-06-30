@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
         to: ['jsoriano@bi2.mx', 'jsorglez@gmail.com'],
         replyTo: emailVal,
         message: {
-          subject: '🗓️ Nueva Solicitud de Demo — ' + nameVal + ' (' + companyVal + ')',
-          html: '<h2 style="color:#002e2e">🗓️ Nueva Solicitud de Demo</h2>' +
+          subject: '🗓️ Nueva Solicitud de ERP — ' + nameVal + ' (' + companyVal + ')',
+          html: '<h2 style="color:#002e2e">🗓️ Nueva Solicitud de ERP</h2>' +
                 '<table style="border-collapse:collapse;width:100%;max-width:500px">' +
                 '<tr><td style="padding:10px;background:#004d4d;color:#fff;font-weight:700" colspan="2">Datos del Prospecto</td></tr>' +
                 '<tr style="background:#f8fafc"><td style="padding:10px;color:#64748b;width:120px">👤 Nombre</td><td style="padding:10px;font-weight:700;color:#002e2e">' + nameVal + '</td></tr>' +
