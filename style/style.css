@@ -180,6 +180,40 @@ a {
   color: rgba(255, 255, 255, 0.86);
 }
 
+.hero-message {
+  margin: 1.2rem 0 0.8rem;
+  max-width: 66ch;
+  color: #ffffff;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.hero-message-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.6rem;
+  display: grid;
+  gap: 0.7rem;
+  max-width: 68ch;
+}
+
+.hero-message-list li {
+  position: relative;
+  padding-left: 1.6rem;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.55;
+}
+
+.hero-message-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #7cf1a3;
+  font-weight: 900;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -233,33 +267,6 @@ a {
   width: 100%;
   height: 370px;
   object-fit: cover;
-}
-
-.hero-overlay-card {
-  position: absolute;
-  left: 1.2rem;
-  right: 1.2rem;
-  bottom: 1.2rem;
-  padding: 1rem 1.1rem;
-  border-radius: 18px;
-  color: #fff;
-  background: linear-gradient(135deg, rgba(8, 61, 115, 0.92), rgba(11, 92, 171, 0.84));
-  backdrop-filter: blur(12px);
-}
-
-.hero-overlay-card span {
-  display: block;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.8;
-  margin-bottom: 0.25rem;
-}
-
-.hero-overlay-card strong {
-  display: block;
-  font-size: 1.05rem;
-  line-height: 1.35;
 }
 
 .hero-stats {
