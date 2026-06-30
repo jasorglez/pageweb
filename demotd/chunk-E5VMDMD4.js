@@ -1,0 +1,1 @@
+import{Cc as s,Rb as i,Sb as a,tc as r,ua as o}from"./chunk-SYKJHCVB.js";import"./chunk-7BXBZ5JU.js";var d=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=o({type:e,selectors:[["app-setup"]],standalone:!0,features:[s],decls:2,vars:0,template:function(n,c){n&1&&(i(0,"p"),r(1,"setup works!"),a())}});let t=e;return t})();export{d as SetupComponent};

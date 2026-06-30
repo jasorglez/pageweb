@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configura tu empresa — ERP Bi2</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="/style/bootstrap.min.css" rel="stylesheet">
+  <link href="/style/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root { --bi2-dark:#002e2e; --bi2-mid:#004d4d; --bi2-teal:#006868; --bi2-light:#b2ffee; }
+
+    body {
+      background: linear-gradient(135deg, #f0f9f9 0%, #e0f5f0 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .wizard-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,104,104,.18);
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+    }
+
+    .wizard-header {
+      background: linear-gradient(135deg, var(--bi2-dark), var(--bi2-teal));
+      padding: 32px 40px 28px;
+      text-align: center;
+      color: #fff;
+    }
+    .wizard-header .logo { font-size: 2rem; font-weight: 900; letter-spacing: -1px; }
+    .wizard-header .subtitle { color: var(--bi2-light); font-size: .9rem; margin: 6px 0 0; }
+
+    /* Progress bar */
+    .wizard-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 20px 40px 0;
+    }
+    .step-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; color: #94a3b8;
+      transition: all .3s;
+      flex-shrink: 0;
+    }
+    .step-dot.active  { border-color: var(--bi2-teal); background: var(--bi2-teal); color: #fff; }
+    .step-dot.done    { border-color: #22c55e; background: #22c55e; color: #fff; }
+    .step-line {
+      flex: 1; height: 2px;
+      background: #e2e8f0;
+      transition: background .3s;
+    }
+    .step-line.done { background: #22c55e; }
+
+    .wizard-body { padding: 28px 40px 36px; }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-title {
+      font-size: 1.2rem; font-weight: 700; color: var(--bi2-dark);
+      margin-bottom: 6px;
+    }
+    .step-desc { color: #64748b; font-size: .9rem; margin-bottom: 22px; }
+
+    .form-label { font-weight: 600; color: #334155; font-size: .9rem; }
+    .form-control:focus {
+      border-color: var(--bi2-teal);
+      box-shadow: 0 0 0 .2rem rgba(0,104,104,.18);
+    }
+
+    /* Password strength */
+    .strength-bar { height: 4px; border-radius: 2px; transition: all .3s; margin-top: 6px; }
+    .strength-text { font-size: .78rem; margin-top: 4px; font-weight: 600; }
+
+    .btn-bi2 {
+      background: linear-gradient(135deg, var(--bi2-dark), var(--bi2-teal));
+      border: none; color: #fff;
+      padding: 12px 28px; border-radius: 50px;
+      font-weight: 700; font-size: 1rem;
+      width: 100%; transition: opacity .2s;
+    }
+    .btn-bi2:hover { opacity: .88; color: #fff; }
+    .btn-bi2:disabled { opacity: .5; }
+
+    .alert-bi2 {
+      background: #ecfdf5; border: 1px solid #6ee7b7;
+      color: var(--bi2-dark); border-radius: 10px;
+      padding: 12px 16px; font-size: .9rem;
+    }
+
+    /* Loading spinner in button */
+    .spinner-border-sm { width: 1rem; height: 1rem; }
+
+    /* Success step */
+    .success-icon {
+      font-size: 4rem; color: #22c55e;
+      display: block; text-align: center; margin-bottom: 12px;
+    }
+    .success-title { font-size: 1.5rem; font-weight: 800; color: var(--bi2-dark); text-align: center; }
+    .success-desc  { color: #64748b; text-align: center; margin: 8px 0 24px; }
+
+    /* Verifying spinner */
+    #stepVerifying { text-align: center; padding: 20px 0; }
+    #stepVerifying .spinner-border { color: var(--bi2-teal); width: 3rem; height: 3rem; }
+    #stepVerifying p { color: #64748b; margin-top: 14px; }
+
+    .user-info-card {
+      background: #f0f9f9;
+      border: 1px solid #b2ffee;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+    }
+    .user-info-card .field-label { color: #64748b; font-size: .8rem; font-weight: 600; }
+    .user-info-card .field-value { color: var(--bi2-dark); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<div class="wizard-card">
+  <!-- Header -->
+  <div class="wizard-header">
+    <div class="logo">Bi2</div>
+    <div class="subtitle">Configura tu empresa en el ERP</div>
+  </div>
+
+  <!-- Progress -->
+  <div class="wizard-progress" id="progressBar" style="display:none!important;">
+    <div class="step-dot" id="dot1">1</div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-dot" id="dot2">2</div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-dot" id="dot3">3</div>
+  </div>
+
+  <!-- Body -->
+  <div class="wizard-body">
+
+    <!-- Step 0: Verificando -->
+    <div class="step active" id="stepVerifying">
+      <div class="spinner-border" role="status"></div>
+      <p>Verificando tu enlace de acceso…</p>
+    </div>
+
+    <!-- Step Error -->
+    <div class="step" id="stepError">
+      <div class="text-center mb-3" style="font-size:3rem;">⚠️</div>
+      <div class="step-title text-center">Enlace no válido</div>
+      <p class="step-desc text-center" id="errorMsg">Este enlace de onboarding no es válido o ya fue utilizado.</p>
+      <a href="/" class="btn btn-bi2">Volver al inicio</a>
+    </div>
+
+    <!-- Step 1: Contraseña -->
+    <div class="step" id="step1">
+      <div class="step-title">Crea tu contraseña</div>
+      <p class="step-desc" id="welcomeMsg">Hola — establece una contraseña para tu cuenta.</p>
+
+      <div class="user-info-card mb-3">
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="field-label">Correo</div>
+            <div class="field-value" id="infoEmail" style="font-size:.85rem;word-break:break-all;">—</div>
+          </div>
+          <div class="col-6">
+            <div class="field-label">Empresa</div>
+            <div class="field-value" id="infoEmpresa" style="font-size:.85rem;">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Contraseña <span class="text-danger">*</span></label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+          <button class="btn btn-outline-secondary" type="button" id="togglePwd"><i class="bi bi-eye"></i></button>
+        </div>
+        <div class="strength-bar mt-2" id="strengthBar" style="background:#e2e8f0;"></div>
+        <div class="strength-text" id="strengthText"></div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Confirmar contraseña <span class="text-danger">*</span></label>
+        <input type="password" class="form-control" id="passwordConfirm" placeholder="Repite la contraseña" autocomplete="new-password">
+        <div class="text-danger small mt-1" id="pwdMatchError" style="display:none;">Las contraseñas no coinciden.</div>
+      </div>
+
+      <button class="btn btn-bi2" id="btnStep1">Continuar <i class="bi bi-arrow-right-short"></i></button>
+    </div>
+
+    <!-- Step 2: Datos empresa -->
+    <div class="step" id="step2">
+      <div class="step-title">Datos de tu empresa</div>
+      <p class="step-desc">Estos datos son los que usará el sistema. Puedes editarlos después.</p>
+
+      <div class="mb-3">
+        <label class="form-label">Nombre de la empresa <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="empresa" placeholder="Razón social o nombre comercial">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">RFC</label>
+        <input type="text" class="form-control" id="rfc" placeholder="RFC (opcional)" maxlength="13">
+      </div>
+      <div class="row g-2 mb-3">
+        <div class="col">
+          <label class="form-label">Ciudad</label>
+          <input type="text" class="form-control" id="city" placeholder="Ciudad">
+        </div>
+        <div class="col">
+          <label class="form-label">Teléfono</label>
+          <input type="text" class="form-control" id="telefono" placeholder="+52 ...">
+        </div>
+      </div>
+
+      <div id="step2Error" class="alert alert-danger small mb-3" style="display:none;"></div>
+
+      <button class="btn btn-bi2" id="btnStep2">
+        <span id="btnStep2Text">Crear mi cuenta <i class="bi bi-check2-circle"></i></span>
+        <span id="btnStep2Loading" style="display:none;">
+          <span class="spinner-border spinner-border-sm me-2"></span>Creando cuenta…
+        </span>
+      </button>
+    </div>
+
+    <!-- Step 3: Éxito -->
+    <div class="step" id="step3">
+      <i class="bi bi-check-circle-fill success-icon"></i>
+      <div class="success-title">¡Tu cuenta está lista!</div>
+      <p class="success-desc">Tu empresa ha sido configurada en el ERP Bi2. Ya puedes iniciar sesión.</p>
+
+      <div class="alert-bi2 mb-4">
+        <i class="bi bi-envelope-fill me-2"></i>
+        Se envió un correo de bienvenida a <strong id="successEmail"></strong>
+      </div>
+
+      <a href="https://www.biapp.com.mx" class="btn btn-bi2">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión en Bi2
+      </a>
+    </div>
+
+  </div><!-- /wizard-body -->
+</div>
+
+<script type="module">
+import { initializeApp }    from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { getFirestore, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyDxCBGKk8nT09hdW85-PyOkhw5_JPZLF1A",
+  authDomain:        "beapp-501d1.firebaseapp.com",
+  projectId:         "beapp-501d1",
+  storageBucket:     "beapp-501d1.appspot.com",
+  messagingSenderId: "151993360357",
+  appId:             "1:151993360357:web:127db5b6d20896fb84990c"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+const SECURITY_API = 'https://endpoints.biapp.com.mx/api';
+
+// ── State ──────────────────────────────────────────────────────────────────
+let tokenData = null;
+let wizardToken = '';
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showError(msg) {
+  document.getElementById('errorMsg').textContent = msg;
+  showStep('stepError');
+}
+
+function updateProgress(current) {
+  const bar = document.getElementById('progressBar');
+  bar.style.display = 'flex';
+  [1,2,3].forEach(n => {
+    const dot  = document.getElementById('dot' + n);
+    dot.classList.remove('active','done');
+    if (n < current)       dot.classList.add('done'), dot.innerHTML = '<i class="bi bi-check-lg" style="font-size:.7rem"></i>';
+    else if (n === current) dot.classList.add('active');
+    else                   dot.textContent = n;
+  });
+  [1,2].forEach(n => {
+    const line = document.getElementById('line' + n);
+    line.classList.toggle('done', n < current);
+  });
+}
+
+// ── Password strength ───────────────────────────────────────────────────────
+document.getElementById('password').addEventListener('input', function() {
+  const val = this.value;
+  const bar = document.getElementById('strengthBar');
+  const txt = document.getElementById('strengthText');
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    { bg: '#ef4444', label: 'Muy débil' },
+    { bg: '#f97316', label: 'Débil' },
+    { bg: '#eab308', label: 'Media' },
+    { bg: '#22c55e', label: 'Fuerte' },
+    { bg: '#15803d', label: 'Muy fuerte' },
+  ];
+  const lvl = levels[score] ?? levels[0];
+  bar.style.background = val ? lvl.bg : '#e2e8f0';
+  bar.style.width      = val ? `${(score + 1) * 20}%` : '100%';
+  txt.textContent      = val ? lvl.label : '';
+  txt.style.color      = lvl.bg;
+});
+
+// Toggle password visibility
+document.getElementById('togglePwd').addEventListener('click', function() {
+  const pwd = document.getElementById('password');
+  const isText = pwd.type === 'text';
+  pwd.type = isText ? 'password' : 'text';
+  this.innerHTML = isText ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+});
+
+// ── Step 1: validate password ───────────────────────────────────────────────
+document.getElementById('btnStep1').addEventListener('click', function() {
+  const pwd  = document.getElementById('password').value;
+  const pwd2 = document.getElementById('passwordConfirm').value;
+  const err  = document.getElementById('pwdMatchError');
+
+  if (pwd.length < 8) {
+    document.getElementById('password').classList.add('is-invalid');
+    return;
+  }
+  if (pwd !== pwd2) {
+    err.style.display = 'block';
+    document.getElementById('passwordConfirm').classList.add('is-invalid');
+    return;
+  }
+  err.style.display = 'none';
+  document.getElementById('passwordConfirm').classList.remove('is-invalid');
+
+  updateProgress(2);
+  showStep('step2');
+});
+
+// ── Step 2: submit ──────────────────────────────────────────────────────────
+document.getElementById('btnStep2').addEventListener('click', async function() {
+  const empresa  = document.getElementById('empresa').value.trim();
+  const errDiv   = document.getElementById('step2Error');
+  errDiv.style.display = 'none';
+
+  if (!empresa) {
+    errDiv.textContent  = 'El nombre de la empresa es requerido.';
+    errDiv.style.display = 'block';
+    return;
+  }
+
+  // Show loading
+  document.getElementById('btnStep2Text').style.display    = 'none';
+  document.getElementById('btnStep2Loading').style.display = 'inline';
+  this.disabled = true;
+
+  const payload = {
+    token:    wizardToken,
+    nombre:   tokenData.nombre,
+    empresa:  empresa,
+    email:    tokenData.email,
+    telefono: document.getElementById('telefono').value.trim() || tokenData.telefono || '',
+    rol:      tokenData.rol  || '',
+    password: document.getElementById('password').value,
+    rfc:      document.getElementById('rfc').value.trim()  || null,
+    city:     document.getElementById('city').value.trim() || null,
+  };
+
+  try {
+    const res = await fetch(`${SECURITY_API}/Onboarding/complete`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.message || `Error ${res.status}`);
+    }
+
+    // Mark token as used in Firestore
+    try {
+      await updateDoc(doc(db, 'onboarding_tokens', wizardToken), { usado: true });
+    } catch(_) { /* no crítico */ }
+
+    document.getElementById('successEmail').textContent = tokenData.email;
+    updateProgress(3);
+    showStep('step3');
+
+  } catch (err) {
+    errDiv.textContent  = err.message || 'Ocurrió un error. Intenta de nuevo.';
+    errDiv.style.display = 'block';
+    document.getElementById('btnStep2Text').style.display    = 'inline';
+    document.getElementById('btnStep2Loading').style.display = 'none';
+    this.disabled = false;
+  }
+});
+
+// ── Init: verify token ──────────────────────────────────────────────────────
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  wizardToken  = params.get('token') || '';
+
+  if (!wizardToken) {
+    showError('No se proporcionó un token de acceso. Revisa el enlace en tu correo.');
+    return;
+  }
+
+  try {
+    const snap = await getDoc(doc(db, 'onboarding_tokens', wizardToken));
+
+    if (!snap.exists()) {
+      showError('Este enlace no es válido. Solicita uno nuevo.');
+      return;
+    }
+
+    const data = snap.data();
+
+    if (data.usado) {
+      showError('Este enlace ya fue utilizado. Si necesitas acceso, contacta a soporte en hola@bi2.mx');
+      return;
+    }
+
+    // Check expiry
+    const expira = data.expiraEn?.toDate?.();
+    if (expira && new Date() > expira) {
+      showError('Este enlace ha expirado. Solicita uno nuevo a tu ejecutivo Bi2.');
+      return;
+    }
+
+    tokenData = data;
+
+    // Pre-fill Step 1
+    document.getElementById('welcomeMsg').textContent =
+      `Hola ${data.nombre || 'bienvenido/a'} — establece tu contraseña para ingresar al ERP.`;
+    document.getElementById('infoEmail').textContent   = data.email   || '—';
+    document.getElementById('infoEmpresa').textContent = data.empresa || '—';
+
+    // Pre-fill Step 2
+    document.getElementById('empresa').value  = data.empresa  || '';
+    document.getElementById('telefono').value = data.telefono || '';
+
+    updateProgress(1);
+    showStep('step1');
+
+  } catch (err) {
+    console.error(err);
+    showError('Error al verificar tu enlace. Intenta de nuevo o contacta a soporte.');
+  }
+}
+
+init();
+</script>
+
+<script src="/script/bootstrap.bundle.min.js"></script>
+</body>
+</html>

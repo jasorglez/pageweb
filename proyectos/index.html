@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo de Proyectos & Construcción — ERP Bi2</title>
+  <meta name="description" content="Controla cada obra desde contratos hasta la bitácora diaria. Proyectos, OT, estimados, materiales, mano de obra, avances y bot Telegram/WhatsApp integrado.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    :root {
+      --primary:      #1e3a5f;
+      --primary-dark: #0f2040;
+      --primary-light:#2a5298;
+      --accent:       #f59e0b;
+      --accent2:      #ea580c;
+      --green:        #16a34a;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar { background: var(--primary-dark); padding: .75rem 1.5rem; }
+    .navbar-brand { font-weight: 800; font-size: 1.3rem; color: #fff !important; }
+    .navbar-brand span { color: var(--accent); }
+    .nav-back { color: rgba(255,255,255,.75) !important; font-size: .88rem; }
+    .nav-back:hover { color: #fff !important; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+      padding: 100px 0 64px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: rgba(245,158,11,.07); pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block; background: rgba(245,158,11,.18);
+      border: 1px solid rgba(245,158,11,.4); border-radius: 50px;
+      padding: 5px 18px; font-size: .8rem; color: var(--accent);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .hero-title { font-size: clamp(2rem,4vw,3.2rem); font-weight: 900; color: #fff; line-height: 1.1; }
+    .hero-title span { color: var(--accent); }
+    .hero-sub { color: rgba(255,255,255,.78); font-size: 1.05rem; margin: 1rem 0 1.5rem; max-width: 540px; }
+    .hero-check { color: #4ade80; font-weight: 700; }
+    .hero-img { width: 100%; border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,.5); }
+    .btn-hero { background: var(--accent); color: #fff; border: none; padding: .75rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1rem; transition: all .2s; text-decoration: none; display: inline-block; }
+    .btn-hero:hover { background: #d97706; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,.4); }
+    .btn-hero-ghost { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.4); padding: .72rem 1.8rem; border-radius: 50px; font-weight: 600; transition: all .2s; text-decoration: none; display: inline-block; }
+    .btn-hero-ghost:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,.1); }
+
+    /* ── DEMO ── */
+    .demo-section { background: #eef2ff; padding: 60px 0; }
+    .demo-card { background: var(--primary-dark); border-radius: 20px; padding: 2.5rem 2rem; color: #fff; box-shadow: 0 16px 48px rgba(15,32,64,.4); }
+    .demo-card h3 { font-weight: 800; font-size: 1.5rem; color: var(--accent); margin-bottom: 1rem; }
+    .demo-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem; }
+    .demo-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; }
+    .btn-demo { background: var(--accent); color: #fff; border: none; padding: .7rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: .95rem; text-decoration: none; display: inline-block; transition: all .2s; margin-top: 1rem; }
+    .btn-demo:hover { background: #d97706; color: #fff; transform: translateY(-2px); }
+
+    /* ── PROBLEMA ── */
+    .problema-section { background: #fff; padding: 72px 0; }
+    .problema-card { background: #fff3cd; border-left: 4px solid var(--accent2); border-radius: 12px; padding: 1.1rem 1.3rem; margin-bottom: .8rem; }
+    .problema-card p { margin: 0; font-size: .9rem; color: #555; }
+    .problema-card strong { color: var(--accent2); }
+
+    /* ── MÓDULOS TABS ── */
+    .tabs-section { background: #f0f4ff; padding: 72px 0; }
+    .section-title { font-weight: 900; color: var(--primary-dark); }
+    .section-sub { color: #555; max-width: 580px; margin: .5rem auto 0; }
+    .tab-chip {
+      display: flex; align-items: center; gap: .7rem;
+      background: #fff; border-radius: 12px; padding: .85rem 1rem;
+      box-shadow: 0 3px 12px rgba(0,0,0,.07);
+      transition: transform .2s, box-shadow .2s; height: 100%;
+    }
+    .tab-chip:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(30,58,95,.15); }
+    .tab-chip .tc-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .tab-chip strong { font-size: .88rem; color: var(--primary-dark); display: block; }
+    .tab-chip small { font-size: .76rem; color: #777; }
+
+    /* ── FUNCIONALIDADES ── */
+    .func-section { background: #fff; padding: 72px 0; }
+    .func-card { border-radius: 16px; padding: 1.6rem; height: 100%; box-shadow: 0 4px 18px rgba(0,0,0,.07); border-top: 4px solid var(--primary); transition: transform .25s; }
+    .func-card:hover { transform: translateY(-5px); }
+    .func-card h5 { font-weight: 800; color: var(--primary-dark); margin-bottom: .8rem; font-size: 1rem; }
+    .func-list { list-style: none; padding: 0; margin: 0; }
+    .func-list li { font-size: .85rem; color: #555; padding: .3rem 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: flex-start; gap: .5rem; }
+    .func-list li:last-child { border-bottom: none; }
+    .func-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    /* ── OT TABS ── */
+    .ot-section { background: var(--primary-dark); padding: 72px 0; }
+    .ot-tab { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; padding: 1rem 1.1rem; text-align: center; }
+    .ot-tab .ot-icon { font-size: 1.8rem; margin-bottom: .4rem; }
+    .ot-tab strong { color: #fff; font-size: .9rem; display: block; }
+    .ot-tab small { color: rgba(255,255,255,.6); font-size: .76rem; }
+
+    /* ── BITÁCORA ── */
+    .bitacora-section { background: #f0f4ff; padding: 72px 0; }
+    .bit-card { background: #fff; border-radius: 14px; padding: 1.2rem; box-shadow: 0 3px 14px rgba(0,0,0,.07); height: 100%; border-left: 4px solid var(--primary-light); }
+    .bit-card strong { color: var(--primary-dark); font-size: .9rem; display: block; margin-bottom: .2rem; }
+    .bit-card span { font-size: .8rem; color: #666; }
+
+    /* ── PROGRAMA DE TRABAJO ── */
+    .prog-section { background: #fff; padding: 72px 0; }
+    .vista-chip { display: inline-flex; align-items: center; gap: .5rem; background: var(--primary); color: #fff; border-radius: 10px; padding: .5rem 1rem; font-size: .85rem; font-weight: 700; margin: .3rem; }
+
+    /* ── BOT ── */
+    .bot-section { background: #0f2040; padding: 72px 0; }
+
+    /* ── PUBLICIDAD ── */
+    .pub-section { background: #f8f9ff; padding: 72px 0; }
+
+    /* ── CTA ── */
+    .cta-section { background: linear-gradient(135deg, var(--accent2), #b91c1c); padding: 64px 0; text-align: center; }
+    .cta-section h2 { color: #fff; font-weight: 900; font-size: clamp(1.6rem,3vw,2.4rem); }
+    .cta-section p { color: rgba(255,255,255,.85); }
+    .btn-cta-white { background: #fff; color: var(--accent2); border: none; padding: .85rem 2.5rem; border-radius: 50px; font-weight: 800; font-size: 1.05rem; text-decoration: none; display: inline-block; transition: all .2s; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .btn-cta-white:hover { transform: translateY(-3px); color: #b91c1c; }
+
+    /* ── CONTACTO ── */
+    .contact-section { background: #f8f9ff; padding: 64px 0; }
+    .contact-item { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; }
+    .contact-icon { width: 40px; height: 40px; border-radius: 11px; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-item a { color: var(--primary-dark); font-weight: 600; text-decoration: none; font-size: .95rem; }
+    .contact-item a:hover { color: var(--accent2); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--primary-dark); color: rgba(255,255,255,.6); padding: 2rem 0; text-align: center; font-size: .85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark fixed-top">
+  <div class="container-fluid d-flex align-items-center gap-3">
+    <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Inicio</a>
+    <a class="navbar-brand ms-2" href="../">Bi<span>2</span></a>
+    <span class="text-white-50 d-none d-sm-inline" style="font-size:.85rem">/ Proyectos & Construcción</span>
+    <div class="ms-auto d-flex gap-2 align-items-center">
+      <a href="https://wa.me/522292063157" target="_blank" class="btn btn-sm btn-success rounded-pill px-3"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
+      <a href="https://www.biapp.com.mx" target="_blank" class="btn btn-sm btn-warning rounded-pill px-3 fw-bold">Demo Gratis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 reveal">
+        <span class="hero-badge">🏗️ Módulo Proyectos</span>
+        <h1 class="hero-title">Control Total de<br><span>Proyectos & Obra</span></h1>
+        <p class="hero-sub">Desde el contrato hasta la bitácora diaria — gestiona proyectos, órdenes de trabajo, estimados, materiales, mano de obra y avances en una sola plataforma.</p>
+        <div class="mb-3">
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">17 módulos integrados: contratos, OT, estimados, bitácora y más</span></div>
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Autoriza compras y requisiciones desde tu celular</span></div>
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Bot Telegram/WhatsApp — reportes y alertas en tiempo real</span></div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a href="https://www.biapp.com.mx" target="_blank" class="btn-hero">🚀 Probar Gratis Ahora</a>
+          <a href="https://wa.me/522292063157" target="_blank" class="btn-hero-ghost"><i class="bi bi-whatsapp me-1"></i>Contactar</a>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <img src="./control obra.png" alt="Control de Obra — ERP Bi2" class="hero-img">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="demo-card reveal">
+          <h3>🎯 Pruébalo Gratis Ahora</h3>
+          <div class="row g-3">
+            <div class="col-sm-4">
+              <div class="demo-row">
+                <div class="demo-icon">🌐</div>
+                <div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Sistema</div><strong style="color:var(--accent);">www.biapp.com.mx</strong></div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="demo-row">
+                <div class="demo-icon">👤</div>
+                <div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Usuario</div><strong style="color:var(--accent);">demo@bi2.mx</strong></div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="demo-row">
+                <div class="demo-icon">🔑</div>
+                <div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Contraseña</div><strong style="color:var(--accent);">123456</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="https://www.biapp.com.mx" target="_blank" class="btn-demo">Entrar al sistema →</a>
+            <a href="https://wa.me/522292063157?text=Hola%2C%20quiero%20una%20demo%20del%20m%C3%B3dulo%20de%20Proyectos%20Bi2" target="_blank" class="btn-demo" style="background:#25D366;">
+              <i class="bi bi-whatsapp me-1"></i>Agendar Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="problema-section">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 reveal">
+        <img src="./demo para obras.png" alt="Control de dinero en obra — Bi2"
+             style="width:100%;border-radius:16px;box-shadow:0 12px 36px rgba(0,0,0,.15);">
+      </div>
+      <div class="col-lg-7 reveal">
+        <h2 class="section-title mb-1">¿No sabes en qué se te va<br>el dinero en obra?</h2>
+        <p style="color:#555;margin-bottom:1.5rem;">Controla cada gasto y autoriza compras desde tu celular. Estos son los problemas más comunes que el ERP Bi2 resuelve:</p>
+        <div class="problema-card">
+          <p><strong>💸 Compras sin control</strong> — No tienes registro claro de lo que se solicita y compra.</p>
+        </div>
+        <div class="problema-card">
+          <p><strong>📞 Autorizaciones por llamadas</strong> — Las aprobaciones por teléfono o WhatsApp no quedan registradas.</p>
+        </div>
+        <div class="problema-card">
+          <p><strong>❓ No sabes quién autorizó qué</strong> — Sin trazabilidad de decisiones ni historial de cambios.</p>
+        </div>
+        <div class="problema-card">
+          <p><strong>🚪 Fugas de dinero en materiales</strong> — Sin control, se pierden miles de pesos en cada obra.</p>
+        </div>
+        <div class="mt-3 p-3 rounded" style="background:#d1fae5;border-left:4px solid #16a34a;">
+          <strong style="color:#166534;">✅ Nuestra solución:</strong>
+          <p style="color:#166534;margin:.3rem 0 0;font-size:.9rem;">Sistema de control de requisiciones con BOT en <strong>Telegram / WhatsApp</strong> — registra, revisa y autoriza desde cualquier lugar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 MÓDULOS / TABS -->
+<section class="tabs-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 class="section-title">17 Módulos Integrados</h2>
+      <p class="section-sub">Cada pestaña es un módulo completo, todos conectados entre sí y accesibles desde el menú principal de Proyectos</p>
+    </div>
+    <div class="row g-3">
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📁</span>
+          <div><strong>Proyectos</strong><small>CRUD, prioridades, tipos de construcción, clasificaciones</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📄</span>
+          <div><strong>Contratos</strong><small>Contratos maestro con detalles expandibles, estados y montos</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🤝</span>
+          <div><strong>Convenios</strong><small>Acuerdos y convenios vinculados a contratos y proyectos</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📈</span>
+          <div><strong>Avances</strong><small>Curva S — avance programado acumulado vs avance real</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🔧</span>
+          <div><strong>Órdenes de Trabajo</strong><small>OT internas, externas y mixtas con reportes diarios</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📊</span>
+          <div><strong>Estimados</strong><small>Generadores de estimaciones, ítems, PDF y reportes diarios/semanales</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📅</span>
+          <div><strong>Programas de Trabajo</strong><small>Gantt con vistas: Año, Trimestre, Mes, Semana, Día</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📝</span>
+          <div><strong>Sistema / Bitácora</strong><small>Reportes diarios con 9 sub-componentes de evidencia</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📦</span>
+          <div><strong>Materiales</strong><small>Familias, subfamilias, unidades, PDF distribución y erogaciones</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🚜</span>
+          <div><strong>Equipos</strong><small>Tipos de equipo, medidas, distribución y costos por proyecto</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">👷</span>
+          <div><strong>Mano de Obra</strong><small>Catálogo laboral, asignación por proyecto, PDF erogaciones</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🔨</span>
+          <div><strong>Herramientas</strong><small>Inventario y asignación de herramientas a frentes de trabajo</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🧰</span>
+          <div><strong>Auxiliares</strong><small>Recursos auxiliares e insumos de soporte por proyecto</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">💡</span>
+          <div><strong>Conceptos de Costo</strong><small>Catálogo de conceptos de gasto vinculados a cada proyecto</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🏭</span>
+          <div><strong>Proveedores</strong><small>Catálogo de proveedores con contacto, precios y estado</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">🛢️</span>
+          <div><strong>Campos / Oilfields</strong><small>Ubicaciones y campos de operación vinculados a proyectos</small></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="tab-chip">
+          <span class="tc-icon">📚</span>
+          <div><strong>Catálogos</strong><small>Catálogos generales de soporte para todos los módulos</small></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ÓRDENES DE TRABAJO -->
+<section class="ot-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);border-radius:50px;padding:5px 18px;font-size:.8rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">🔧 OT — Órdenes de Trabajo</span>
+      <h2 style="font-weight:900;color:#fff;">Todo sobre la Orden de Trabajo en una sola pantalla</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:560px;margin:.5rem auto 0;">Cada OT tiene 8 sub-pestañas para documentar completamente el trabajo realizado. Soporta OT Interna, Externa y Mixta con cálculo de pago a cuadrilla.</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">📋</div>
+          <strong>Reportes Diarios</strong>
+          <small>Fechas, horarios, supervisor y tipo de reporte</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">👥</div>
+          <strong>Personal Asignado</strong>
+          <small>Cuadrilla interna y externa con cálculo de pago</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">📸</div>
+          <strong>Fotografías</strong>
+          <small>Evidencia fotográfica del trabajo realizado</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">🎬</div>
+          <strong>Videos</strong>
+          <small>Registro en video del avance de la obra</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">📦</div>
+          <strong>Material Utilizado</strong>
+          <small>Consumo de materiales por orden de trabajo</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">🚜</div>
+          <strong>Equipos Utilizados</strong>
+          <small>Registro de equipos y maquinaria empleados</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">⚙️</div>
+          <strong>Trabajo Realizado</strong>
+          <small>Conceptos del reporte con descripción de actividades</small>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal">
+        <div class="ot-tab">
+          <div class="ot-icon">📝</div>
+          <strong>Notas del Reporte</strong>
+          <small>Observaciones, incidencias y comentarios del supervisor</small>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 g-3 reveal">
+      <div class="col-12">
+        <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.2rem 1.5rem;">
+          <p style="color:rgba(255,255,255,.8);margin:0;font-size:.92rem;"><strong style="color:var(--accent);">Generadores de OT:</strong> &nbsp;OT Interna — cálculo de pago a cuadrilla interna &nbsp;|&nbsp; OT Externa — carga de Excel con cuadrilla externa &nbsp;|&nbsp; OT Mixto — combinación de ambas. Exportación a Excel con rango de fechas personalizado, semanal o mensual.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BITÁCORA SISTEMA -->
+<section class="bitacora-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:#e0f2fe;color:#0369a1;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">📝 Sistema / Bitácora</span>
+      <h2 class="section-title">Bitácora Diaria Completa</h2>
+      <p class="section-sub">Cada reporte diario se expande en 9 sub-componentes para documentar todos los aspectos de la jornada de trabajo</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card">
+          <strong>👷 Personal en Campo</strong>
+          <span>Registro de trabajadores presentes, posición y horas laboradas en el día</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#f59e0b;">
+          <strong>📦 Consumo de Materiales</strong>
+          <span>Materiales utilizados en la jornada con cantidades y costos</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#ea580c;">
+          <strong>🚜 Uso de Equipos</strong>
+          <span>Equipos y maquinaria operados, tiempo de uso y rendimiento</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#8b5cf6;">
+          <strong>📸 Evidencia Fotográfica</strong>
+          <span>Fotos del avance de obra, incidencias y trabajos terminados</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#06b6d4;">
+          <strong>🎬 Evidencia en Video</strong>
+          <span>Videos del trabajo realizado para respaldo y supervisión remota</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#16a34a;">
+          <strong>💡 Conceptos de Costo</strong>
+          <span>Registro de gastos y conceptos del reporte diario</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#d97706;">
+          <strong>📝 Notas y Observaciones</strong>
+          <span>Comentarios del supervisor, incidencias y acuerdos del día</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#ef4444;">
+          <strong>⏸️ Tiempos Inactivos</strong>
+          <span>Registro de paros, esperas y tiempos improductivos justificados</span>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="bit-card" style="border-left-color:#64748b;">
+          <strong>🗂️ Datos Base</strong>
+          <span>Información base de la jornada: convenio, condiciones y datos generales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMA DE TRABAJO + AVANCES -->
+<section class="prog-section">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-6 reveal">
+        <span style="display:inline-block;background:#e0f2fe;color:#0369a1;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">📅 Programa de Trabajo</span>
+        <h3 class="section-title">Gantt interactivo con 5 niveles de zoom</h3>
+        <p style="color:#555;margin:.5rem 0 1.2rem;">Planifica, programa y supervisa cada tarea con una vista tipo Gantt. Vincula el programa al convenio vigente y exporta a Excel o PDF.</p>
+        <div class="mb-3">
+          <span class="vista-chip">📅 Vista Anual</span>
+          <span class="vista-chip">📊 Vista Trimestral</span>
+          <span class="vista-chip">🗓️ Vista Mensual</span>
+          <span class="vista-chip">📆 Vista Semanal</span>
+          <span class="vista-chip">☀️ Vista Diaria</span>
+        </div>
+        <ul class="func-list">
+          <li>Agregar/eliminar tareas con sangría jerárquica (fases)</li>
+          <li>Exportar a Excel y PDF con distribución completa</li>
+          <li>Calcular ponderado (regla de 3 sobre total)</li>
+          <li>Sub-pestañas: Personal, Equipo, Materiales, Auxiliares</li>
+          <li>Vinculado a Convenio Vigente y OT activa</li>
+          <li>Creación de Nuevas Fases (ej. Fase 1, Arranque…)</li>
+        </ul>
+      </div>
+      <div class="col-lg-6 reveal">
+        <span style="display:inline-block;background:#d1fae5;color:#166534;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">📈 Avances de Proyecto</span>
+        <h3 class="section-title">Curva S — Avance Real vs Programado</h3>
+        <p style="color:#555;margin:.5rem 0 1.2rem;">Visualiza el progreso de la obra con una gráfica acumulada que compara lo planeado contra lo ejecutado, mes a mes.</p>
+        <ul class="func-list">
+          <li>MES — columna temporal de control</li>
+          <li>Avance Programado Acumulado — lo que debió ejecutarse</li>
+          <li>Hitos de Avance — puntos de control del proyecto</li>
+          <li>Avance Real Acumulado — lo que se ejecutó realmente</li>
+          <li>Gráfica ApexCharts tipo S-Curve interactiva</li>
+          <li>Importación de datos desde Excel</li>
+          <li>Herramientas de zoom, pan y descarga del gráfico</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOT -->
+<section class="bot-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);border-radius:50px;padding:5px 18px;font-size:.8rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">🤖 Bot Inteligente</span>
+      <h2 style="font-weight:900;color:#fff;">ERP Construcción + Bot de Telegram</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:560px;margin:.5rem auto 0;">¡Administra tus obras de forma fácil y eficiente! Tu asistente virtual disponible 24/7 para información, recordatorios y soporte.</p>
+    </div>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-6 reveal">
+        <img src="./Gestión de obras con ERP y bot.png" alt="ERP Construcción + Bot Telegram Bi2"
+             style="width:100%;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.5);">
+      </div>
+      <div class="col-md-6 reveal">
+        <div class="row g-3">
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">📋</span>
+              <div>
+                <strong style="color:var(--accent);font-size:1rem;">Plataforma Integral de Gestión</strong>
+                <p style="color:rgba(255,255,255,.7);margin:.3rem 0 0;font-size:.88rem;">Proyectos, Tareas, Personal y Finanzas — todo desde una sola plataforma en la nube.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">💬</span>
+              <div>
+                <strong style="color:var(--accent);font-size:1rem;">Asistente Virtual 24/7</strong>
+                <p style="color:rgba(255,255,255,.7);margin:.3rem 0 0;font-size:.88rem;">Información al instante, recordatorios automáticos y soporte sin interrupciones.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">✅</span>
+              <div>
+                <strong style="color:var(--accent);font-size:1rem;">Autoriza desde tu Celular</strong>
+                <p style="color:rgba(255,255,255,.7);margin:.3rem 0 0;font-size:.88rem;">Registro de requisiciones, autorizaciones y historial completo — quién, cuándo y para qué.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">📊</span>
+              <div>
+                <strong style="color:var(--accent);font-size:1rem;">Reportes e Informes en Tiempo Real</strong>
+                <p style="color:rgba(255,255,255,.7);margin:.3rem 0 0;font-size:.88rem;">Reportes automáticos y control en tiempo real directamente en Telegram o WhatsApp.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICIDAD -->
+<section class="pub-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 class="section-title">Solución Completa para Constructoras</h2>
+      <p class="section-sub">Proyectos, Finanzas, Materiales y Personal — todo integrado</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-5 reveal">
+        <img src="./erp construccion.png" alt="ERP Construcción — Proyectos, Finanzas, Materiales, Personal"
+             style="width:100%;border-radius:16px;box-shadow:0 10px 32px rgba(0,0,0,.12);">
+      </div>
+      <div class="col-md-5 reveal">
+        <img src="./Publicidad de ERP para construcción.png" alt="ERP Construcción + Bot Telegram — Administra tus obras"
+             style="width:100%;border-radius:16px;box-shadow:0 10px 32px rgba(0,0,0,.12);">
+      </div>
+    </div>
+    <!-- ESTIMADOS -->
+    <div class="row g-4 mt-4">
+      <div class="col-12 reveal">
+        <div style="background:var(--primary-dark);border-radius:18px;padding:2rem;color:#fff;">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-4">
+              <span style="display:inline-block;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.35);border-radius:50px;padding:4px 16px;font-size:.78rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem;">📊 Estimados</span>
+              <h4 style="font-weight:800;color:#fff;margin-bottom:.5rem;">Generador de Estimaciones</h4>
+              <p style="color:rgba(255,255,255,.7);font-size:.88rem;margin:0;">Crea, edita y genera PDFs de estimaciones vinculadas a contratos. Navegación ágil con Enter/Tab entre campos.</p>
+            </div>
+            <div class="col-lg-8">
+              <div class="row g-2">
+                <div class="col-sm-6 col-lg-3">
+                  <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:.8rem;text-align:center;">
+                    <div style="font-size:1.5rem;">📋</div>
+                    <strong style="color:var(--accent);font-size:.82rem;display:block;">Estimados Maestro</strong>
+                    <small style="color:rgba(255,255,255,.6);font-size:.76rem;">Lista de estimaciones por contrato</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:.8rem;text-align:center;">
+                    <div style="font-size:1.5rem;">⚡</div>
+                    <strong style="color:var(--accent);font-size:.82rem;display:block;">Generadores</strong>
+                    <small style="color:rgba(255,255,255,.6);font-size:.76rem;">Estimados de generadores y equipos</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:.8rem;text-align:center;">
+                    <div style="font-size:1.5rem;">📅</div>
+                    <strong style="color:var(--accent);font-size:.82rem;display:block;">Diarios / Semanales</strong>
+                    <small style="color:rgba(255,255,255,.6);font-size:.76rem;">Seguimiento temporal de estimaciones</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:.8rem;text-align:center;">
+                    <div style="font-size:1.5rem;">📄</div>
+                    <strong style="color:var(--accent);font-size:.82rem;display:block;">Reportes PDF</strong>
+                    <small style="color:rgba(255,255,255,.6);font-size:.76rem;">Generación de PDF de estimaciones</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <div class="container">
+    <h2>¿Listo para controlar cada peso de tu obra?</h2>
+    <p>Tú sigues construyendo, nosotros te ayudamos a controlar el dinero de tus obras.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      <a href="https://www.biapp.com.mx" target="_blank" class="btn-cta-white">🚀 Probar Demo Gratis</a>
+      <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20del%20m%C3%B3dulo%20de%20Proyectos%20Bi2"
+         target="_blank"
+         style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.5);padding:.85rem 2.5rem;border-radius:50px;font-weight:700;font-size:1.05rem;text-decoration:none;display:inline-block;transition:all .2s;"
+         onmouseover="this.style.background='rgba(255,255,255,.3)'" onmouseout="this.style.background='rgba(255,255,255,.2)'">
+        <i class="bi bi-whatsapp me-2"></i>Hablar con Ventas
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="text-center mb-4 reveal">
+          <h2 class="section-title">Contáctanos</h2>
+          <p class="section-sub">Veracruz, México — listos para mostrarte el sistema en acción</p>
+        </div>
+        <div class="row g-3 reveal">
+          <div class="col-sm-6">
+            <div class="contact-item">
+              <div class="contact-icon" style="background:#25D366;"><i class="bi bi-whatsapp"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">WhatsApp</div><a href="https://wa.me/522292063157">+52 229 206 3157</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Teléfono</div><a href="tel:+522941550400">+52 294 155 0400</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" style="background:#229ED9;"><i class="bi bi-telegram"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Telegram Bot</div><a href="https://t.me/biapp_bot" target="_blank">@biapp_bot</a></div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Ventas</div><a href="mailto:ventas@biapp.com.mx">ventas@biapp.com.mx</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-envelope-at"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Info</div><a href="mailto:info@biapp.com.mx">info@biapp.com.mx</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" style="background:#ff0000;"><i class="bi bi-youtube"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">YouTube</div><a href="https://www.youtube.com/@bi2mx" target="_blank">@bi2mx</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p class="mb-1">© 2026 <a href="https://bi2.mx">Bussines Inteligent — bi2.mx</a> · Veracruz, México</p>
+    <p class="mb-0" style="font-size:.8rem;">
+      <a href="../">Inicio</a> &nbsp;·&nbsp;
+      <a href="../pv/">Punto de Venta</a> &nbsp;·&nbsp;
+      <a href="../clinica/">MediControl BI</a> &nbsp;·&nbsp;
+      <a href="../educacion/">EduControl Pro</a> &nbsp;·&nbsp;
+      <a href="../municipio/">Control Municipal</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

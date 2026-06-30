@@ -1,0 +1,1 @@
+import{Cc as s,Rb as o,Sb as a,tc as r,ua as i}from"./chunk-SYKJHCVB.js";var m=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=i({type:e,selectors:[["app-procindic02"]],standalone:!0,features:[s],decls:2,vars:0,template:function(n,p){n&1&&(o(0,"p"),r(1,"Indicadores 2 aqui iran otros Menus!"),a())}});let t=e;return t})();export{m as a};

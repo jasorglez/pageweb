@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP EduControl Bi2 - Sistema Integral de Gestión Escolar</title>
+    <meta name="description" content="ERP EduControl Bi2 - Plataforma integral para gestionar alumnos, maestros, pagos, asistencias y más. Con Bot de Telegram 24/7 e IA integrada.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul: #1a3a6e;
+            --azul-claro: #2563eb;
+            --dorado: #f4b400;
+            --dorado-oscuro: #d4960a;
+            --gris-claro: #f8fafc;
+            --texto: #1e293b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--texto); overflow-x: hidden; }
+
+        /* NAVBAR */
+        .navbar-edu {
+            background: var(--azul);
+            padding: 12px 0;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .brand-text { color: white; font-size: 1.1rem; font-weight: 700; }
+        .brand-text span { color: var(--dorado); }
+        .nav-links a {
+            color: rgba(255,255,255,0.85); text-decoration: none;
+            font-size: 0.9rem; font-weight: 500; padding: 8px 16px;
+            border-radius: 20px; transition: all 0.3s;
+        }
+        .nav-links a:hover { color: var(--dorado); background: rgba(255,255,255,0.1); }
+        .btn-demo {
+            background: var(--dorado); color: var(--azul); font-weight: 700;
+            padding: 8px 24px; border-radius: 25px; text-decoration: none;
+            font-size: 0.9rem; transition: all 0.3s;
+        }
+        .btn-demo:hover { background: var(--dorado-oscuro); color: var(--azul); transform: translateY(-2px); }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #0f1f40 0%, #1a3a6e 40%, #1e4d8c 70%, #0f3460 100%);
+            min-height: 100vh; display: flex; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; right: -20%;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(244,180,0,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: ''; position: absolute; bottom: -30%; left: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(244,180,0,0.15); border: 1px solid rgba(244,180,0,0.4);
+            color: var(--dorado); padding: 6px 16px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+            color: white; line-height: 1.15; margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .hero h1 span { color: var(--dorado); }
+        .hero p {
+            font-size: 1.15rem; color: rgba(255,255,255,0.8);
+            max-width: 560px; margin-bottom: 35px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.6s both; }
+        .btn-hero-primary {
+            background: var(--dorado); color: var(--azul); font-weight: 700;
+            padding: 14px 32px; border-radius: 30px; text-decoration: none;
+            font-size: 1rem; transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(244,180,0,0.4);
+        }
+        .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(244,180,0,0.5); color: var(--azul); }
+        .btn-hero-outline {
+            background: transparent; color: white; font-weight: 600;
+            padding: 14px 32px; border-radius: 30px; text-decoration: none;
+            font-size: 1rem; border: 2px solid rgba(255,255,255,0.4); transition: all 0.3s;
+        }
+        .btn-hero-outline:hover { border-color: white; background: rgba(255,255,255,0.1); color: white; }
+        .hero-image-wrapper { position: relative; animation: fadeInRight 1s ease 0.3s both; }
+        .hero-image-wrapper img {
+            width: 100%; max-width: 480px; border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            border: 2px solid rgba(244,180,0,0.3);
+        }
+        .hero-stats { display: flex; gap: 30px; margin-top: 40px; animation: fadeInUp 0.8s ease 0.8s both; }
+        .hero-stat .num { font-size: 2rem; font-weight: 900; color: var(--dorado); line-height: 1; }
+        .hero-stat .lbl { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+        /* FLOAT CARDS */
+        .float-card {
+            position: absolute; background: white; border-radius: 12px;
+            padding: 10px 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.8rem; font-weight: 600; color: var(--texto);
+            animation: float 3s ease-in-out infinite;
+        }
+        .float-card-1 { top: 15%; right: -10px; }
+        .float-card-2 { bottom: 20%; right: -20px; animation-delay: 1.5s; }
+
+        /* MÓDULOS */
+        .section-modules { background: var(--gris-claro); padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .tag {
+            display: inline-block; background: rgba(37,99,235,0.1);
+            color: var(--azul-claro); padding: 6px 18px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--azul); }
+        .section-title h2 span { color: var(--dorado-oscuro); }
+        .section-title p { font-size: 1.05rem; color: #64748b; max-width: 580px; margin: 12px auto 0; }
+
+        .module-card {
+            background: white; border-radius: 16px; padding: 28px 22px;
+            text-align: center; transition: all 0.3s;
+            border: 2px solid transparent; height: 100%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .module-card:hover {
+            transform: translateY(-6px); border-color: var(--azul-claro);
+            box-shadow: 0 15px 40px rgba(37,99,235,0.15);
+        }
+        .module-icon {
+            width: 64px; height: 64px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin: 0 auto 16px;
+        }
+        .module-card h5 { font-size: 0.95rem; font-weight: 700; color: var(--azul); margin-bottom: 8px; }
+        .module-card p { font-size: 0.8rem; color: #64748b; line-height: 1.5; }
+
+        /* BOT TELEGRAM */
+        .section-bot {
+            background: linear-gradient(135deg, #0f1f40 0%, #1a3a6e 100%);
+            padding: 80px 0; position: relative; overflow: hidden;
+        }
+        .section-bot::before {
+            content: ''; position: absolute; top: -30%; right: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(244,180,0,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .bot-feature { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+        .bot-feature-icon {
+            width: 48px; height: 48px; background: rgba(244,180,0,0.15);
+            border: 1px solid rgba(244,180,0,0.3); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; flex-shrink: 0; color: var(--dorado);
+        }
+        .bot-feature h6 { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 4px; }
+        .bot-feature p { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin: 0; }
+        .telegram-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 10px 20px; border-radius: 50px; font-size: 1rem; font-weight: 600;
+        }
+
+        /* BENEFICIOS */
+        .section-benefits { padding: 80px 0; background: white; }
+        .benefit-item {
+            display: flex; align-items: flex-start; gap: 16px;
+            padding: 20px; border-radius: 12px; margin-bottom: 16px;
+            border: 1px solid #e2e8f0; transition: all 0.3s;
+        }
+        .benefit-item:hover { border-color: var(--azul-claro); background: rgba(37,99,235,0.03); }
+        .benefit-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .benefit-item h6 { font-weight: 700; color: var(--azul); margin-bottom: 4px; }
+        .benefit-item p { font-size: 0.85rem; color: #64748b; margin: 0; }
+
+        /* IA */
+        .section-ia { background: linear-gradient(135deg, #f4b400 0%, #d4960a 100%); padding: 70px 0; }
+        .ia-card {
+            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 16px; padding: 24px; text-align: center; transition: all 0.3s;
+        }
+        .ia-card:hover { background: rgba(255,255,255,0.3); transform: translateY(-4px); }
+        .ia-card i { font-size: 2.5rem; color: var(--azul); margin-bottom: 12px; display: block; }
+        .ia-card h5 { font-weight: 700; color: var(--azul); margin-bottom: 8px; }
+        .ia-card p { font-size: 0.85rem; color: rgba(26,58,110,0.8); margin: 0; }
+
+        /* GALERÍA */
+        .section-gallery { padding: 80px 0; background: white; }
+        .gallery-img {
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: all 0.3s; height: 240px;
+        }
+        .gallery-img:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        .gallery-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* CTA */
+        .section-cta {
+            background: linear-gradient(135deg, #0f1f40 0%, #1a3a6e 100%);
+            padding: 80px 0; text-align: center;
+        }
+        .section-cta h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: white; margin-bottom: 16px; }
+        .section-cta h2 span { color: var(--dorado); }
+        .section-cta p { color: rgba(255,255,255,0.8); font-size: 1.05rem; max-width: 560px; margin: 0 auto 36px; }
+
+        /* CONTACTO */
+        .section-contact { background: var(--gris-claro); padding: 60px 0; }
+        .contact-item { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .contact-icon {
+            width: 44px; height: 44px; background: var(--azul); color: white;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .contact-item h6 { font-weight: 700; color: var(--azul); margin: 0; font-size: 0.85rem; }
+        .contact-item p { color: #475569; margin: 0; font-size: 0.85rem; }
+
+        /* FOOTER */
+        footer {
+            background: var(--azul); color: rgba(255,255,255,0.7);
+            padding: 30px 0; text-align: center; font-size: 0.85rem;
+        }
+        footer a { color: var(--dorado); text-decoration: none; }
+
+        /* ANIMATIONS */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* SOMOS BI2 */
+        .section-somos { background: white; padding: 70px 0; }
+        .somos-card {
+            background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+            border-radius: 20px; padding: 40px; border: 1px solid #e2e8f0;
+        }
+
+        /* DEMO */
+        .section-demo {
+            background: linear-gradient(135deg, #0f3460 0%, #1a3a6e 100%);
+            padding: 70px 0;
+        }
+        .demo-box {
+            background: white; border-radius: 20px; padding: 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .demo-credential {
+            display: flex; align-items: center; gap: 12px;
+            background: #f8fafc; border-radius: 10px; padding: 12px 16px;
+            margin-bottom: 10px; border: 1px solid #e2e8f0;
+        }
+        .demo-credential i { color: var(--azul-claro); font-size: 1.1rem; flex-shrink: 0; }
+        .demo-credential code { font-size: 0.9rem; color: var(--texto); font-weight: 600; word-break: break-all; }
+
+        /* IDEAL PARA */
+        .ideal-card {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 16px; padding: 28px 20px; text-align: center;
+            transition: all 0.3s; color: white; height: 100%;
+        }
+        .ideal-card:hover { background: rgba(255,255,255,0.2); transform: translateY(-4px); }
+        .ideal-card .icon { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+        .ideal-card h5 { font-weight: 700; margin-bottom: 6px; }
+        .ideal-card p { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin: 0; }
+
+        @media (max-width: 768px) {
+            .hero-image-wrapper { margin-top: 40px; }
+            .float-card { display: none; }
+            .hero-stats { gap: 20px; }
+            .hero-stat .num { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-edu">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <div style="width:38px;height:38px;background:var(--dorado);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                    <i class="bi bi-mortarboard-fill" style="color:var(--azul);font-size:1.2rem;"></i>
+                </div>
+                <div class="brand-text">ERP <span>EduControl</span> Bi2</div>
+            </div>
+            <div class="nav-links d-none d-md-flex align-items-center gap-1">
+                <a href="#modulos">Módulos</a>
+                <a href="#bot">Bot Telegram</a>
+                <a href="#beneficios">Beneficios</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+            <a href="https://wa.me/522292063157?text=Quiero%20información%20sobre%20EduControl%20Bi2"
+               target="_blank" class="btn-demo">
+                <i class="bi bi-whatsapp me-1"></i> Solicitar Demo
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-badge">
+                    <i class="bi bi-stars"></i> Sistema con Inteligencia Artificial integrada
+                </div>
+                <h1>La plataforma <span>todo en uno</span> para gestionar tu escuela</h1>
+                <p>ERP educativo completo con 14 módulos integrados, Bot de Telegram 24/7 y generación automática de horarios con IA. Diseñado para instituciones mexicanas.</p>
+                <div class="hero-buttons">
+                    <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20de%20EduControl%20Bi2"
+                       target="_blank" class="btn-hero-primary">
+                        <i class="bi bi-play-circle me-2"></i>Ver Demo Gratis
+                    </a>
+                    <a href="#modulos" class="btn-hero-outline">
+                        <i class="bi bi-grid me-2"></i>Ver Módulos
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><div class="num">14+</div><div class="lbl">Módulos</div></div>
+                    <div class="hero-stat"><div class="num">24/7</div><div class="lbl">Bot Telegram</div></div>
+                    <div class="hero-stat"><div class="num">100%</div><div class="lbl">En la nube</div></div>
+                    <div class="hero-stat"><div class="num">MX</div><div class="lbl">Empresa mexicana</div></div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image-wrapper d-inline-block position-relative">
+                    <img src="publicidad erp escolar.png" alt="ERP EduControl Bi2">
+                    <div class="float-card float-card-1">
+                        <span style="font-size:1.4rem;">🤖</span>
+                        <div>
+                            <div style="font-size:0.75rem;font-weight:700;color:#1a3a6e;">Bot Telegram</div>
+                            <div style="font-size:0.7rem;color:#64748b;">Activo 24/7</div>
+                        </div>
+                    </div>
+                    <div class="float-card float-card-2">
+                        <span style="font-size:1.4rem;">✨</span>
+                        <div>
+                            <div style="font-size:0.75rem;font-weight:700;color:#1a3a6e;">IA Integrada</div>
+                            <div style="font-size:0.7rem;color:#64748b;">Google Gemini</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SOMOS BI2 -->
+<section class="section-somos">
+    <div class="container">
+        <div class="somos-card reveal">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <div class="tag mb-3"><i class="bi bi-building me-1"></i>Quiénes somos</div>
+                    <h2 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:var(--azul);margin-bottom:16px;">
+                        Somos <span style="color:var(--dorado-oscuro);">Bi2</span> — Soluciones ERP en la nube
+                    </h2>
+                    <p style="color:#475569;font-size:1rem;line-height:1.8;margin-bottom:20px;">
+                        Somos una empresa que ofrece <strong>soluciones personalizadas de ERP en la nube</strong> y
+                        bots automatizados para transformar y optimizar tu negocio. Nuestro sistema educativo es
+                        un ERP completo desarrollado con <strong>React + TypeScript + Firebase</strong>, diseñado
+                        para que instituciones gestionen toda su operación desde una sola plataforma,
+                        con soporte para múltiples escuelas (multi-tenant).
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="d-flex align-items-center gap-2" style="font-size:0.9rem;font-weight:600;color:var(--azul);">
+                            <i class="bi bi-check-circle-fill text-success"></i> Reportes en tiempo real
+                        </div>
+                        <div class="d-flex align-items-center gap-2" style="font-size:0.9rem;font-weight:600;color:var(--azul);">
+                            <i class="bi bi-check-circle-fill text-success"></i> Multi-sucursal / multi-empresa
+                        </div>
+                        <div class="d-flex align-items-center gap-2" style="font-size:0.9rem;font-weight:600;color:var(--azul);">
+                            <i class="bi bi-check-circle-fill text-success"></i> Acceso desde cualquier lugar
+                        </div>
+                        <div class="d-flex align-items-center gap-2" style="font-size:0.9rem;font-weight:600;color:var(--azul);">
+                            <i class="bi bi-check-circle-fill text-success"></i> Bot inteligente de Telegram
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <p style="color:#64748b;font-size:0.95rem;margin-bottom:20px;">
+                        ¿Te gustaría que te expliquemos más a fondo o que te contactemos para una demostración gratuita?
+                    </p>
+                    <div class="d-flex flex-column gap-3">
+                        <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20de%20EduControl%20Bi2"
+                           target="_blank" class="btn-hero-primary text-center" style="border-radius:12px;">
+                            <i class="bi bi-whatsapp me-2"></i>Solicitar demostración gratuita
+                        </a>
+                        <a href="mailto:ventas@biapp.com.mx"
+                           style="display:block;text-align:center;padding:12px;border-radius:12px;border:2px solid var(--azul-claro);color:var(--azul-claro);font-weight:600;text-decoration:none;font-size:0.9rem;transition:all 0.3s;"
+                           onmouseover="this.style.background='var(--azul-claro)';this.style.color='white';"
+                           onmouseout="this.style.background='transparent';this.style.color='var(--azul-claro)';">
+                            <i class="bi bi-envelope me-2"></i>ventas@biapp.com.mx
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MÓDULOS -->
+<section class="section-modules" id="modulos">
+    <div class="container">
+        <div class="section-title reveal">
+            <div class="tag"><i class="bi bi-grid-3x3-gap me-1"></i>Funcionalidades</div>
+            <h2>14 módulos para <span>gestión completa</span></h2>
+            <p>Todo lo que necesita tu institución en una sola plataforma integrada</p>
+        </div>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">📊</div>
+                    <h5>Dashboard General</h5>
+                    <p>Estadísticas en tiempo real: alumnos, pagos, asistencias y egresos de un vistazo</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0fdf4;">👨‍🎓</div>
+                    <h5>Control de Alumnos</h5>
+                    <p>Matrícula, materias, calificaciones, pagos y asistencias por alumno</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fef3c7;">👩‍🏫</div>
+                    <h5>Control de Maestros</h5>
+                    <p>Registro, disponibilidad semanal, materias asignadas y control de asistencia</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fdf4ff;">📚</div>
+                    <h5>Materias</h5>
+                    <p>Código único, maestro asignado, salón, horario y costo por materia</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff7ed;">🏫</div>
+                    <h5>Salones / Aulas</h5>
+                    <p>Inventario de espacios: aulas, laboratorios, talleres, piso y capacidad</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#ecfdf5;">🎓</div>
+                    <h5>Carreras / Programas</h5>
+                    <p>Gestión de programas académicos vinculados a alumnos y materias</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">✅</div>
+                    <h5>Asistencias</h5>
+                    <p>Registro centralizado de entradas y salidas con estadísticas comparativas</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0fdf4;">💰</div>
+                    <h5>Control de Ingresos</h5>
+                    <p>Pagos estudiantiles, recibos con logo de la escuela y reportes en PDF</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff1f2;">📉</div>
+                    <h5>Control de Egresos</h5>
+                    <p>Nómina, servicios, mantenimiento — filtros por categoría y rango de fechas</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fef3c7;">🗓️</div>
+                    <h5>Horarios con IA</h5>
+                    <p>Generador automático con Google Gemini, evitando conflictos de salón y maestro</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">📝</div>
+                    <h5>Gestión de Tareas</h5>
+                    <p>Maestros asignan tareas con archivos adjuntos, calificación y retroalimentación</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fdf4ff;">🎯</div>
+                    <h5>Marketing con IA</h5>
+                    <p>Guiones publicitarios, locución en español y video promocional automático</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#ecfdf5;">👥</div>
+                    <h5>Gestión de Usuarios</h5>
+                    <p>Roles Admin, Staff y Maestro. PINs para integración con Bot de Telegram</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff7ed;">🏢</div>
+                    <h5>Multi-Escuela</h5>
+                    <p>Administra múltiples instituciones con datos completamente aislados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEMO GRATIS -->
+<section class="section-demo">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 reveal">
+                <div style="background:rgba(244,180,0,0.15);color:var(--dorado);display:inline-block;padding:6px 18px;border-radius:20px;font-size:0.85rem;font-weight:600;margin-bottom:16px;">
+                    <i class="bi bi-play-circle me-1"></i> Pruébalo ahora mismo
+                </div>
+                <h2 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:white;margin-bottom:16px;">
+                    Accede al demo <span style="color:var(--dorado);">completamente gratis</span>
+                </h2>
+                <p style="color:rgba(255,255,255,0.8);margin-bottom:28px;">
+                    Explora todas las funcionalidades sin compromiso. Usa las credenciales de demostración y descubre el poder del sistema en minutos.
+                </p>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex align-items-center gap-2" style="color:rgba(255,255,255,0.8);font-size:0.9rem;">
+                        <i class="bi bi-check-circle-fill" style="color:var(--dorado);"></i> Sin tarjeta de crédito
+                    </div>
+                    <div class="d-flex align-items-center gap-2" style="color:rgba(255,255,255,0.8);font-size:0.9rem;">
+                        <i class="bi bi-check-circle-fill" style="color:var(--dorado);"></i> Acceso inmediato a todos los módulos
+                    </div>
+                    <div class="d-flex align-items-center gap-2" style="color:rgba(255,255,255,0.8);font-size:0.9rem;">
+                        <i class="bi bi-check-circle-fill" style="color:var(--dorado);"></i> Bot de Telegram incluido en el demo
+                    </div>
+                </div>
+
+                <!-- Bot Telegram -->
+                <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:14px;padding:20px;margin-top:28px;">
+                    <div style="color:white;font-weight:700;margin-bottom:10px;">
+                        <i class="bi bi-telegram" style="color:#2ca5e0;font-size:1.2rem;"></i>
+                        Bot de Telegram del Demo
+                    </div>
+                    <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;margin-bottom:14px;">
+                        Activa el bot para probar las consultas automáticas desde Telegram
+                    </p>
+                    <a href="https://t.me/mi_escuela_2026_bot" target="_blank"
+                       style="display:inline-flex;align-items:center;gap:8px;background:#2ca5e0;color:white;padding:10px 20px;border-radius:25px;font-weight:700;text-decoration:none;font-size:0.9rem;transition:all 0.3s;">
+                        <i class="bi bi-telegram"></i> @mi_escuela_2026_bot
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-7 reveal">
+                <div class="demo-box">
+                    <div style="text-align:center;margin-bottom:24px;">
+                        <div style="width:56px;height:56px;background:linear-gradient(135deg,#1a3a6e,#2563eb);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                            <i class="bi bi-play-circle-fill" style="color:white;font-size:1.8rem;"></i>
+                        </div>
+                        <h4 style="font-weight:800;color:var(--azul);margin-bottom:6px;">Acceso al Sistema Demo</h4>
+                        <p style="color:#64748b;font-size:0.9rem;margin:0;">Copia las credenciales y entra ahora</p>
+                    </div>
+
+                    <div style="background:#f0f9ff;border:2px solid #bae6fd;border-radius:12px;padding:14px;margin-bottom:20px;text-align:center;">
+                        <div style="font-size:0.8rem;color:#0369a1;font-weight:600;margin-bottom:6px;">URL del Sistema</div>
+                        <a href="https://escuelas.biapp.com.mx/" target="_blank"
+                           style="font-size:1rem;font-weight:700;color:#1a3a6e;text-decoration:none;">
+                            🌐 escuelas.biapp.com.mx
+                        </a>
+                    </div>
+
+                    <div class="demo-credential">
+                        <i class="bi bi-person-circle"></i>
+                        <div>
+                            <div style="font-size:0.75rem;color:#64748b;margin-bottom:2px;">Usuario</div>
+                            <code>demoescuelas@biapp.com.mx</code>
+                        </div>
+                    </div>
+                    <div class="demo-credential">
+                        <i class="bi bi-key-fill"></i>
+                        <div>
+                            <div style="font-size:0.75rem;color:#64748b;margin-bottom:2px;">Contraseña</div>
+                            <code>Qwer200</code>
+                        </div>
+                    </div>
+
+                    <a href="https://escuelas.biapp.com.mx/" target="_blank"
+                       style="display:block;text-align:center;background:linear-gradient(135deg,#1a3a6e,#2563eb);color:white;padding:15px;border-radius:12px;font-weight:700;text-decoration:none;font-size:1rem;margin-top:20px;transition:all 0.3s;box-shadow:0 4px 20px rgba(37,99,235,0.3);"
+                       onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 30px rgba(37,99,235,0.4)';"
+                       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 20px rgba(37,99,235,0.3)';">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Entrar al Sistema Demo
+                    </a>
+
+                    <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid #f1f5f9;">
+                        <a href="https://www.youtube.com/@bi2mx" target="_blank"
+                           style="display:inline-flex;align-items:center;gap:8px;color:#ff0000;font-weight:600;font-size:0.9rem;text-decoration:none;">
+                            <i class="bi bi-youtube" style="font-size:1.2rem;"></i>
+                            Ver tutoriales en YouTube @bi2mx
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- IDEAL PARA -->
+<section style="background:linear-gradient(135deg,#1a3a6e,#0f3460);padding:70px 0;">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2 style="color:white;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;">
+                💬 Ideal para tu tipo de institución
+            </h2>
+            <p style="color:rgba(255,255,255,0.75);max-width:560px;margin:12px auto 0;">
+                Una solución flexible que se adapta a cualquier institución educativa o negocio en crecimiento
+            </p>
+        </div>
+        <div class="row g-3 justify-content-center">
+            <div class="col-md-4 col-6 reveal">
+                <div class="ideal-card">
+                    <span class="icon">🏫</span>
+                    <h5>Escuelas</h5>
+                    <p>Primarias, secundarias, preparatorias, universidades y centros de formación</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-6 reveal">
+                <div class="ideal-card">
+                    <span class="icon">📈</span>
+                    <h5>Negocios en crecimiento</h5>
+                    <p>Empresas que buscan digitalizar y escalar su operación con tecnología de punta</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-6 reveal">
+                <div class="ideal-card">
+                    <span class="icon">💡</span>
+                    <h5>Sin sistema actual</h5>
+                    <p>Instituciones que todavía usan Excel o papel y quieren dar el salto digital</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BOT TELEGRAM -->
+<section class="section-bot" id="bot">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0 reveal text-center">
+                <img src="ERP-Bi2-Educacion.png" alt="Bot Telegram EduControl"
+                     style="max-width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+            </div>
+            <div class="col-lg-7 reveal">
+                <div style="background:rgba(244,180,0,0.15);color:var(--dorado);display:inline-block;padding:6px 18px;border-radius:20px;font-size:0.85rem;font-weight:600;margin-bottom:16px;">
+                    <i class="bi bi-telegram me-1"></i> Asistente Virtual
+                </div>
+                <h2 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:white;margin-bottom:16px;">
+                    Bot de Telegram <span style="color:var(--dorado);">disponible 24/7</span>
+                </h2>
+                <p style="color:rgba(255,255,255,0.75);margin-bottom:32px;">
+                    Tu institución siempre conectada. Alumnos y padres consultan calificaciones,
+                    asistencias y pagos en cualquier momento desde su celular.
+                </p>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-graph-up"></i></div>
+                    <div>
+                        <h6>Consulta de calificaciones</h6>
+                        <p>Alumnos reciben sus notas al instante por Telegram, sin entrar al sistema</p>
+                    </div>
+                </div>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-bell"></i></div>
+                    <div>
+                        <h6>Recordatorios de pago</h6>
+                        <p>Notificaciones automáticas antes del vencimiento de colegiaturas</p>
+                    </div>
+                </div>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-calendar-check"></i></div>
+                    <div>
+                        <h6>Asistencias en tiempo real</h6>
+                        <p>Padres reciben alerta cuando su hijo no entra a clases ese día</p>
+                    </div>
+                </div>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-chat-dots"></i></div>
+                    <div>
+                        <h6>Soporte e información</h6>
+                        <p>Horarios, eventos y comunicados institucionales desde Telegram</p>
+                    </div>
+                </div>
+                <div class="telegram-badge mt-2">
+                    <i class="bi bi-telegram" style="color:#2ca5e0;font-size:1.4rem;"></i>
+                    Integración nativa con Telegram Bot API
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="section-benefits" id="beneficios">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 reveal">
+                <div class="tag">Ventajas</div>
+                <h2 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:var(--azul);margin:12px 0 16px;">
+                    ¿Por qué elegir <span style="color:var(--dorado-oscuro);">EduControl Bi2</span>?
+                </h2>
+                <p style="color:#64748b;margin-bottom:32px;">
+                    Una solución diseñada específicamente para el sector educativo mexicano,
+                    con tecnología de vanguardia y soporte local.
+                </p>
+                <img src="Edu Control.png" alt="EduControl Beneficios"
+                     style="width:100%;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.12);">
+            </div>
+            <div class="col-lg-7 reveal">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div>
+                        <h6>Datos seguros en la nube</h6>
+                        <p>Firebase con Google OAuth. Tus datos siempre protegidos y respaldados automáticamente.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📱</div>
+                    <div>
+                        <h6>Acceso desde cualquier dispositivo</h6>
+                        <p>Web responsive. Funciona en computadora, tablet y celular sin instalar nada.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🤖</div>
+                    <div>
+                        <h6>Inteligencia Artificial incluida</h6>
+                        <p>Google Gemini para horarios automáticos, guiones de marketing y contenido institucional.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📄</div>
+                    <div>
+                        <h6>Reportes profesionales en PDF</h6>
+                        <p>Boletas, recibos con logo, reportes de asistencia y horarios listos para imprimir.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🏢</div>
+                    <div>
+                        <h6>Multi-institución (Multi-tenant)</h6>
+                        <p>Administra varias escuelas desde una sola cuenta. Ideal para grupos educativos.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🇲🇽</div>
+                    <div>
+                        <h6>Empresa 100% mexicana</h6>
+                        <p>Soporte en español, facturación en pesos, atención en zona horaria del centro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- IA -->
+<section class="section-ia">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2 style="color:var(--azul);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;">
+                ✨ Inteligencia Artificial al servicio de tu escuela
+            </h2>
+            <p style="color:rgba(26,58,110,0.8);max-width:560px;margin:12px auto 0;">
+                Automatiza tareas complejas con la potencia de Google Gemini
+            </p>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-3 col-6 reveal">
+                <div class="ia-card">
+                    <i class="bi bi-calendar2-week"></i>
+                    <h5>Horarios Automáticos</h5>
+                    <p>Genera el horario académico completo sin conflictos de salón ni maestro</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 reveal">
+                <div class="ia-card">
+                    <i class="bi bi-megaphone"></i>
+                    <h5>Guiones Publicitarios</h5>
+                    <p>Crea anuncios profesionales para redes sociales en segundos</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 reveal">
+                <div class="ia-card">
+                    <i class="bi bi-mic"></i>
+                    <h5>Locución en Español</h5>
+                    <p>Audio voiceover profesional para tus campañas de difusión institucional</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 reveal">
+                <div class="ia-card">
+                    <i class="bi bi-camera-video"></i>
+                    <h5>Video Promocional</h5>
+                    <p>Video cinemático automático para difundir tu institución en redes sociales</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="section-gallery">
+    <div class="container">
+        <div class="section-title reveal">
+            <div class="tag">Capturas del sistema</div>
+            <h2>Ve el sistema <span style="color:var(--dorado-oscuro);">en acción</span></h2>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="gallery-img">
+                    <img src="erp educacion.png" alt="ERP Educación pantallas">
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="gallery-img">
+                    <img src="Solución ERP y bot educativo.png" alt="Solución ERP y Bot">
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 reveal">
+                <div class="gallery-img">
+                    <img src="educontrol.png" alt="EduControl Pro">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section-cta">
+    <div class="container reveal">
+        <h2>¿Listo para transformar <span>tu institución</span>?</h2>
+        <p>Solicita una demostración gratuita y descubre cómo EduControl Bi2 optimiza la gestión de tu escuela desde el primer día.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20de%20EduControl%20Bi2"
+               target="_blank" class="btn-hero-primary">
+                <i class="bi bi-whatsapp me-2"></i>Solicitar Demo por WhatsApp
+            </a>
+            <a href="https://t.me/+522292063157" target="_blank" class="btn-hero-outline">
+                <i class="bi bi-telegram me-2"></i>Contactar por Telegram
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="section-contact" id="contacto">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 reveal">
+                <h4 style="font-weight:800;color:var(--azul);margin-bottom:8px;">Bussines Inteligent</h4>
+                <p style="color:#64748b;font-size:0.9rem;margin-bottom:24px;">
+                    Empresa 100% mexicana especializada en tecnología para instituciones educativas.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="https://wa.me/522292063157" target="_blank"
+                       style="width:40px;height:40px;background:#25d366;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;text-decoration:none;">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@bi2mx" target="_blank"
+                       style="width:40px;height:40px;background:#ff0000;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;text-decoration:none;">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                    <a href="https://bi2.mx" target="_blank"
+                       style="width:40px;height:40px;background:var(--azul);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;text-decoration:none;">
+                        <i class="bi bi-globe2"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 reveal">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+                    <div>
+                        <h6>Teléfonos</h6>
+                        <p>+52 229 206 3157 &nbsp;|&nbsp; +1 765 268 4112</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
+                    <div>
+                        <h6>México</h6>
+                        <p>Paseo de los Cedros No. 687, CP 91940, Veracruz, Ver.</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+                    <div>
+                        <h6>Correo electrónico</h6>
+                        <p>
+                            <a href="mailto:ventas@biapp.com.mx" style="color:var(--azul-claro);">ventas@biapp.com.mx</a><br>
+                            <a href="mailto:info@biapp.com.mx" style="color:var(--azul-claro);">info@biapp.com.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-globe"></i></div>
+                    <div>
+                        <h6>Sitio Web</h6>
+                        <p><a href="https://bi2.mx" style="color:var(--azul-claro);">https://bi2.mx</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 reveal">
+                <div style="background:var(--azul);border-radius:16px;padding:28px;color:white;">
+                    <h5 style="font-weight:700;margin-bottom:8px;">¿Tienes dudas?</h5>
+                    <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:20px;">
+                        Escríbenos y un asesor te contactará en menos de 24 horas.
+                    </p>
+                    <a href="https://wa.me/522292063157?text=Hola,%20quiero%20información%20sobre%20EduControl%20Bi2"
+                       target="_blank"
+                       style="display:block;background:var(--dorado);color:var(--azul);text-align:center;padding:12px;border-radius:25px;font-weight:700;text-decoration:none;font-size:0.9rem;">
+                        <i class="bi bi-whatsapp me-2"></i>Escribir por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <p style="margin:0 0 8px;">
+            © 2025 <strong style="color:white;">Bussines Inteligent</strong> &nbsp;·&nbsp;
+            ERP EduControl Bi2 &nbsp;·&nbsp;
+            <a href="https://bi2.mx">bi2.mx</a> &nbsp;·&nbsp; Veracruz, México
+        </p>
+        <p style="margin:0;font-size:0.8rem;">
+            <a href="mailto:ventas@biapp.com.mx">ventas@biapp.com.mx</a> &nbsp;·&nbsp;
+            <a href="mailto:info@biapp.com.mx">info@biapp.com.mx</a> &nbsp;·&nbsp;
+            <a href="https://www.youtube.com/@bi2mx" target="_blank">YouTube @bi2mx</a> &nbsp;·&nbsp;
+            <a href="https://t.me/mi_escuela_2026_bot" target="_blank">Telegram @mi_escuela_2026_bot</a>
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+</body>
+</html>

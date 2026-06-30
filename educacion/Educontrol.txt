@@ -1,0 +1,174 @@
+● Aquí tienes el resumen completo de todo el proyecto para tu presentación:
+
+  ---
+  EduControl Pro — Sistema Integral de Gestión Educativa
+
+  ¿Qué es?
+
+  Un ERP educativo completo desarrollado con React + TypeScript + Firebase, diseñado para que instituciones educativas gestionen toda su operación desde una sola plataforma. Soporta múltiples escuelas
+   (multi-tenant).
+
+  ---
+  Módulos del Sistema
+
+  1. Dashboard General
+
+  - Panel de control central con estadísticas clave en tiempo real
+  - Gráficos de alumnos por grado, distribución por carrera, pagos mensuales y egresos
+  - Accesos rápidos a todos los módulos
+
+  ---
+  2. Control de Alumnos
+
+  - Registro completo: matrícula, nivel, grado, grupo, carrera, contacto de emergencia, tipo de sangre
+  - Asignación de materias
+  - Sub-paneles expandibles por alumno:
+    - Materias asignadas con horario y maestro
+    - Calificaciones por materia, semestre y promedio general
+    - Pagos individuales del alumno
+    - Asistencias personales
+  - Exportación de reporte general en PDF
+
+  ---
+  3. Control de Maestros
+
+  - Registro con especialidad, disponibilidad semanal y materias asignadas
+  - Registro de entrada/salida (asistencia)
+  - Perfil detallado con modal
+
+  ---
+  4. Materias
+
+  - Crear materias con código único, maestro y salón asignado
+  - Horario, horas semanales y costo por materia
+
+  ---
+  5. Salones/Aulas
+
+  - Inventario de espacios: aulas, laboratorios, talleres
+  - Edificio, piso, capacidad y tipo
+
+  ---
+  6. Carreras / Programas Académicos
+
+  - Gestión de programas con código y descripción
+  - Vinculación con alumnos y materias
+
+  ---
+  7. Asistencias
+
+  - Registro centralizado de entradas y salidas (alumnos y maestros)
+  - Filtros por tipo de persona, tipo de movimiento y fecha
+  - Estadísticas: total entradas vs salidas
+
+  ---
+  8. Control de Ingresos (Pagos)
+
+  - Registro de pagos estudiantiles con concepto, monto, método y estado
+  - Tipos de pago: Semestre, Materia, Otro
+  - Métodos: Efectivo, Tarjeta, Transferencia
+  - Estados: Pagado, Pendiente, Cancelado
+  - Estadísticas: total recaudado, ingresos del mes
+  - Reporte general en PDF y recibos individuales con logo de escuela y espacio para firmas
+
+  ---
+  9. Control de Egresos (Gastos)
+
+  - Registro de gastos por categoría: Nómina, Servicios, Mantenimiento, Insumos, Otros
+  - Métodos de pago y número de referencia/comprobante
+  - Filtros por categoría y rango de fechas
+  - Estadísticas: total de egresos, egresos del mes
+
+  ---
+  10. Programación Académica (con IA)
+
+  - Creación de escenarios de horarios
+  - Generador automático con Google Gemini IA
+  - Grupos académicos con lista de alumnos
+  - Vista semanal día por día
+  - Exportación de horarios en PDF
+
+  ---
+  11. Gestión de Tareas
+
+  - Maestros crean tareas con archivos adjuntos (PDF, Word, Excel, Video, Imágenes)
+  - Asignación individual o por grupo
+  - Seguimiento de entregas con porcentaje de avance
+  - Calificación con retroalimentación
+  - Estados: Pendiente, Entregado, Calificado
+
+  ---
+  12. Marketing con IA
+
+  - Generación de guiones publicitarios con Google Gemini
+  - Generación de locución/audio (voiceover) en español
+  ---
+  11. Gestión de Tareas
+
+  - Maestros crean tareas con archivos adjuntos (PDF, Word, Excel, Video, Imágenes)
+  - Asignación individual o por grupo
+  - Seguimiento de entregas con porcentaje de avance
+  - Calificación con retroalimentación
+  - Estados: Pendiente, Entregado, Calificado
+
+  ---
+  12. Marketing con IA
+
+  - Generación de guiones publicitarios con Google Gemini
+  - Generación de locución/audio (voiceover) en español
+  ---
+  11. Gestión de Tareas
+
+  - Maestros crean tareas con archivos adjuntos (PDF, Word, Excel, Video, Imágenes)
+  - Asignación individual o por grupo
+  - Seguimiento de entregas con porcentaje de avance
+  - Calificación con retroalimentación
+  - Estados: Pendiente, Entregado, Calificado
+
+  ---
+  12. Marketing con IA
+
+  - Generación de guiones publicitarios con Google Gemini
+  - Generación de locución/audio (voiceover) en español
+  - Generación de video promocional cinemático
+  - Descarga de todos los recursos generados
+
+  ---
+  13. Gestión de Usuarios
+
+  - Asignación de roles: Admin, Staff, Maestro
+  - Generación de PINs para integración con bot de Telegram
+  - Reset de contraseña por email
+
+  ---
+  14. Gestión de Escuelas (Multi-tenant)
+
+  - Múltiples escuelas con datos completamente aislados
+  - Invitaciones por email con rol
+  - Super Admin puede gestionar todas las escuelas, mover usuarios y cambiar contexto de datos
+
+  ---
+  Tecnologías
+
+  ┌─────────────────────────┬────────────────────────────────────┐
+  │          Área           │             Tecnología             │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Frontend                │ React 19, TypeScript, Tailwind CSS │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Base de Datos           │ Firebase Firestore                 │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Autenticación           │ Google OAuth + Firebase Auth       │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Inteligencia Artificial │ Google Gemini                      │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Reportes PDF            │ pdfMake                            │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Gráficas                │ Recharts                           │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Animaciones             │ Framer Motion                      │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Email                   │ Nodemailer                         │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Bot                     │ Telegram Bot API                   │
+  ├─────────────────────────┼────────────────────────────────────┤
+  │ Almacenamiento          │ Firebase Storage                   │

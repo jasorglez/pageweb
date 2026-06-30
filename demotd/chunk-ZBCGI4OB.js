@@ -1,0 +1,1 @@
+import{b as r}from"./chunk-7MMUWCPP.js";function s(i){return i?r.confirmAlert("Cambios sin guardar","Tienes cambios sin guardar. \xBFDeseas salir sin guardar?","warning","S\xED, salir").then(e=>e.isConfirmed):Promise.resolve(!0)}export{s as a};

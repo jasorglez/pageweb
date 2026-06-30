@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo de Almacenes — ERP Bi2</title>
+  <meta name="description" content="Control total de inventarios: materiales, proveedores, requisiciones, órdenes de compra, entradas, salidas y kardex desde una sola plataforma.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏪</text></svg>">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    :root {
+      --primary:      #1a4731;
+      --primary-dark: #0d2b1e;
+      --primary-light:#2d7a50;
+      --accent:       #22c55e;
+      --accent2:      #16a34a;
+      --yellow:       #f59e0b;
+    }
+    .navbar { background: var(--primary-dark); padding: .75rem 1.5rem; }
+    .navbar-brand { font-weight: 800; font-size: 1.3rem; color: #fff !important; }
+    .navbar-brand span { color: var(--accent); }
+    .nav-back { color: rgba(255,255,255,.75) !important; font-size: .88rem; }
+    .nav-back:hover { color: #fff !important; }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+      padding: 100px 0 72px; position: relative; overflow: hidden;
+    }
+    .hero::before { content:''; position:absolute; top:-80px; right:-80px; width:500px; height:500px; border-radius:50%; background:rgba(34,197,94,.06); pointer-events:none; }
+    .hero-badge { display:inline-block; background:rgba(34,197,94,.18); border:1px solid rgba(34,197,94,.4); border-radius:50px; padding:5px 18px; font-size:.8rem; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:1rem; }
+    .hero-title { font-size:clamp(2rem,4vw,3.2rem); font-weight:900; color:#fff; line-height:1.1; }
+    .hero-title span { color:var(--accent); }
+    .hero-sub { color:rgba(255,255,255,.75); font-size:1.05rem; margin:1rem 0 1.5rem; max-width:540px; }
+    .hero-check { color:#4ade80; font-weight:700; }
+    .btn-hero { background:var(--accent); color:#fff; border:none; padding:.75rem 2rem; border-radius:50px; font-weight:700; font-size:1rem; transition:all .2s; text-decoration:none; display:inline-block; }
+    .btn-hero:hover { background:#16a34a; color:#fff; transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,197,94,.4); }
+    .btn-hero-ghost { background:transparent; color:#fff; border:2px solid rgba(255,255,255,.4); padding:.72rem 1.8rem; border-radius:50px; font-weight:600; transition:all .2s; text-decoration:none; display:inline-block; }
+    .btn-hero-ghost:hover { border-color:#fff; color:#fff; background:rgba(255,255,255,.1); }
+
+    /* FLOW preview */
+    .flow-box { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1rem 1.1rem; text-align:center; }
+    .flow-box .fb-icon { font-size:2rem; margin-bottom:.4rem; }
+    .flow-box strong { color:#fff; font-size:.85rem; display:block; }
+    .flow-box small { color:rgba(255,255,255,.55); font-size:.75rem; }
+    .flow-arrow { color:var(--accent); font-size:1.4rem; display:flex; align-items:center; justify-content:center; }
+
+    /* DEMO */
+    .demo-section { background:#f0fdf4; padding:60px 0; }
+    .demo-card { background:var(--primary-dark); border-radius:20px; padding:2.5rem 2rem; color:#fff; box-shadow:0 16px 48px rgba(13,43,30,.4); }
+    .demo-card h3 { font-weight:800; font-size:1.5rem; color:var(--accent); margin-bottom:1rem; }
+    .demo-row { display:flex; align-items:center; gap:.75rem; margin-bottom:.6rem; }
+    .demo-icon { width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.1rem; }
+    .btn-demo { background:var(--accent); color:#fff; border:none; padding:.7rem 1.8rem; border-radius:50px; font-weight:700; font-size:.95rem; text-decoration:none; display:inline-block; transition:all .2s; margin-top:1rem; }
+    .btn-demo:hover { background:#16a34a; color:#fff; transform:translateY(-2px); }
+
+    .section-title { font-weight:900; color:var(--primary-dark); }
+    .section-sub { color:#555; max-width:580px; margin:.5rem auto 0; }
+
+    /* TABS */
+    .tabs-section { background:#fff; padding:72px 0; }
+    .tab-chip { display:flex; align-items:center; gap:.7rem; background:#f0fdf4; border-radius:12px; padding:.85rem 1rem; box-shadow:0 3px 12px rgba(0,0,0,.06); transition:transform .2s, box-shadow .2s; height:100%; border-left:4px solid var(--accent2); }
+    .tab-chip:hover { transform:translateY(-4px); box-shadow:0 10px 28px rgba(22,163,74,.15); }
+    .tab-chip .tc-icon { font-size:1.6rem; flex-shrink:0; }
+    .tab-chip strong { font-size:.88rem; color:var(--primary-dark); display:block; }
+    .tab-chip small { font-size:.76rem; color:#666; }
+
+    /* MATERIALES */
+    .mat-section { background:#f0fdf4; padding:72px 0; }
+    .col-tag { display:inline-block; background:#fff; color:#1a4731; border:1px solid #bbf7d0; border-radius:6px; padding:3px 9px; font-size:.76rem; margin:2px; }
+    .info-card { background:#fff; border-radius:16px; padding:1.5rem; box-shadow:0 3px 14px rgba(0,0,0,.07); height:100%; }
+    .info-card h5 { font-weight:800; color:var(--primary-dark); margin-bottom:1rem; display:flex; align-items:center; gap:.5rem; font-size:.95rem; }
+
+    /* FLUJO COMPRAS */
+    .compras-section { background:var(--primary-dark); padding:72px 0; }
+    .step-card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:1.4rem; height:100%; }
+    .step-num { width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff; font-weight:800; font-size:.9rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-card h6 { color:#fff; font-weight:800; font-size:.9rem; margin:0; }
+    .step-card ul { padding-left:1.1rem; margin:.6rem 0 0; }
+    .step-card li { color:rgba(255,255,255,.7); font-size:.82rem; margin-bottom:.25rem; }
+
+    /* ENTRADAS/SALIDAS/KARDEX */
+    .mov-section { background:#fff; padding:72px 0; }
+    .mov-card { border-radius:16px; padding:1.5rem; height:100%; box-shadow:0 3px 14px rgba(0,0,0,.07); }
+    .mov-card h5 { font-weight:800; margin-bottom:.8rem; font-size:.95rem; }
+    .mov-card ul { list-style:none; padding:0; margin:0; }
+    .mov-card li { font-size:.84rem; color:#555; padding:.3rem 0; border-bottom:1px solid #f0f0f0; display:flex; align-items:flex-start; gap:.5rem; }
+    .mov-card li:last-child { border-bottom:none; }
+    .mov-card li::before { content:'✓'; font-weight:700; flex-shrink:0; }
+
+    /* PROVEEDORES */
+    .prov-section { background:#f0fdf4; padding:72px 0; }
+    .prov-detail { background:#fff; border-radius:12px; padding:1rem 1.2rem; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:.6rem; display:flex; align-items:flex-start; gap:.8rem; }
+    .prov-icon { width:34px; height:34px; border-radius:9px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; }
+    .prov-detail strong { color:var(--primary-dark); font-size:.88rem; display:block; margin-bottom:.1rem; }
+    .prov-detail span { font-size:.8rem; color:#666; }
+
+    /* CONFIG */
+    .config-section { background:var(--primary-dark); padding:72px 0; }
+    .cfg-card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1.2rem; height:100%; text-align:center; }
+    .cfg-card .cfg-icon { font-size:2rem; margin-bottom:.5rem; }
+    .cfg-card h6 { color:var(--accent); font-weight:800; font-size:.88rem; margin-bottom:.3rem; }
+    .cfg-card p { color:rgba(255,255,255,.65); font-size:.8rem; margin:0; }
+
+    /* CTA */
+    .cta-section { background:linear-gradient(135deg, #16a34a, #14532d); padding:64px 0; text-align:center; }
+    .cta-section h2 { color:#fff; font-weight:900; font-size:clamp(1.6rem,3vw,2.4rem); }
+    .cta-section p { color:rgba(255,255,255,.85); }
+    .btn-cta-white { background:#fff; color:#16a34a; border:none; padding:.85rem 2.5rem; border-radius:50px; font-weight:800; font-size:1.05rem; text-decoration:none; display:inline-block; transition:all .2s; box-shadow:0 8px 24px rgba(0,0,0,.2); }
+    .btn-cta-white:hover { transform:translateY(-3px); color:#14532d; }
+
+    .contact-section { background:#f0fdf4; padding:64px 0; }
+    .contact-item { display:flex; align-items:center; gap:.8rem; margin-bottom:.9rem; }
+    .contact-icon { width:40px; height:40px; border-radius:11px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+    .contact-item a { color:var(--primary-dark); font-weight:600; text-decoration:none; font-size:.95rem; }
+    .contact-item a:hover { color:var(--accent2); }
+
+    footer { background:var(--primary-dark); color:rgba(255,255,255,.6); padding:2rem 0; text-align:center; font-size:.85rem; }
+    footer a { color:var(--accent); text-decoration:none; }
+
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark fixed-top">
+  <div class="container-fluid d-flex align-items-center gap-3">
+    <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Inicio</a>
+    <a class="navbar-brand ms-2" href="../">Bi<span>2</span></a>
+    <span class="text-white-50 d-none d-sm-inline" style="font-size:.85rem">/ Almacenes</span>
+    <div class="ms-auto d-flex gap-2">
+      <a href="https://wa.me/522292063157" target="_blank" class="btn btn-sm btn-success rounded-pill px-3"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
+      <a href="https://www.biapp.com.mx" target="_blank" class="btn btn-sm btn-warning rounded-pill px-3 fw-bold">Demo Gratis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 reveal">
+        <span class="hero-badge">🏪 Módulo Almacenes</span>
+        <h1 class="hero-title">Control Total de<br><span>Inventarios y Almacén</span></h1>
+        <p class="hero-sub">Desde el catálogo de materiales hasta el kardex — gestiona proveedores, requisiciones, órdenes de compra, entradas y salidas en una sola plataforma.</p>
+        <div class="mb-3">
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Flujo completo: Requisición → Cotización → OC → Entrada → Kardex</span></div>
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Stock mínimo, máximo y cantidad a pedir automatizados</span></div>
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Notificaciones de stock bajo por WhatsApp, Telegram o Email</span></div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a href="https://www.biapp.com.mx" target="_blank" class="btn-hero">🚀 Probar Gratis</a>
+          <a href="https://wa.me/522292063157" target="_blank" class="btn-hero-ghost"><i class="bi bi-whatsapp me-1"></i>Contactar</a>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <!-- Flujo visual -->
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:1.5rem;">
+          <p class="text-white-50 mb-3" style="font-size:.78rem;letter-spacing:1px;text-transform:uppercase;">🔄 Flujo de Compras y Almacén</p>
+          <div class="row g-2 align-items-center">
+            <div class="col"><div class="flow-box"><div class="fb-icon">📝</div><strong>Requisición</strong><small>Solicitud de material</small></div></div>
+            <div class="col-auto"><div class="flow-arrow"><i class="bi bi-arrow-right"></i></div></div>
+            <div class="col"><div class="flow-box"><div class="fb-icon">💬</div><strong>Cotización</strong><small>Comparar proveedores</small></div></div>
+            <div class="col-auto"><div class="flow-arrow"><i class="bi bi-arrow-right"></i></div></div>
+            <div class="col"><div class="flow-box"><div class="fb-icon">🛒</div><strong>Orden de Compra</strong><small>Autorización</small></div></div>
+          </div>
+          <div class="d-flex justify-content-center my-2">
+            <i class="bi bi-arrow-down" style="color:var(--accent);font-size:1.4rem;"></i>
+          </div>
+          <div class="row g-2 align-items-center flex-row-reverse">
+            <div class="col"><div class="flow-box"><div class="fb-icon">📊</div><strong>Kardex</strong><small>Historial completo</small></div></div>
+            <div class="col-auto"><div class="flow-arrow"><i class="bi bi-arrow-left"></i></div></div>
+            <div class="col"><div class="flow-box"><div class="fb-icon">📤</div><strong>Salidas</strong><small>Despacho</small></div></div>
+            <div class="col-auto"><div class="flow-arrow"><i class="bi bi-arrow-left"></i></div></div>
+            <div class="col"><div class="flow-box"><div class="fb-icon">📥</div><strong>Entradas</strong><small>Recepción</small></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="demo-card reveal">
+          <h3>🎯 Pruébalo Gratis Ahora</h3>
+          <div class="row g-3">
+            <div class="col-sm-4"><div class="demo-row"><div class="demo-icon">🌐</div><div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Sistema</div><strong style="color:var(--accent);">www.biapp.com.mx</strong></div></div></div>
+            <div class="col-sm-4"><div class="demo-row"><div class="demo-icon">👤</div><div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Usuario</div><strong style="color:var(--accent);">demo@bi2.mx</strong></div></div></div>
+            <div class="col-sm-4"><div class="demo-row"><div class="demo-icon">🔑</div><div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Contraseña</div><strong style="color:var(--accent);">123456</strong></div></div></div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="https://www.biapp.com.mx" target="_blank" class="btn-demo">Entrar al sistema →</a>
+            <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20del%20m%C3%B3dulo%20de%20Almacenes%20Bi2" target="_blank" class="btn-demo" style="background:#25D366;"><i class="bi bi-whatsapp me-1"></i>Agendar Demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 TABS DEL MÓDULO -->
+<section class="tabs-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 class="section-title">11 Módulos Integrados</h2>
+      <p class="section-sub">Todo el ciclo de inventario cubierto en una sola plataforma — desde el proveedor hasta el despacho</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">🏭</span><div><strong>Proveedores</strong><small>Catálogo con contactos, bancos, cuentas por pagar y materiales por proveedor</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">🏬</span><div><strong>Almacenes</strong><small>Gestión de almacenes físicos por sucursal o proyecto</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">📦</span><div><strong>Materiales</strong><small>Catálogo maestro con familias, subfamilias, precios MXN/USD, stock y código de barras</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">📝</span><div><strong>Requisiciones</strong><small>Solicitudes de material con prioridad, departamento, fecha de uso y estado</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">💬</span><div><strong>Cotizaciones</strong><small>Comparación de precios entre proveedores — el precio más bajo resaltado en verde</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">🛒</span><div><strong>Órdenes de Compra</strong><small>OC con proveedor, moneda, forma de pago, descuento, retención IVA y tiempo de entrega</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">📥</span><div><strong>Entradas</strong><small>Recepción de mercancía por almacén con detalles de cada partida recibida</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">📤</span><div><strong>Salidas</strong><small>Despacho de materiales por almacén con trazabilidad completa</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">📊</span><div><strong>Kardex</strong><small>Historial completo de movimientos por material: entradas, salidas y saldo</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">🛡️</span><div><strong>Guardia</strong><small>Control de acceso y registro de entradas al almacén</small></div></div></div>
+      <div class="col-6 col-sm-4 col-lg-3 reveal"><div class="tab-chip"><span class="tc-icon">📚</span><div><strong>Catálogos y Setup</strong><small>Configuración de prefijos, notificaciones y modo de operación (proyectos o sucursales)</small></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATÁLOGO DE MATERIALES -->
+<section class="mat-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:#bbf7d0;color:#14532d;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">📦 Catálogo de Materiales</span>
+      <h2 class="section-title">Ficha Completa por cada Material</h2>
+      <p class="section-sub">Más de 35 campos configurables para gestionar tu inventario con total precisión</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 reveal">
+        <div class="info-card">
+          <h5><i class="bi bi-tag-fill text-success"></i> Identificación</h5>
+          <span class="col-tag">Artículo</span><span class="col-tag">Num. Material</span><span class="col-tag">Código de Barras</span>
+          <span class="col-tag">Descripción</span><span class="col-tag">Familia</span><span class="col-tag">SubFamilia</span>
+          <span class="col-tag">Tipo Material</span><span class="col-tag">Categoría</span><span class="col-tag">Fase</span>
+          <span class="col-tag">Producto</span><span class="col-tag">Presentación</span>
+        </div>
+      </div>
+      <div class="col-lg-4 reveal">
+        <div class="info-card">
+          <h5><i class="bi bi-currency-dollar text-warning"></i> Precios y Costos</h5>
+          <span class="col-tag">Costo MXN</span><span class="col-tag">Costo USD</span>
+          <span class="col-tag">Venta MXN</span><span class="col-tag">Venta USD</span>
+          <span class="col-tag">Precio por Proveedor</span><span class="col-tag">Costo Final</span>
+          <span class="col-tag">Fecha Cambio</span><span class="col-tag">Caducidad (meses)</span>
+          <span class="col-tag">Tiempo de Entrega (semanas)</span>
+        </div>
+      </div>
+      <div class="col-lg-4 reveal">
+        <div class="info-card">
+          <h5><i class="bi bi-boxes text-primary"></i> Inventario y Medidas</h5>
+          <span class="col-tag">Stock Mínimo</span><span class="col-tag">Stock Máximo</span>
+          <span class="col-tag">Cantidad a Pedir</span><span class="col-tag">Unidad</span>
+          <span class="col-tag">Medidas</span><span class="col-tag">Peso por Unidad</span>
+          <span class="col-tag">Empaquetado</span><span class="col-tag">Ubicación</span>
+          <span class="col-tag">Sucursal</span><span class="col-tag">Proveedor</span><span class="col-tag">Imagen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalle maestro-detalle -->
+    <div class="row g-4 mt-2">
+      <div class="col-md-4 reveal">
+        <div class="info-card" style="border-top:3px solid #22c55e;">
+          <h5><i class="bi bi-diagram-3 text-success"></i> Materiales del Producto</h5>
+          <p style="font-size:.85rem;color:#555;margin:0;">Fórmula o receta del producto: materiales, costo, cantidad, proporción y merma con su porcentaje de desperdicio.</p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="info-card" style="border-top:3px solid #f59e0b;">
+          <h5><i class="bi bi-sliders text-warning"></i> Parámetros de Control</h5>
+          <p style="font-size:.85rem;color:#555;margin:0;">Define Mínimo, Objetivo y Máximo por parámetro de calidad o producción para cada material.</p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="info-card" style="border-top:3px solid #3b82f6;">
+          <h5><i class="bi bi-clock-history text-primary"></i> Histórico de Costos</h5>
+          <p style="font-size:.85rem;color:#555;margin:0;">Registro de cada cambio de costo: materia prima básica, costo total, merma, costo final y fecha de cambio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLUJO DE COMPRAS -->
+<section class="compras-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.4);border-radius:50px;padding:5px 18px;font-size:.8rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">🛒 Flujo de Compras</span>
+      <h2 style="font-weight:900;color:#fff;">De la Requisición a la Orden de Compra</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:560px;margin:.5rem auto 0;">Trazabilidad completa en cada paso del proceso de adquisición de materiales</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="step-card">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="step-num">1</div><h6>Requisición</h6>
+          </div>
+          <ul>
+            <li>Número de documento</li>
+            <li>Fecha solicitud y entrega</li>
+            <li>Departamento solicitante</li>
+            <li>Prioridad (urgente, normal)</li>
+            <li>Producto, cantidad y fecha de uso</li>
+            <li>Exportación a PDF</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="step-card">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="step-num">2</div><h6>Cotización</h6>
+          </div>
+          <ul>
+            <li>Solicitar cotización a múltiples proveedores</li>
+            <li>Comparación lado a lado</li>
+            <li>Precio más bajo resaltado en verde</li>
+            <li>Items copiados de la requisición automáticamente</li>
+            <li>Seleccionar mejor opción y generar OC</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="step-card">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="step-num">3</div><h6>Orden de Compra</h6>
+          </div>
+          <ul>
+            <li>Vinculada a requisición y proveedor</li>
+            <li>Moneda: MXN o USD</li>
+            <li>Forma de pago y condición</li>
+            <li>Descuento y retención de IVA</li>
+            <li>Tiempo de entrega</li>
+            <li>Solicita / Autoriza</li>
+            <li>PDF de la orden</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="step-card">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="step-num">4</div><h6>Recepción y Kardex</h6>
+          </div>
+          <ul>
+            <li>Entrada al almacén vinculada a la OC</li>
+            <li>Verificación de cantidades recibidas</li>
+            <li>Actualización automática de stock</li>
+            <li>Registro en kardex con saldo actualizado</li>
+            <li>Salidas con trazabilidad completa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notificaciones -->
+    <div class="row mt-4 reveal">
+      <div class="col-12">
+        <div style="background:rgba(255,255,255,.07);border:1px solid rgba(34,197,94,.3);border-radius:14px;padding:1.3rem 1.6rem;">
+          <p style="color:#fff;margin:0;font-size:.92rem;"><strong style="color:var(--accent);">🔔 Notificaciones Automáticas de Stock:</strong>&nbsp; Recibe alertas de <strong style="color:var(--accent);">stock bajo</strong>, <strong style="color:var(--accent);">pedido recibido</strong> y <strong style="color:var(--accent);">pedido retrasado</strong> por los canales que elijas: <span style="color:#4ade80;">WhatsApp · Telegram · Correo · SMS</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTRADAS, SALIDAS Y KARDEX -->
+<section class="mov-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:#dcfce7;color:#14532d;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">📊 Movimientos de Inventario</span>
+      <h2 class="section-title">Entradas, Salidas y Kardex</h2>
+      <p class="section-sub">Trazabilidad completa de cada movimiento de inventario en tiempo real</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="mov-card" style="border-top:4px solid #22c55e;background:#f0fdf4;">
+          <h5 style="color:#14532d;"><i class="bi bi-box-arrow-in-down me-2"></i>Entradas</h5>
+          <ul>
+            <li style="color:#166534;">&nbsp;Selección de almacén de destino</li>
+            <li style="color:#166534;">&nbsp;Detalle completo de cada partida recibida</li>
+            <li style="color:#166534;">&nbsp;Vinculación a Orden de Compra</li>
+            <li style="color:#166534;">&nbsp;Actualización automática de existencias</li>
+            <li style="color:#166534;">&nbsp;Fecha y responsable de recepción</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="mov-card" style="border-top:4px solid #f59e0b;background:#fffbeb;">
+          <h5 style="color:#92400e;"><i class="bi bi-box-arrow-up me-2"></i>Salidas</h5>
+          <ul>
+            <li style="color:#78350f;">&nbsp;Selección de almacén de origen</li>
+            <li style="color:#78350f;">&nbsp;Despacho por departamento o proyecto</li>
+            <li style="color:#78350f;">&nbsp;Detalle de materiales despachados</li>
+            <li style="color:#78350f;">&nbsp;Validación contra stock disponible</li>
+            <li style="color:#78350f;">&nbsp;Fecha y responsable del despacho</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="mov-card" style="border-top:4px solid #3b82f6;background:#eff6ff;">
+          <h5 style="color:#1e3a8a;"><i class="bi bi-journal-text me-2"></i>Kardex</h5>
+          <ul>
+            <li style="color:#1e40af;">&nbsp;Historial completo por material</li>
+            <li style="color:#1e40af;">&nbsp;Cada movimiento: entrada o salida</li>
+            <li style="color:#1e40af;">&nbsp;Saldo actualizado en cada línea</li>
+            <li style="color:#1e40af;">&nbsp;Filtros por almacén y fechas</li>
+            <li style="color:#1e40af;">&nbsp;Exportación a PDF y Excel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVEEDORES -->
+<section class="prov-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:#bbf7d0;color:#14532d;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">🏭 Gestión de Proveedores</span>
+      <h2 class="section-title">Expediente Completo por Proveedor</h2>
+      <p class="section-sub">Todo lo que necesitas saber de cada proveedor en pestañas expandibles</p>
+    </div>
+    <div class="row g-3 justify-content-center">
+      <div class="col-md-6 col-lg-5 reveal">
+        <div class="prov-detail"><div class="prov-icon"><i class="bi bi-person-badge"></i></div><div><strong>Datos Generales</strong><span>Compañía, contacto principal, puesto, teléfono, email, dirección, ciudad, estado y tipo de proveedor</span></div></div>
+        <div class="prov-detail"><div class="prov-icon"><i class="bi bi-bank"></i></div><div><strong>Cuentas Bancarias</strong><span>Banco, número de cuenta, CLABE, titular y cuenta principal para pagos</span></div></div>
+        <div class="prov-detail"><div class="prov-icon"><i class="bi bi-receipt"></i></div><div><strong>Cuentas por Pagar</strong><span>Facturas, notas, abonos, restante y fecha de cada requisición u OC vinculada</span></div></div>
+      </div>
+      <div class="col-md-6 col-lg-5 reveal">
+        <div class="prov-detail"><div class="prov-icon"><i class="bi bi-boxes"></i></div><div><strong>Materiales por Sucursal</strong><span>Qué materiales suministra, en qué sucursal, precio unitario y clasificación por familia/subfamilia</span></div></div>
+        <div class="prov-detail"><div class="prov-icon"><i class="bi bi-people"></i></div><div><strong>Contactos Adicionales</strong><span>Múltiples contactos por proveedor con nombre, puesto, teléfono, email y comentarios</span></div></div>
+        <div class="prov-detail"><div class="prov-icon"><i class="bi bi-bar-chart"></i></div><div><strong>Historial de Pagos y Ventas</strong><span>Número de nota, fecha, total, abono y saldo restante de cada transacción con el proveedor</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIGURACIÓN -->
+<section class="config-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 style="font-weight:900;color:#fff;">Configuración Flexible</h2>
+      <p style="color:rgba(255,255,255,.65);">Adapta el módulo a tu forma de operar</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="cfg-card"><div class="cfg-icon">🏗️</div><h6>Modo de Operación</h6><p>Trabaja por Proyectos o por Sucursales — configurable desde el Setup</p></div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="cfg-card"><div class="cfg-icon">🔢</div><h6>Prefijos Personalizados</h6><p>Define prefijos y consecutivos para Requisiciones, Cotizaciones y Órdenes de Compra</p></div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="cfg-card"><div class="cfg-icon">🔔</div><h6>Notificaciones</h6><p>Activa alertas por Email, SMS, WhatsApp o Telegram para stock bajo, pedidos y retrasos</p></div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="cfg-card"><div class="cfg-icon">🛒</div><h6>Módulo de OC</h6><p>Las Órdenes de Compra se activan/desactivan desde Setup según las necesidades de la empresa</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <div class="container">
+    <h2>¿Listo para controlar tu inventario sin perder nada?</h2>
+    <p>Del proveedor al kardex — trazabilidad total con notificaciones automáticas.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      <a href="https://www.biapp.com.mx" target="_blank" class="btn-cta-white">🚀 Probar Demo Gratis</a>
+      <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20del%20m%C3%B3dulo%20de%20Almacenes%20Bi2" target="_blank"
+         style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.5);padding:.85rem 2.5rem;border-radius:50px;font-weight:700;font-size:1.05rem;text-decoration:none;display:inline-block;transition:all .2s;"
+         onmouseover="this.style.background='rgba(255,255,255,.3)'" onmouseout="this.style.background='rgba(255,255,255,.2)'">
+        <i class="bi bi-whatsapp me-2"></i>Hablar con Ventas
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="text-center mb-4 reveal"><h2 class="section-title">Contáctanos</h2><p class="section-sub">Veracruz, México</p></div>
+        <div class="row g-3 reveal">
+          <div class="col-sm-6">
+            <div class="contact-item"><div class="contact-icon" style="background:#25D366;"><i class="bi bi-whatsapp"></i></div><div><div style="font-size:.75rem;color:#888;">WhatsApp</div><a href="https://wa.me/522292063157">+52 229 206 3157</a></div></div>
+            <div class="contact-item"><div class="contact-icon"><i class="bi bi-telephone"></i></div><div><div style="font-size:.75rem;color:#888;">Teléfono</div><a href="tel:+522941550400">+52 294 155 0400</a></div></div>
+            <div class="contact-item"><div class="contact-icon" style="background:#229ED9;"><i class="bi bi-telegram"></i></div><div><div style="font-size:.75rem;color:#888;">Telegram</div><a href="https://t.me/biapp_bot" target="_blank">@biapp_bot</a></div></div>
+          </div>
+          <div class="col-sm-6">
+            <div class="contact-item"><div class="contact-icon"><i class="bi bi-envelope"></i></div><div><div style="font-size:.75rem;color:#888;">Ventas</div><a href="mailto:ventas@biapp.com.mx">ventas@biapp.com.mx</a></div></div>
+            <div class="contact-item"><div class="contact-icon"><i class="bi bi-envelope-at"></i></div><div><div style="font-size:.75rem;color:#888;">Info</div><a href="mailto:info@biapp.com.mx">info@biapp.com.mx</a></div></div>
+            <div class="contact-item"><div class="contact-icon" style="background:#ff0000;"><i class="bi bi-youtube"></i></div><div><div style="font-size:.75rem;color:#888;">YouTube</div><a href="https://www.youtube.com/@bi2mx" target="_blank">@bi2mx</a></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p class="mb-1">© 2026 <a href="https://bi2.mx">Bussines Inteligent — bi2.mx</a> · Veracruz, México</p>
+    <p class="mb-0" style="font-size:.8rem;">
+      <a href="../">Inicio</a> &nbsp;·&nbsp;
+      <a href="../pv/">Punto de Venta</a> &nbsp;·&nbsp;
+      <a href="../proyectos/">Proyectos</a> &nbsp;·&nbsp;
+      <a href="../mantenimiento/">Mantenimiento</a> &nbsp;·&nbsp;
+      <a href="../clinica/">MediControl BI</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

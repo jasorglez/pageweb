@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo Punto de Venta — ERP Bi2</title>
+  <meta name="description" content="Gestiona tus ventas, clientes, productos, inventario y sucursales desde una sola plataforma. POS multitienda con lealtad, reportes y modo offline.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    :root {
+      --primary: #004d4d;
+      --primary-dark: #002e2e;
+      --primary-light: #006868;
+      --accent: #f97316;
+      --accent2: #fbbf24;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar { background: var(--primary-dark); padding: .75rem 1.5rem; }
+    .navbar-brand { font-weight: 800; font-size: 1.3rem; color: #fff !important; letter-spacing: -.5px; }
+    .navbar-brand span { color: var(--accent2); }
+    .nav-back { color: rgba(255,255,255,.75) !important; font-size: .88rem; }
+    .nav-back:hover { color: #fff !important; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 55%, var(--primary-light) 100%);
+      padding: 90px 0 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: rgba(249,115,22,.08); pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block; background: rgba(249,115,22,.2);
+      border: 1px solid rgba(249,115,22,.4); border-radius: 50px;
+      padding: 5px 18px; font-size: .8rem; color: #fbbf24;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .hero-title { font-size: clamp(2rem,4vw,3.2rem); font-weight: 900; color: #fff; line-height: 1.1; }
+    .hero-title span { color: #fbbf24; }
+    .hero-sub { color: rgba(255,255,255,.78); font-size: 1.05rem; margin: 1rem 0 1.5rem; max-width: 520px; }
+    .hero-check { color: #4ade80; font-weight: 700; }
+    .hero-img { width: 100%; border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,.5); }
+    .btn-hero-primary {
+      background: var(--accent); color: #fff; border: none;
+      padding: .75rem 2rem; border-radius: 50px; font-weight: 700;
+      font-size: 1rem; transition: all .2s; text-decoration: none; display: inline-block;
+    }
+    .btn-hero-primary:hover { background: #ea6d10; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,.4); }
+    .btn-hero-ghost {
+      background: transparent; color: #fff;
+      border: 2px solid rgba(255,255,255,.4); padding: .72rem 1.8rem;
+      border-radius: 50px; font-weight: 600; transition: all .2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-hero-ghost:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,.1); }
+
+    /* ── DEMO CARD ── */
+    .demo-section { background: #f0faf9; padding: 60px 0; }
+    .demo-card {
+      background: var(--primary-dark); border-radius: 20px; padding: 2.5rem 2rem;
+      color: #fff; box-shadow: 0 16px 48px rgba(0,46,46,.35);
+    }
+    .demo-card h3 { font-weight: 800; font-size: 1.5rem; color: #fbbf24; margin-bottom: 1rem; }
+    .demo-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem; }
+    .demo-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; }
+    .demo-row span { font-size: .95rem; }
+    .demo-row strong { color: #fbbf24; }
+    .btn-demo {
+      background: var(--accent); color: #fff; border: none;
+      padding: .7rem 1.8rem; border-radius: 50px; font-weight: 700;
+      font-size: .95rem; text-decoration: none; display: inline-block;
+      transition: all .2s; margin-top: 1rem;
+    }
+    .btn-demo:hover { background: #ea6d10; color: #fff; transform: translateY(-2px); }
+
+    /* ── FEATURES ── */
+    .features-section { padding: 72px 0; background: #fff; }
+    .section-title { font-weight: 900; color: var(--primary-dark); }
+    .section-sub { color: #555; max-width: 580px; margin: .5rem auto 0; }
+    .feat-card {
+      background: #f8fffe; border-radius: 16px; padding: 1.5rem;
+      border-left: 4px solid var(--primary); height: 100%;
+      box-shadow: 0 3px 14px rgba(0,0,0,.06);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .feat-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,77,77,.14); }
+    .feat-icon { font-size: 2rem; margin-bottom: .6rem; }
+    .feat-card h5 { font-weight: 800; color: var(--primary-dark); font-size: 1rem; margin-bottom: .4rem; }
+    .feat-card ul { padding-left: 1.1rem; margin: 0; }
+    .feat-card li { font-size: .85rem; color: #555; margin-bottom: .2rem; }
+
+    /* ── SLIDES GRID ── */
+    .slides-section { background: #f0faf9; padding: 72px 0; }
+    .slide-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .85rem; flex-shrink: 0;
+    }
+    .slide-item {
+      display: flex; align-items: flex-start; gap: .85rem;
+      background: #fff; border-radius: 14px; padding: 1rem 1.1rem;
+      box-shadow: 0 3px 12px rgba(0,0,0,.07); height: 100%;
+      transition: box-shadow .2s;
+    }
+    .slide-item:hover { box-shadow: 0 8px 24px rgba(0,77,77,.13); }
+    .slide-item strong { font-size: .92rem; color: var(--primary-dark); display: block; margin-bottom: .2rem; }
+    .slide-item span { font-size: .8rem; color: #666; }
+
+    /* ── TODO EN UN SISTEMA ── */
+    .todo-section { background: #fff; padding: 72px 0; }
+    .todo-card {
+      text-align: center; padding: 1.5rem 1rem;
+      border-radius: 16px; background: #f8fffe;
+      box-shadow: 0 3px 14px rgba(0,0,0,.06); height: 100%;
+      transition: transform .25s;
+    }
+    .todo-card:hover { transform: translateY(-5px); }
+    .todo-icon { font-size: 2.4rem; margin-bottom: .7rem; }
+    .todo-card h6 { font-weight: 800; color: var(--primary-dark); font-size: .95rem; margin-bottom: .3rem; }
+    .todo-card p { font-size: .82rem; color: #555; margin: 0; }
+
+    /* ── TECH CAPS ── */
+    .tech-section { background: var(--primary-dark); padding: 72px 0; }
+    .tech-card {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px; padding: 1.4rem 1.2rem; text-align: center; height: 100%;
+    }
+    .tech-icon { font-size: 2rem; margin-bottom: .6rem; }
+    .tech-card h6 { color: #fbbf24; font-weight: 800; font-size: .9rem; margin-bottom: .3rem; }
+    .tech-card p { color: rgba(255,255,255,.7); font-size: .82rem; margin: 0; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      padding: 64px 0; text-align: center;
+    }
+    .cta-section h2 { color: #fff; font-weight: 900; font-size: clamp(1.6rem,3vw,2.4rem); }
+    .cta-section p { color: rgba(255,255,255,.85); font-size: 1.05rem; }
+    .btn-cta-white {
+      background: #fff; color: var(--accent); border: none;
+      padding: .85rem 2.5rem; border-radius: 50px; font-weight: 800;
+      font-size: 1.05rem; text-decoration: none; display: inline-block;
+      transition: all .2s; box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+    .btn-cta-white:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.25); color: #ea580c; }
+
+    /* ── CONTACT ── */
+    .contact-section { background: #f8fffe; padding: 64px 0; }
+    .contact-item { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; }
+    .contact-icon { width: 40px; height: 40px; border-radius: 11px; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-item a { color: var(--primary-dark); font-weight: 600; text-decoration: none; font-size: .95rem; }
+    .contact-item a:hover { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--primary-dark); color: rgba(255,255,255,.6); padding: 2rem 0; text-align: center; font-size: .85rem; }
+    footer a { color: var(--accent2); text-decoration: none; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark fixed-top">
+  <div class="container-fluid d-flex align-items-center gap-3">
+    <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Inicio</a>
+    <a class="navbar-brand ms-2" href="../">Bi<span>2</span></a>
+    <span class="text-white-50 d-none d-sm-inline" style="font-size:.85rem">/ Punto de Venta</span>
+    <div class="ms-auto d-flex gap-2 align-items-center">
+      <a href="https://wa.me/522292063157" target="_blank" class="btn btn-sm btn-success rounded-pill px-3"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
+      <a href="https://www.biapp.com.mx" target="_blank" class="btn btn-sm btn-warning rounded-pill px-3 fw-bold">Demo Gratis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 reveal">
+        <span class="hero-badge">🛒 Módulo POS</span>
+        <h1 class="hero-title">Módulo de<br><span>Punto de Venta</span></h1>
+        <p class="hero-sub">Solución completa para gestionar tus ventas, clientes, productos, inventario y sucursales desde una sola plataforma.</p>
+        <div class="mb-3">
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Multitienda — cualquier número de sucursales</span></div>
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Modo offline con sincronización automática</span></div>
+          <div class="mb-1"><span class="hero-check">✓</span> <span class="text-white-75">Lealtad, reportes y corte de caja integrados</span></div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a href="https://www.biapp.com.mx" target="_blank" class="btn-hero-primary">🚀 Probar Gratis Ahora</a>
+          <a href="https://wa.me/522292063157" target="_blank" class="btn-hero-ghost"><i class="bi bi-whatsapp me-1"></i>Contactar</a>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <img src="./pv ok.png" alt="Módulo Punto de Venta Bi2" class="hero-img">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="demo-card reveal">
+          <h3>🎯 Pruébalo Gratis Ahora</h3>
+          <div class="row g-3">
+            <div class="col-sm-4">
+              <div class="demo-row">
+                <div class="demo-icon">🌐</div>
+                <div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Sistema</div><strong>www.biapp.com.mx</strong></div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="demo-row">
+                <div class="demo-icon">👤</div>
+                <div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Usuario</div><strong>demo@bi2.mx</strong></div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="demo-row">
+                <div class="demo-icon">🔑</div>
+                <div><div style="font-size:.75rem;color:rgba(255,255,255,.6)">Contraseña</div><strong>123456</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="https://www.biapp.com.mx" target="_blank" class="btn-demo">Entrar al sistema →</a>
+            <a href="https://wa.me/522292063157?text=Hola%2C%20quiero%20una%20demo%20del%20m%C3%B3dulo%20Punto%20de%20Venta%20Bi2" target="_blank" class="btn-demo" style="background:#25D366;">
+              <i class="bi bi-whatsapp me-1"></i>Agendar Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 CARACTERÍSTICAS PRINCIPALES -->
+<section class="features-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 class="section-title">Características del Módulo</h2>
+      <p class="section-sub">Todo lo que necesitas para operar tu punto de venta de manera eficiente</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feat-card">
+          <div class="feat-icon">⚡</div>
+          <h5>Ventas Rápidas y Simples</h5>
+          <ul>
+            <li>Búsqueda por nombre, código o código de barras</li>
+            <li>Cambio de compra calculado automáticamente</li>
+            <li>Interfaz intuitiva lista para cualquier cajero</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feat-card" style="border-left-color: #f97316;">
+          <div class="feat-icon">🌟</div>
+          <h5>Clientes y Lealtad</h5>
+          <ul>
+            <li>Sistema de puntos por cada compra</li>
+            <li>Acumula puntos y vales digitales</li>
+            <li>Consulta de saldo al instante en caja</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feat-card" style="border-left-color: #8b5cf6;">
+          <div class="feat-icon">💳</div>
+          <h5>Múltiples Formas de Pago</h5>
+          <ul>
+            <li>Efectivo, Tarjeta, Cheque y Vale</li>
+            <li>Cálculo automático de cambio</li>
+            <li>Pagos combinados en una sola venta</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feat-card" style="border-left-color: #0ea5e9;">
+          <div class="feat-icon">📊</div>
+          <h5>Reportes y Análisis</h5>
+          <ul>
+            <li>Ventas por fecha, forma de pago y caja</li>
+            <li>Análisis por productos y clientes</li>
+            <li>Exportación a PDF con logo de empresa</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feat-card" style="border-left-color: #10b981;">
+          <div class="feat-icon">📡</div>
+          <h5>Trabaja Sin Internet</h5>
+          <ul>
+            <li>Modo offline con IndexedDB local</li>
+            <li>Sincronización automática al reconectar</li>
+            <li>Indicador de ventas pendientes de sincronizar</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="feat-card" style="border-left-color: #ef4444;">
+          <div class="feat-icon">💰</div>
+          <h5>Corte de Caja</h5>
+          <ul>
+            <li>Resumen de ventas por forma de pago</li>
+            <li>Retiros de efectivo y saldo final</li>
+            <li>Cierre diario por cajero y tienda</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLUB DE CLIENTES / LEALTAD -->
+<section style="background:#003a1a; padding:72px 0;">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:50px;padding:5px 18px;font-size:.8rem;color:#fbbf24;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">🌟 Lealtad de Clientes</span>
+      <h2 style="font-weight:900;color:#fff;">Únete Gratis al Club de Clientes</h2>
+      <p style="color:rgba(255,255,255,.7);max-width:560px;margin:.5rem auto 0;">Fideliza a tus compradores con un programa de puntos y promociones exclusivas directo por WhatsApp — sin costo adicional.</p>
+    </div>
+    <div class="row g-4 align-items-center">
+      <div class="col-md-5 reveal">
+        <img src="./ventas x whatsapp.png" alt="Club de Clientes Bi2 — Puntos por WhatsApp"
+             style="width:100%;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.5);">
+      </div>
+      <div class="col-md-7 reveal">
+        <div class="row g-3">
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">⭐</span>
+              <div>
+                <strong style="color:#fbbf24;font-size:1rem;">Acumula Puntos</strong>
+                <p style="color:rgba(255,255,255,.7);margin:0;font-size:.88rem;">En cada compra el cliente suma puntos automáticamente desde la caja.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">🎁</span>
+              <div>
+                <strong style="color:#fbbf24;font-size:1rem;">Canjea Descuentos y Promociones</strong>
+                <p style="color:rgba(255,255,255,.7);margin:0;font-size:.88rem;">Vales digitales y descuentos aplicables en la siguiente compra.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">📱</span>
+              <div>
+                <strong style="color:#fbbf24;font-size:1rem;">Ofertas Exclusivas por WhatsApp</strong>
+                <p style="color:rgba(255,255,255,.7);margin:0;font-size:.88rem;">Avisos de promociones especiales solo para miembros del club, sin apps adicionales.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;">
+              <span style="font-size:2rem;flex-shrink:0;">🔢</span>
+              <div>
+                <strong style="color:#fbbf24;font-size:1rem;">¿Cómo Funciona?</strong>
+                <p style="color:rgba(255,255,255,.7);margin:0;font-size:.88rem;">
+                  <strong style="color:rgba(255,255,255,.9);">1.</strong> Da tu número en caja &nbsp;→&nbsp;
+                  <strong style="color:rgba(255,255,255,.9);">2.</strong> Acumula puntos &nbsp;→&nbsp;
+                  <strong style="color:rgba(255,255,255,.9);">3.</strong> Recibe ofertas por WhatsApp
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 reveal">
+          <img src="./ventas xwhats.png" alt="Club de Clientes — flyer"
+               style="width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 PANTALLAS DEL MÓDULO -->
+<section class="slides-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 class="section-title">Todas las Pantallas del Módulo</h2>
+      <p class="section-sub">11 vistas diseñadas para cubrir cada etapa del proceso de venta</p>
+    </div>
+    <div class="row g-3">
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">1</div>
+          <div>
+            <strong>Dashboard Principal</strong>
+            <span>Panel de control con métricas en tiempo real, accesos rápidos y estadísticas de ventas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">2</div>
+          <div>
+            <strong>Punto de Venta (POS)</strong>
+            <span>Interfaz de cobro rápida: busca productos, agrega al carrito, aplica pagos y emite ticket</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">3</div>
+          <div>
+            <strong>Iniciar Turno</strong>
+            <span>Control de cierres a ventas: apertura de caja, registro de fondo inicial y asignación de cajero</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">4</div>
+          <div>
+            <strong>Programa de Lealtad</strong>
+            <span>Fidelización integrada al POS: acumula puntos, consulta saldo y canjea vales en caja</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">5</div>
+          <div>
+            <strong>Corte de Caja</strong>
+            <span>Resumen por cajero y tienda: desglose por forma de pago, retiros y cierre del día</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">6</div>
+          <div>
+            <strong>Reportes de Ventas</strong>
+            <span>Análisis completo: ventas por fecha, producto, vendedor, forma de pago con exportación PDF</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">7</div>
+          <div>
+            <strong>Catálogo de Productos</strong>
+            <span>SKUs, códigos de barras, precios MXN/USD, imágenes, presentaciones y control de stock</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">8</div>
+          <div>
+            <strong>Prospectos y Cotizaciones</strong>
+            <span>Pipeline de ventas: gestión de prospectos, seguimiento y generación de cotizaciones PDF</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">9</div>
+          <div>
+            <strong>Cursos y Demos</strong>
+            <span>Catálogo comercial: organiza cursos, inscripciones y solicitudes de demo con aprobación</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item">
+          <div class="slide-num">10</div>
+          <div>
+            <strong>Tiendas y Configuración</strong>
+            <span>Infraestructura multitienda: cajas, prefijos de ticket, impresoras y permisos por sucursal</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="slide-item" style="border-left: 4px solid var(--accent);">
+          <div class="slide-num" style="background: var(--accent);">11</div>
+          <div>
+            <strong>Capacidades Técnicas</strong>
+            <span>Offline, PDF con logo, AG Grid Enterprise, Telegram bot, multitienda y permisos granulares</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- imagen de todas las diapositivas -->
+    <div class="row justify-content-center mt-5 reveal">
+      <div class="col-lg-11">
+        <img src="./pv todas las diap.png" alt="Todas las pantallas del módulo PV Bi2"
+             style="width:100%; border-radius:14px; box-shadow:0 12px 40px rgba(0,0,0,.15);">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENTAS CON BOT -->
+<section style="background:#f8fffe; padding:72px 0;">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span style="display:inline-block;background:#e0f2f1;color:#004d4d;border-radius:50px;padding:5px 20px;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem;">🤖 Bot + ERP</span>
+      <h2 class="section-title">Vende Más, Atiende Mejor,<br>Automatiza con el Bot</h2>
+      <p class="section-sub">Tu vendedor nunca descansa — atiende clientes, genera cotizaciones y consulta inventario desde Telegram o WhatsApp.</p>
+    </div>
+    <div class="row g-4 align-items-center mb-5">
+      <div class="col-lg-6 reveal">
+        <img src="./Bot y ERP en acción.png" alt="Bot + ERP Bi2 en acción"
+             style="width:100%;border-radius:16px;box-shadow:0 12px 36px rgba(0,0,0,.15);">
+      </div>
+      <div class="col-lg-6 reveal">
+        <h4 style="font-weight:800;color:var(--primary-dark);margin-bottom:1rem;">¿Qué puedes hacer con el Módulo de Ventas con Bot?</h4>
+        <div style="display:flex;flex-direction:column;gap:.85rem;">
+          <div style="display:flex;gap:.9rem;align-items:flex-start;">
+            <div style="width:40px;height:40px;border-radius:11px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📦</div>
+            <div><strong style="color:var(--primary-dark);">Catálogo de Productos</strong><br><small style="color:#555;">Consulta precios y disponibilidad en tiempo real desde el chat.</small></div>
+          </div>
+          <div style="display:flex;gap:.9rem;align-items:flex-start;">
+            <div style="width:40px;height:40px;border-radius:11px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📝</div>
+            <div><strong style="color:var(--primary-dark);">Cotizaciones por Chat</strong><br><small style="color:#555;">El bot genera cotizaciones al instante directamente en Telegram o WhatsApp.</small></div>
+          </div>
+          <div style="display:flex;gap:.9rem;align-items:flex-start;">
+            <div style="width:40px;height:40px;border-radius:11px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📊</div>
+            <div><strong style="color:var(--primary-dark);">Reportes Automáticos</strong><br><small style="color:#555;">Recibe el resumen de ventas del día sin entrar al sistema.</small></div>
+          </div>
+          <div style="display:flex;gap:.9rem;align-items:flex-start;">
+            <div style="width:40px;height:40px;border-radius:11px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🔔</div>
+            <div><strong style="color:var(--primary-dark);">Notificaciones Automáticas</strong><br><small style="color:#555;">Alertas de stock bajo, pedidos y ventas en tiempo real.</small></div>
+          </div>
+          <div style="display:flex;gap:.9rem;align-items:flex-start;">
+            <div style="width:40px;height:40px;border-radius:11px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📍</div>
+            <div><strong style="color:var(--primary-dark);">Seguimiento de Pedidos</strong><br><small style="color:#555;">El bot informa el estado de cada pedido al cliente automáticamente.</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fila de publicidad -->
+    <div class="row g-4">
+      <div class="col-md-6 reveal">
+        <img src="./Ventas.png" alt="Módulo de Ventas con Bot — Bi2"
+             style="width:100%;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.12);">
+      </div>
+      <div class="col-md-6 reveal">
+        <div style="display:flex;flex-direction:column;gap:1rem;height:100%;">
+          <img src="./Solución integral para ventas y ERP logo.jpg" alt="Ventas + ERP — Prospecto Cotización Venta"
+               style="width:100%;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.12);flex:1;object-fit:cover;">
+          <img src="./Sistema POS para tu negocio.png" alt="Punto de Venta POS — Tu negocio bajo control"
+               style="width:100%;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.12);">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TODO EN UN SISTEMA -->
+<section class="todo-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 class="section-title">Todo lo que Necesitas en un Solo Sistema</h2>
+      <p class="section-sub">Funciones avanzadas integradas directamente en el módulo POS</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="todo-card">
+          <div class="todo-icon">📦</div>
+          <h6>Catálogo de Productos</h6>
+          <p>SKUs, código de barras, precios MXN y USD, imágenes y control de stock</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="todo-card">
+          <div class="todo-icon">🎓</div>
+          <h6>Cursos y Demos</h6>
+          <p>Organiza cursos, inscripciones y pagos. Solicitudes de demo con aprobación</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="todo-card">
+          <div class="todo-icon">📈</div>
+          <h6>Prospectos y Cotizaciones</h6>
+          <p>Gestiona prospectos con seguimiento y genera cotizaciones exportables a PDF</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="todo-card">
+          <div class="todo-icon">🔐</div>
+          <h6>Permisos por Rol</h6>
+          <p>Control granular de accesos por módulo y sucursal para cada usuario</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="todo-card">
+          <div class="todo-icon">🏪</div>
+          <h6>Tiendas y Configuración</h6>
+          <p>Tiendas, cajas, prefijos de ticket e integración con opciones de impresión</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="todo-card">
+          <div class="todo-icon">🤖</div>
+          <h6>Integración Telegram</h6>
+          <p>Consultas y reportes de ventas desde Telegram con nuestro bot inteligente</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPACIDADES TÉCNICAS -->
+<section class="tech-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <h2 style="font-weight:900;color:#fff;">Capacidades Técnicas Destacadas</h2>
+      <p style="color:rgba(255,255,255,.65);">Tecnología robusta detrás de cada venta</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="tech-card">
+          <div class="tech-icon">☁️</div>
+          <h6>Operación Offline</h6>
+          <p>IndexedDB + Sincronización automática al recuperar conexión</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="tech-card">
+          <div class="tech-icon">📄</div>
+          <h6>Reportes en PDF</h6>
+          <p>pdfMake con logo de empresa, tickets con diseño profesional</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="tech-card">
+          <div class="tech-icon">📊</div>
+          <h6>Grids Empresariales</h6>
+          <p>AG Grid Enterprise para gestión de catálogos y reportes avanzados</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="tech-card">
+          <div class="tech-icon">✈️</div>
+          <h6>Integración Telegram</h6>
+          <p>Ventas e inventario disponibles vía bot desde cualquier dispositivo</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="tech-card">
+          <div class="tech-icon">🏬</div>
+          <h6>Multitienda</h6>
+          <p>Cualquier número de tiendas y cajas desde una sola cuenta raíz</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="tech-card">
+          <div class="tech-icon">🔒</div>
+          <h6>Permisos por Rol</h6>
+          <p>Control granular de acceso por módulo, sucursal y tipo de usuario</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <div class="container">
+    <h2>¿Listo para modernizar tu punto de venta?</h2>
+    <p>Vende más rápido, controla mejor tu inventario y toma decisiones con información en tiempo real.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      <a href="https://www.biapp.com.mx" target="_blank" class="btn-cta-white">🚀 Probar Demo Gratis</a>
+      <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20del%20m%C3%B3dulo%20Punto%20de%20Venta%20Bi2"
+         target="_blank"
+         style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.5);padding:.85rem 2.5rem;border-radius:50px;font-weight:700;font-size:1.05rem;text-decoration:none;display:inline-block;transition:all .2s;"
+         onmouseover="this.style.background='rgba(255,255,255,.3)'" onmouseout="this.style.background='rgba(255,255,255,.2)'">
+        <i class="bi bi-whatsapp me-2"></i>Hablar con Ventas
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="text-center mb-4 reveal">
+          <h2 class="section-title">Contáctanos</h2>
+          <p class="section-sub">Estamos listos para mostrarte el sistema en acción</p>
+        </div>
+        <div class="row g-3 reveal">
+          <div class="col-sm-6">
+            <div class="contact-item">
+              <div class="contact-icon" style="background:#25D366;"><i class="bi bi-whatsapp"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">WhatsApp</div>
+                <a href="https://wa.me/522292063157">+52 229 206 3157</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Teléfono</div>
+                <a href="tel:+522941550400">+52 294 155 0400</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" style="background:#229ED9;"><i class="bi bi-telegram"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Telegram Bot</div>
+                <a href="https://t.me/biapp_bot" target="_blank">@biapp_bot</a></div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Ventas</div>
+                <a href="mailto:ventas@biapp.com.mx">ventas@biapp.com.mx</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="bi bi-envelope-at"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">Info</div>
+                <a href="mailto:info@biapp.com.mx">info@biapp.com.mx</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" style="background:#ff0000;"><i class="bi bi-youtube"></i></div>
+              <div><div style="font-size:.75rem;color:#888;">YouTube</div>
+                <a href="https://www.youtube.com/@bi2mx" target="_blank">@bi2mx</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p class="mb-1">© 2026 <a href="https://bi2.mx">Bussines Inteligent — bi2.mx</a> · Veracruz, México</p>
+    <p class="mb-0" style="font-size:.8rem;">
+      <a href="../">Inicio</a> &nbsp;·&nbsp;
+      <a href="../clinica/">MediControl BI</a> &nbsp;·&nbsp;
+      <a href="../educacion/">EduControl Pro</a> &nbsp;·&nbsp;
+      <a href="../municipio/">Control Municipal</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

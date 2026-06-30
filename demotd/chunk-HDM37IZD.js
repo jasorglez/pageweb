@@ -1,0 +1,1 @@
+import{Cc as s,Rb as i,Sb as a,tc as r,ua as n}from"./chunk-SYKJHCVB.js";import"./chunk-7BXBZ5JU.js";var d=(()=>{let e=class e{};e.\u0275fac=function(o){return new(o||e)},e.\u0275cmp=n({type:e,selectors:[["app-out-pos"]],standalone:!0,features:[s],decls:2,vars:0,template:function(o,c){o&1&&(i(0,"p"),r(1,"out-pos works!"),a())}});let t=e;return t})();export{d as OutPosComponent};

@@ -1,0 +1,1 @@
+import{Cc as s,Rb as o,Sb as i,tc as a,ua as r}from"./chunk-SYKJHCVB.js";import"./chunk-7BXBZ5JU.js";var d=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=r({type:e,selectors:[["app-returns"]],standalone:!0,features:[s],decls:2,vars:0,template:function(n,c){n&1&&(o(0,"p"),a(1,"returns works!"),i())}});let t=e;return t})();export{d as ReturnsComponent};

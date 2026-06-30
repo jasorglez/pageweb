@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Clínica Bi2 — MediControl BI | Sistema Hospitalario Integral</title>
+    <meta name="description" content="MediControl BI — ERP para clínicas y hospitales. Gestión de pacientes, agenda médica, farmacia, hospitalización, quirófano y más. Bot de Telegram incluido.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --verde: #006d5b;
+            --verde-claro: #1a9a7d;
+            --teal: #17a589;
+            --dorado: #e9c46a;
+            --dorado-oscuro: #c9a84c;
+            --gris-claro: #f0faf8;
+            --texto: #1e293b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--texto); overflow-x: hidden; }
+
+        /* NAVBAR */
+        .navbar-med {
+            background: var(--verde);
+            padding: 12px 0; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+        }
+        .brand-text { color: white; font-size: 1.1rem; font-weight: 700; }
+        .brand-text span { color: var(--dorado); }
+        .nav-links a {
+            color: rgba(255,255,255,0.85); text-decoration: none;
+            font-size: 0.9rem; font-weight: 500; padding: 8px 16px;
+            border-radius: 20px; transition: all 0.3s;
+        }
+        .nav-links a:hover { color: var(--dorado); background: rgba(255,255,255,0.1); }
+        .btn-demo {
+            background: var(--dorado); color: var(--verde); font-weight: 700;
+            padding: 8px 24px; border-radius: 25px; text-decoration: none;
+            font-size: 0.9rem; transition: all 0.3s;
+        }
+        .btn-demo:hover { background: var(--dorado-oscuro); color: var(--verde); transform: translateY(-2px); }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #003d2e 0%, #006d5b 40%, #008a6e 70%, #004d3b 100%);
+            min-height: 100vh; display: flex; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -40%; right: -15%;
+            width: 650px; height: 650px;
+            background: radial-gradient(circle, rgba(233,196,106,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: ''; position: absolute; bottom: -30%; left: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(23,165,137,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(233,196,106,0.15); border: 1px solid rgba(233,196,106,0.4);
+            color: var(--dorado); padding: 6px 16px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+            color: white; line-height: 1.15; margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .hero h1 span { color: var(--dorado); }
+        .hero p {
+            font-size: 1.1rem; color: rgba(255,255,255,0.82);
+            max-width: 540px; margin-bottom: 35px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.6s both; }
+        .btn-hero-primary {
+            background: var(--dorado); color: var(--verde); font-weight: 700;
+            padding: 14px 32px; border-radius: 30px; text-decoration: none;
+            font-size: 1rem; transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(233,196,106,0.35);
+        }
+        .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(233,196,106,0.5); color: var(--verde); }
+        .btn-hero-outline {
+            background: transparent; color: white; font-weight: 600;
+            padding: 14px 32px; border-radius: 30px; text-decoration: none;
+            font-size: 1rem; border: 2px solid rgba(255,255,255,0.4); transition: all 0.3s;
+        }
+        .btn-hero-outline:hover { border-color: white; background: rgba(255,255,255,0.1); color: white; }
+        .hero-image-wrapper { position: relative; animation: fadeInRight 1s ease 0.3s both; }
+        .hero-image-wrapper img {
+            width: 100%; max-width: 500px; border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+            border: 2px solid rgba(233,196,106,0.3);
+        }
+        .hero-stats { display: flex; gap: 28px; margin-top: 40px; animation: fadeInUp 0.8s ease 0.8s both; flex-wrap: wrap; }
+        .hero-stat .num { font-size: 1.9rem; font-weight: 900; color: var(--dorado); line-height: 1; }
+        .hero-stat .lbl { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+        /* FLOAT CARDS */
+        .float-card {
+            position: absolute; background: white; border-radius: 12px;
+            padding: 10px 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.8rem; font-weight: 600;
+            animation: float 3s ease-in-out infinite;
+        }
+        .float-card-1 { top: 12%; right: -8px; }
+        .float-card-2 { bottom: 18%; right: -15px; animation-delay: 1.5s; }
+
+        /* SOMOS */
+        .section-somos { background: white; padding: 70px 0; }
+        .somos-card {
+            background: linear-gradient(135deg, #f0faf8, #e8f8f5);
+            border-radius: 20px; padding: 40px; border: 1px solid #c8e6df;
+        }
+
+        /* MÓDULOS */
+        .section-modules { background: var(--gris-claro); padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .tag {
+            display: inline-block; background: rgba(0,109,91,0.1);
+            color: var(--verde); padding: 6px 18px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--verde); }
+        .section-title h2 span { color: var(--dorado-oscuro); }
+        .section-title p { font-size: 1rem; color: #64748b; max-width: 580px; margin: 12px auto 0; }
+
+        .module-card {
+            background: white; border-radius: 16px; padding: 26px 20px;
+            text-align: center; transition: all 0.3s;
+            border: 2px solid transparent; height: 100%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .module-card:hover {
+            transform: translateY(-6px); border-color: var(--teal);
+            box-shadow: 0 15px 40px rgba(23,165,137,0.15);
+        }
+        .module-icon {
+            width: 64px; height: 64px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin: 0 auto 16px;
+        }
+        .module-card h5 { font-size: 0.93rem; font-weight: 700; color: var(--verde); margin-bottom: 8px; }
+        .module-card p { font-size: 0.8rem; color: #64748b; line-height: 1.5; }
+
+        /* BOT TELEGRAM */
+        .section-bot {
+            background: linear-gradient(135deg, #002e24 0%, #006d5b 100%);
+            padding: 80px 0; position: relative; overflow: hidden;
+        }
+        .section-bot::before {
+            content: ''; position: absolute; top: -30%; right: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(233,196,106,0.07) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .bot-feature { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
+        .bot-feature-icon {
+            width: 48px; height: 48px; background: rgba(233,196,106,0.15);
+            border: 1px solid rgba(233,196,106,0.3); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; flex-shrink: 0; color: var(--dorado);
+        }
+        .bot-feature h6 { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 4px; }
+        .bot-feature p { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin: 0; }
+
+        /* BENEFICIOS */
+        .section-benefits { padding: 80px 0; background: white; }
+        .benefit-item {
+            display: flex; align-items: flex-start; gap: 16px;
+            padding: 20px; border-radius: 12px; margin-bottom: 14px;
+            border: 1px solid #e2e8f0; transition: all 0.3s;
+        }
+        .benefit-item:hover { border-color: var(--teal); background: rgba(23,165,137,0.03); }
+        .benefit-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .benefit-item h6 { font-weight: 700; color: var(--verde); margin-bottom: 4px; }
+        .benefit-item p { font-size: 0.85rem; color: #64748b; margin: 0; }
+
+        /* DEMO */
+        .section-demo {
+            background: linear-gradient(135deg, #002e24 0%, #006d5b 100%);
+            padding: 70px 0;
+        }
+        .demo-box {
+            background: white; border-radius: 20px; padding: 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .demo-credential {
+            display: flex; align-items: center; gap: 12px;
+            background: #f0faf8; border-radius: 10px; padding: 12px 16px;
+            margin-bottom: 10px; border: 1px solid #c8e6df;
+        }
+        .demo-credential i { color: var(--teal); font-size: 1.1rem; flex-shrink: 0; }
+        .demo-credential code { font-size: 0.9rem; color: var(--texto); font-weight: 600; word-break: break-all; }
+
+        /* IDEAL PARA */
+        .ideal-card {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 16px; padding: 28px 20px; text-align: center;
+            transition: all 0.3s; color: white; height: 100%;
+        }
+        .ideal-card:hover { background: rgba(255,255,255,0.2); transform: translateY(-4px); }
+        .ideal-card .icon { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+        .ideal-card h5 { font-weight: 700; margin-bottom: 6px; }
+        .ideal-card p { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin: 0; }
+
+        /* GALERÍA */
+        .section-gallery { padding: 80px 0; background: var(--gris-claro); }
+        .gallery-img {
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1); transition: all 0.3s; height: 220px;
+        }
+        .gallery-img:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.18); }
+        .gallery-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* CTA */
+        .section-cta {
+            background: linear-gradient(135deg, #002e24 0%, #006d5b 100%);
+            padding: 80px 0; text-align: center;
+        }
+        .section-cta h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: white; margin-bottom: 16px; }
+        .section-cta h2 span { color: var(--dorado); }
+        .section-cta p { color: rgba(255,255,255,0.8); font-size: 1rem; max-width: 560px; margin: 0 auto 36px; }
+
+        /* CONTACTO */
+        .section-contact { background: white; padding: 60px 0; }
+        .contact-item { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .contact-icon {
+            width: 44px; height: 44px; background: var(--verde); color: white;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .contact-item h6 { font-weight: 700; color: var(--verde); margin: 0; font-size: 0.85rem; }
+        .contact-item p { color: #475569; margin: 0; font-size: 0.85rem; }
+
+        /* FOOTER */
+        footer {
+            background: var(--verde); color: rgba(255,255,255,0.7);
+            padding: 30px 0; text-align: center; font-size: 0.85rem;
+        }
+        footer a { color: var(--dorado); text-decoration: none; }
+
+        /* ANIMATIONS */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero-image-wrapper { margin-top: 40px; }
+            .float-card { display: none; }
+            .hero-stats { gap: 16px; }
+            .hero-stat .num { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-med">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <div style="width:38px;height:38px;background:var(--dorado);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                    <i class="bi bi-heart-pulse-fill" style="color:var(--verde);font-size:1.2rem;"></i>
+                </div>
+                <div class="brand-text">ERP <span>Clínica</span> Bi2</div>
+            </div>
+            <div class="nav-links d-none d-md-flex align-items-center gap-1">
+                <a href="#modulos">Módulos</a>
+                <a href="#bot">Bot Telegram</a>
+                <a href="#demo">Demo</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+            <a href="https://wa.me/522292063157?text=Quiero%20información%20sobre%20ERP%20Clínica%20Bi2"
+               target="_blank" class="btn-demo">
+                <i class="bi bi-whatsapp me-1"></i> Solicitar Demo
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-badge">
+                    <i class="bi bi-heart-pulse"></i> Sistema Hospitalario Integral · Modo Web
+                </div>
+                <h1>Control total de tu <span>clínica</span>, en tiempo real</h1>
+                <p>ERP médico completo con 14 módulos integrados: pacientes, agenda, farmacia, hospitalización, quirófano y Bot de Telegram 24/7. Diseñado para clínicas y hospitales mexicanos.</p>
+                <div class="hero-buttons">
+                    <a href="https://clinica.biapp.com.mx/" target="_blank" class="btn-hero-primary">
+                        <i class="bi bi-play-circle me-2"></i>Acceder al Sistema
+                    </a>
+                    <a href="#modulos" class="btn-hero-outline">
+                        <i class="bi bi-grid me-2"></i>Ver Módulos
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><div class="num">14+</div><div class="lbl">Módulos</div></div>
+                    <div class="hero-stat"><div class="num">24/7</div><div class="lbl">Disponible</div></div>
+                    <div class="hero-stat"><div class="num">100%</div><div class="lbl">En la nube</div></div>
+                    <div class="hero-stat"><div class="num">MX</div><div class="lbl">Empresa mexicana</div></div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image-wrapper d-inline-block position-relative">
+                    <img src="MediControl BI_ gestión de clínicas fácil.png" alt="MediControl BI - ERP Clínica">
+                    <div class="float-card float-card-1">
+                        <span style="font-size:1.4rem;">🤖</span>
+                        <div>
+                            <div style="font-size:0.75rem;font-weight:700;color:#006d5b;">Bot Telegram</div>
+                            <div style="font-size:0.7rem;color:#64748b;">Activo 24/7</div>
+                        </div>
+                    </div>
+                    <div class="float-card float-card-2">
+                        <span style="font-size:1.4rem;">🏥</span>
+                        <div>
+                            <div style="font-size:0.75rem;font-weight:700;color:#006d5b;">Multi-sucursal</div>
+                            <div style="font-size:0.7rem;color:#64748b;">En la nube</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEMO GRATIS -->
+<section class="section-demo" id="demo">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 reveal">
+                <div style="background:rgba(233,196,106,0.15);color:var(--dorado);display:inline-block;padding:6px 18px;border-radius:20px;font-size:0.85rem;font-weight:600;margin-bottom:16px;">
+                    <i class="bi bi-play-circle me-1"></i> Pruébalo ahora mismo
+                </div>
+                <h2 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:white;margin-bottom:16px;">
+                    Accede al demo <span style="color:var(--dorado);">completamente gratis</span>
+                </h2>
+                <p style="color:rgba(255,255,255,0.8);margin-bottom:28px;">
+                    Explora todos los módulos del sistema sin compromiso. Contacta con nosotros para recibir tus credenciales de acceso al demo.
+                </p>
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <div class="d-flex align-items-center gap-2" style="color:rgba(255,255,255,0.85);font-size:0.9rem;">
+                        <i class="bi bi-check-circle-fill" style="color:var(--dorado);"></i> Sin tarjeta de crédito
+                    </div>
+                    <div class="d-flex align-items-center gap-2" style="color:rgba(255,255,255,0.85);font-size:0.9rem;">
+                        <i class="bi bi-check-circle-fill" style="color:var(--dorado);"></i> Acceso inmediato a todos los módulos
+                    </div>
+                    <div class="d-flex align-items-center gap-2" style="color:rgba(255,255,255,0.85);font-size:0.9rem;">
+                        <i class="bi bi-check-circle-fill" style="color:var(--dorado);"></i> Asesoría personalizada incluida
+                    </div>
+                </div>
+                <h5 style="color:white;font-weight:700;margin-bottom:16px;">💬 Ideal para:</h5>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="ideal-card" style="padding:16px 12px;">
+                            <span class="icon" style="font-size:1.8rem;">🏥</span>
+                            <h5 style="font-size:0.85rem;">Clínicas y hospitales</h5>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="ideal-card" style="padding:16px 12px;">
+                            <span class="icon" style="font-size:1.8rem;">🦷</span>
+                            <h5 style="font-size:0.85rem;">Consultorios y dentistas</h5>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="ideal-card" style="padding:16px 12px;">
+                            <span class="icon" style="font-size:1.8rem;">💉</span>
+                            <h5 style="font-size:0.85rem;">Laboratorios médicos</h5>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="ideal-card" style="padding:16px 12px;">
+                            <span class="icon" style="font-size:1.8rem;">🏢</span>
+                            <h5 style="font-size:0.85rem;">Centros de salud</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 reveal">
+                <div class="demo-box">
+                    <div style="text-align:center;margin-bottom:24px;">
+                        <div style="width:56px;height:56px;background:linear-gradient(135deg,#006d5b,#17a589);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                            <i class="bi bi-heart-pulse-fill" style="color:white;font-size:1.8rem;"></i>
+                        </div>
+                        <h4 style="font-weight:800;color:var(--verde);margin-bottom:6px;">Sistema Demo — ERP Clínica Bi2</h4>
+                        <p style="color:#64748b;font-size:0.9rem;margin:0;">Explora el sistema completo sin compromiso</p>
+                    </div>
+                    <div style="background:#f0faf8;border:2px solid #9dd4c8;border-radius:12px;padding:14px;margin-bottom:20px;text-align:center;">
+                        <div style="font-size:0.8rem;color:#006d5b;font-weight:600;margin-bottom:6px;">URL del Sistema</div>
+                        <a href="https://clinica.biapp.com.mx/" target="_blank"
+                           style="font-size:1rem;font-weight:700;color:var(--verde);text-decoration:none;">
+                            🌐 clinica.biapp.com.mx
+                        </a>
+                    </div>
+                    <div class="demo-credential">
+                        <i class="bi bi-person-circle"></i>
+                        <div>
+                            <div style="font-size:0.75rem;color:#64748b;margin-bottom:2px;">Usuario</div>
+                            <code>clinica@bi2.mx</code>
+                        </div>
+                    </div>
+                    <div class="demo-credential">
+                        <i class="bi bi-key-fill"></i>
+                        <div>
+                            <div style="font-size:0.75rem;color:#64748b;margin-bottom:2px;">Contraseña</div>
+                            <code>123456</code>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;">
+                        <a href="https://wa.me/522292063157?text=Quiero%20acceso%20al%20demo%20de%20ERP%20Clínica%20Bi2"
+                           target="_blank"
+                           style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:white;padding:14px;border-radius:12px;font-weight:700;text-decoration:none;font-size:0.9rem;">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://clinica.biapp.com.mx/" target="_blank"
+                           style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#006d5b,#17a589);color:white;padding:14px;border-radius:12px;font-weight:700;text-decoration:none;font-size:0.9rem;">
+                            <i class="bi bi-box-arrow-in-right"></i> Entrar al demo
+                        </a>
+                    </div>
+                    <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid #f1f5f9;">
+                        <a href="https://www.youtube.com/@bi2mx" target="_blank"
+                           style="display:inline-flex;align-items:center;gap:8px;color:#ff0000;font-weight:600;font-size:0.9rem;text-decoration:none;">
+                            <i class="bi bi-youtube" style="font-size:1.2rem;"></i>
+                            Ver tutoriales en YouTube @bi2mx
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CASO DE ÉXITO -->
+<section style="background:white;padding:80px 0;">
+    <div class="container">
+        <div class="section-title reveal">
+            <div class="tag" style="background:rgba(233,196,106,0.15);color:var(--dorado-oscuro);">
+                <i class="bi bi-trophy me-1"></i> Caso de Éxito
+            </div>
+            <h2 style="color:var(--verde);">Primera clínica <span style="color:var(--dorado-oscuro);">100% operativa</span></h2>
+            <p>Sistema entregado y funcionando. Aquí el caso real de implementación exitosa.</p>
+        </div>
+        <div class="row align-items-center g-5 reveal">
+            <div class="col-lg-6">
+                <div style="position:relative;">
+                    <img src="caso exito.png" alt="Caso de Éxito - Centro Urológico de Corte Estancia"
+                         style="width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.18);border:3px solid #c8e6df;">
+                    <div style="position:absolute;top:-14px;left:24px;background:var(--dorado);color:var(--verde);font-weight:800;font-size:0.85rem;padding:6px 18px;border-radius:20px;box-shadow:0 4px 12px rgba(233,196,106,0.4);">
+                        <i class="bi bi-patch-check-fill me-1"></i> Entregado Mayo 2026
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div style="background:linear-gradient(135deg,#f0faf8,#e8f5f3);border-radius:20px;padding:36px;border:1px solid #c8e6df;">
+                    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+                        <div style="width:52px;height:52px;background:var(--verde);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi bi-hospital-fill" style="color:white;font-size:1.4rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-weight:800;color:var(--verde);margin:0;">Centro Urológico de Corte Estancia</h4>
+                            <p style="color:#64748b;margin:0;font-size:0.9rem;">Dr. Juan Jesús Lucas Jiménez — Urólogo</p>
+                        </div>
+                    </div>
+                    <p style="color:#475569;font-size:0.95rem;line-height:1.8;margin-bottom:16px;">
+                        Implementación completa del <strong>ERP Clínica Bi2</strong> con todos los módulos activos.
+                        El sistema fue instalado, configurado y entregado formalmente con plena satisfacción del cliente,
+                        cumpliendo con todos los requerimientos acordados.
+                    </p>
+                    <a href="https://www.facebook.com/urologiatuxtepec/?locale=es_LA" target="_blank"
+                       style="display:inline-flex;align-items:center;gap:8px;background:#1877f2;color:white;padding:8px 18px;border-radius:25px;font-weight:600;text-decoration:none;font-size:0.85rem;margin-bottom:16px;">
+                        <i class="bi bi-facebook"></i> Ver en Facebook
+                    </a>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;">
+                        <div style="background:white;border-radius:10px;padding:10px 14px;border:1px solid #c8e6df;font-size:0.82rem;font-weight:600;color:var(--verde);">
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Expediente electrónico
+                        </div>
+                        <div style="background:white;border-radius:10px;padding:10px 14px;border:1px solid #c8e6df;font-size:0.82rem;font-weight:600;color:var(--verde);">
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Agenda configurada
+                        </div>
+                        <div style="background:white;border-radius:10px;padding:10px 14px;border:1px solid #c8e6df;font-size:0.82rem;font-weight:600;color:var(--verde);">
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Farmacia activa
+                        </div>
+                        <div style="background:white;border-radius:10px;padding:10px 14px;border:1px solid #c8e6df;font-size:0.82rem;font-weight:600;color:var(--verde);">
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Cobranza operando
+                        </div>
+                        <div style="background:white;border-radius:10px;padding:10px 14px;border:1px solid #c8e6df;font-size:0.82rem;font-weight:600;color:var(--verde);">
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Hospitalización
+                        </div>
+                        <div style="background:white;border-radius:10px;padding:10px 14px;border:1px solid #c8e6df;font-size:0.82rem;font-weight:600;color:var(--verde);">
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Quirófano listo
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div style="background:var(--verde);border-radius:12px;padding:14px;color:white;text-align:center;">
+                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);margin-bottom:4px;">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Entregado por
+                            </div>
+                            <div style="font-weight:700;font-size:0.85rem;">L.I. Jose Angel Soriano González</div>
+                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.75);">Bussines Inteligent · bi2.mx</div>
+                        </div>
+                        <div style="background:#004d3b;border-radius:12px;padding:14px;color:white;text-align:center;">
+                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);margin-bottom:4px;">
+                                <i class="bi bi-pen me-1"></i>Firmado por
+                            </div>
+                            <div style="font-weight:700;font-size:0.85rem;">Dr. Juan Jesús Lucas Jiménez</div>
+                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.75);">Centro Urológico de Corte Estancia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SOMOS BI2 -->
+<section class="section-somos">
+    <div class="container">
+        <div class="somos-card reveal">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <div class="tag mb-3"><i class="bi bi-building me-1"></i>Quiénes somos</div>
+                    <h2 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:var(--verde);margin-bottom:16px;">
+                        Somos <span style="color:var(--dorado-oscuro);">Bi2</span> — ERP Integral para tu Negocio
+                    </h2>
+                    <p style="color:#475569;font-size:0.95rem;line-height:1.8;margin-bottom:16px;">
+                        Ofrecemos <strong>soluciones personalizadas de ERP en la nube</strong> y bots automatizados
+                        para transformar y optimizar tu negocio. Controla <strong>TODO desde un solo lugar</strong>.
+                        ¿Te gustaría que te expliquemos más a fondo o que te contactemos para una demostración gratuita?
+                    </p>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Administración de pacientes
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Expediente clínico electrónico
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Agenda y programación de citas
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Consultas y recetas médicas
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Hospitalización
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Inventarios y almacén
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Central de enfermería
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Cirugía y quirófanos
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Multi-sucursal / multi-empresa
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Caja y cobranza
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex align-items-center gap-2" style="font-size:0.85rem;font-weight:600;color:var(--verde);padding:4px 0;">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i> Acceso desde cualquier lugar (nube)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <p style="color:#64748b;font-size:0.95rem;margin-bottom:20px;">
+                        ¿Te gustaría que te expliquemos más a fondo o que te contactemos para una demostración gratuita?
+                    </p>
+                    <div class="d-flex flex-column gap-3">
+                        <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20de%20ERP%20Clínica%20Bi2"
+                           target="_blank" class="btn-hero-primary text-center" style="border-radius:12px;">
+                            <i class="bi bi-whatsapp me-2"></i>Solicitar demostración gratuita
+                        </a>
+                        <a href="mailto:ventas@biapp.com.mx"
+                           style="display:block;text-align:center;padding:12px;border-radius:12px;border:2px solid var(--teal);color:var(--teal);font-weight:600;text-decoration:none;font-size:0.9rem;transition:all 0.3s;"
+                           onmouseover="this.style.background='var(--teal)';this.style.color='white';"
+                           onmouseout="this.style.background='transparent';this.style.color='var(--teal)';">
+                            <i class="bi bi-envelope me-2"></i>ventas@biapp.com.mx
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MÓDULOS -->
+<section class="section-modules" id="modulos">
+    <div class="container">
+        <div class="section-title reveal">
+            <div class="tag"><i class="bi bi-grid-3x3-gap me-1"></i>Funcionalidades</div>
+            <h2>14 módulos para <span>gestión clínica completa</span></h2>
+            <p>Desde el expediente del paciente hasta la farmacia y el quirófano — todo en una sola plataforma</p>
+        </div>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0faf8;">📊</div>
+                    <h5>Dashboard</h5>
+                    <p>Control de expedientes, recetas y estadísticas clínicas en tiempo real</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">👤</div>
+                    <h5>Pacientes</h5>
+                    <p>Gestión completa de pacientes y expedientes médicos digitales</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fef3c7;">📅</div>
+                    <h5>Agenda Médica</h5>
+                    <p>Citas, doctores y pacientes. Agenda inteligente con disponibilidad en tiempo real</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fdf4ff;">🩺</div>
+                    <h5>Consultorio Médico</h5>
+                    <p>Historial clínico, diagnóstico y recetas. Expediente completo por consulta</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff1f2;">🛏️</div>
+                    <h5>Hospitalización</h5>
+                    <p>Control de camas, signos vitales, enfermería y seguimiento de pacientes internados</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0fdf4;">🔬</div>
+                    <h5>Quirófano</h5>
+                    <p>Programación de cirugías por doctor, paciente y fecha. Control quirúrgico completo</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fef9ee;">💊</div>
+                    <h5>Farmacia y Almacén</h5>
+                    <p>Kardex, entradas/salidas de medicamentos, insumos y servicios médicos</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0faf8;">💰</div>
+                    <h5>Cobranza</h5>
+                    <p>Recepción, cobro y recibos. Control financiero por paciente y servicio</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">📋</div>
+                    <h5>Cotizaciones Médicas</h5>
+                    <p>Presupuestos de medicamentos, insumos y servicios para pacientes y aseguradoras</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fdf4ff;">👥</div>
+                    <h5>Recursos Humanos</h5>
+                    <p>Administración de personal médico, administrativo y control de asistencias</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fff1f2;">⚕️</div>
+                    <h5>Especialidades</h5>
+                    <p>Gestión por especialidad médica: urología, consultas, pediatría y más</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#f0fdf4;">⚙️</div>
+                    <h5>Configuración</h5>
+                    <p>Usuarios, sucursales y accesos. Administración completa del sistema</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#fef9ee;">🤖</div>
+                    <h5>Bot de Telegram</h5>
+                    <p>Chatbot inteligente para comunicación con pacientes y personal 24/7</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 reveal">
+                <div class="module-card">
+                    <div class="module-icon" style="background:#eff6ff;">🏢</div>
+                    <h5>Multi-sucursal</h5>
+                    <p>Administra varias clínicas desde una sola cuenta con datos completamente aislados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BOT TELEGRAM -->
+<section class="section-bot" id="bot">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0 reveal text-center">
+                <img src="nucleo clinica.jpg" alt="ERP Clínica Bi2 - Módulos"
+                     style="max-width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.4);border:2px solid rgba(233,196,106,0.3);">
+            </div>
+            <div class="col-lg-7 reveal">
+                <div style="background:rgba(233,196,106,0.15);color:var(--dorado);display:inline-block;padding:6px 18px;border-radius:20px;font-size:0.85rem;font-weight:600;margin-bottom:16px;">
+                    <i class="bi bi-telegram me-1"></i> Comunicación Inteligente
+                </div>
+                <h2 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:white;margin-bottom:16px;">
+                    Bot de Telegram <span style="color:var(--dorado);">para tu clínica</span>
+                </h2>
+                <p style="color:rgba(255,255,255,0.75);margin-bottom:30px;">
+                    Pacientes y personal médico se comunican de forma inmediata. Consultas, recordatorios y alertas sin necesidad de entrar al sistema.
+                </p>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-calendar-check"></i></div>
+                    <div>
+                        <h6>Recordatorios de citas</h6>
+                        <p>El sistema envía automáticamente recordatorios de citas a los pacientes vía Telegram</p>
+                    </div>
+                </div>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-file-medical"></i></div>
+                    <div>
+                        <h6>Consulta de expedientes</h6>
+                        <p>Médicos acceden a historial del paciente desde Telegram sin necesidad de estar en el consultorio</p>
+                    </div>
+                </div>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-bell"></i></div>
+                    <div>
+                        <h6>Alertas de farmacia</h6>
+                        <p>Notificaciones de stock bajo, medicamentos próximos a vencer y pedidos pendientes</p>
+                    </div>
+                </div>
+                <div class="bot-feature">
+                    <div class="bot-feature-icon"><i class="bi bi-chat-dots"></i></div>
+                    <div>
+                        <h6>Soporte 24/7</h6>
+                        <p>Comunicación interna entre áreas: enfermería, recepción, farmacia y dirección médica</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="section-benefits" id="beneficios">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 reveal">
+                <div class="tag">Ventajas</div>
+                <h2 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:var(--verde);margin:12px 0 16px;">
+                    ¿Por qué elegir <span style="color:var(--dorado-oscuro);">ERP Clínica Bi2</span>?
+                </h2>
+                <p style="color:#64748b;margin-bottom:32px;">
+                    Una plataforma diseñada específicamente para el sector salud mexicano, con tecnología moderna y soporte local.
+                </p>
+                <img src="clinica.png" alt="ERP Clínica Beneficios"
+                     style="width:100%;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.1);">
+            </div>
+            <div class="col-lg-7 reveal">
+                <div class="benefit-item">
+                    <div class="benefit-icon">👨‍⚕️</div>
+                    <div>
+                        <h6>Mejora la atención al paciente</h6>
+                        <p>Información centralizada y disponible en tiempo real para tomar mejores decisiones médicas.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <div>
+                        <h6>Optimiza procesos administrativos</h6>
+                        <p>Automatiza agendas, cobranza y farmacia. Reduce el tiempo en tareas manuales hasta un 70%.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💹</div>
+                    <div>
+                        <h6>Control total de ingresos y egresos</h6>
+                        <p>Reportes financieros en tiempo real por servicio, doctor, paciente y sucursal.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div>
+                        <h6>Seguridad y confidencialidad</h6>
+                        <p>Expedientes cifrados en la nube. Acceso por roles: médico, enfermería, recepción, dirección.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📱</div>
+                    <div>
+                        <h6>Acceso desde cualquier dispositivo</h6>
+                        <p>Web responsive. Funciona en PC, tablet y celular. Sin instalación. Sin servidores locales.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🇲🇽</div>
+                    <div>
+                        <h6>Empresa 100% mexicana</h6>
+                        <p>Soporte en español, facturación en pesos, atención en zona horaria del centro de México.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="section-gallery">
+    <div class="container">
+        <div class="section-title reveal">
+            <div class="tag">Capturas del sistema</div>
+            <h2>Ve el sistema <span style="color:var(--dorado-oscuro);">en acción</span></h2>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="gallery-img">
+                    <img src="Clinica/clinic.png" alt="Módulos del sistema">
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="gallery-img">
+                    <img src="erp clinica.png" alt="ERP Clínica Bi2">
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 reveal">
+                <div class="gallery-img">
+                    <img src="login clinica.jpg" alt="Login Sistema Hospitalario">
+                </div>
+            </div>
+        </div>
+        <!-- Miniaturas -->
+        <div class="row g-2 mt-2">
+            <div class="col-4 col-md-2 reveal" style="height:100px;">
+                <div style="border-radius:10px;overflow:hidden;height:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="Clinica/miniatura 1.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Módulo 1">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 reveal" style="height:100px;">
+                <div style="border-radius:10px;overflow:hidden;height:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="Clinica/miniatura 2.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Módulo 2">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 reveal" style="height:100px;">
+                <div style="border-radius:10px;overflow:hidden;height:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="Clinica/miniatura 3.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Módulo 3">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 reveal" style="height:100px;">
+                <div style="border-radius:10px;overflow:hidden;height:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="Clinica/miniatura 4.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Módulo 4">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 reveal" style="height:100px;">
+                <div style="border-radius:10px;overflow:hidden;height:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="Clinica/miniatura 5.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Módulo 5">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 reveal" style="height:100px;">
+                <div style="border-radius:10px;overflow:hidden;height:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="Clinica/miniatura 6.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Módulo 6">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section-cta">
+    <div class="container reveal">
+        <h2>¿Listo para modernizar <span>tu clínica</span>?</h2>
+        <p>Solicita una demostración gratuita y descubre cómo ERP Clínica Bi2 transforma la gestión de tu centro de salud desde el primer día.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="https://wa.me/522292063157?text=Quiero%20una%20demo%20de%20ERP%20Clínica%20Bi2"
+               target="_blank" class="btn-hero-primary">
+                <i class="bi bi-whatsapp me-2"></i>Solicitar Demo por WhatsApp
+            </a>
+            <a href="https://t.me/+522292063157" target="_blank" class="btn-hero-outline">
+                <i class="bi bi-telegram me-2"></i>Contactar por Telegram
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="section-contact" id="contacto">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 reveal">
+                <h4 style="font-weight:800;color:var(--verde);margin-bottom:8px;">Bussines Inteligent</h4>
+                <p style="color:#64748b;font-size:0.9rem;margin-bottom:24px;">
+                    Empresa 100% mexicana especializada en tecnología para el sector salud.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="https://wa.me/522292063157" target="_blank"
+                       style="width:40px;height:40px;background:#25d366;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;text-decoration:none;">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@bi2mx" target="_blank"
+                       style="width:40px;height:40px;background:#ff0000;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;text-decoration:none;">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                    <a href="https://bi2.mx" target="_blank"
+                       style="width:40px;height:40px;background:var(--verde);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;text-decoration:none;">
+                        <i class="bi bi-globe2"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 reveal">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-telephone"></i></div>
+                    <div>
+                        <h6>Teléfonos</h6>
+                        <p>+52 229 206 3157 &nbsp;|&nbsp; +52 294 155 0400</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+                    <div>
+                        <h6>Correo electrónico</h6>
+                        <p>
+                            <a href="mailto:ventas@biapp.com.mx" style="color:var(--teal);">ventas@biapp.com.mx</a><br>
+                            <a href="mailto:info@biapp.com.mx" style="color:var(--teal);">info@biapp.com.mx</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
+                    <div>
+                        <h6>México</h6>
+                        <p>Paseo de los Cedros No. 687, CP 91940, Veracruz, Ver.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 reveal">
+                <div style="background:var(--verde);border-radius:16px;padding:28px;color:white;">
+                    <h5 style="font-weight:700;margin-bottom:8px;">¿Tienes dudas?</h5>
+                    <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:20px;">
+                        Escríbenos y un asesor te contactará en menos de 24 horas.
+                    </p>
+                    <a href="https://wa.me/522292063157?text=Hola,%20quiero%20información%20sobre%20ERP%20Clínica%20Bi2"
+                       target="_blank"
+                       style="display:block;background:var(--dorado);color:var(--verde);text-align:center;padding:12px;border-radius:25px;font-weight:700;text-decoration:none;font-size:0.9rem;">
+                        <i class="bi bi-whatsapp me-2"></i>Escribir por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <p style="margin:0 0 8px;">
+            © 2025 <strong style="color:white;">Bussines Inteligent</strong> &nbsp;·&nbsp;
+            ERP Clínica Bi2 &nbsp;·&nbsp;
+            <a href="https://bi2.mx">bi2.mx</a> &nbsp;·&nbsp; Veracruz, México
+        </p>
+        <p style="margin:0;font-size:0.8rem;">
+            <a href="mailto:ventas@biapp.com.mx">ventas@biapp.com.mx</a> &nbsp;·&nbsp;
+            <a href="mailto:info@biapp.com.mx">info@biapp.com.mx</a> &nbsp;·&nbsp;
+            <a href="https://www.youtube.com/@bi2mx" target="_blank">YouTube @bi2mx</a>
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+</body>
+</html>
