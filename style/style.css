@@ -498,6 +498,12 @@ a {
   margin-bottom: 1.5rem;
 }
 
+.video-channel-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
 .video-channel-link {
   display: inline-flex;
   align-items: center;
@@ -505,10 +511,11 @@ a {
   padding: 0.72rem 1rem;
   border-radius: 999px;
   color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   font-weight: 700;
   white-space: nowrap;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
 }
 
 .video-channel-link i {
@@ -778,6 +785,10 @@ a {
 
   .video-section-head {
     flex-direction: column;
+  }
+
+  .video-channel-row {
+    justify-content: flex-start;
   }
 
   .hero-copy h1 {
