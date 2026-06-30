@@ -5,440 +5,1452 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bussines Inteligent | ERP Bi2 — Inteligencia Empresarial en Tiempo Real</title>
   <meta name="description" content="ERP Bi2: Software de gestión empresarial con módulos de Proyectos, Almacenes, RH, Ventas, Nóminas y ChatBot. Multi-empresa, en la nube, con Bot de Telegram y WhatsApp.">
-  <meta name="theme-color" content="#0b1f33">
   <link rel="icon" type="image/x-icon" href="./asset/logos/Logo.webp">
-  <link rel="stylesheet" href="./style/bootstrap.min.css">
-  <link rel="stylesheet" href="./style/bootstrap-icons.css">
   <link rel="stylesheet" href="./style/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    /* ── HERO ───────────────────────────────────── */
+    .hero-section {
+      background: linear-gradient(135deg, #002e2e 0%, #004d4d 55%, #006868 100%);
+      padding-top: 76px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 50px;
+      padding: 5px 18px;
+      font-size: .82rem;
+      color: #b2ffee;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #fff;
+    }
+    .hero-title span { color: #3ddbcb; }
+    .hero-check { color: #3ddbcb; font-weight: 700; }
+    .hero-img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.45);
+      margin-top: 1.5rem;
+    }
+
+    /* ── FORM CARD ──────────────────────────────── */
+    .form-card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 32px 80px rgba(0,0,0,.38);
+    }
+    .form-card h2 { color: #004d4d; font-weight: 800; font-size: 1.5rem; }
+    .btn-agendar {
+      background: #004d4d;
+      color: #fff;
+      border: none;
+      padding: .75rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      width: 100%;
+      transition: background .2s, transform .15s;
+      cursor: pointer;
+    }
+    .btn-agendar:hover { background: #006868; transform: translateY(-2px); }
+
+    /* ── VIDEO ──────────────────────────────────── */
+    .video-section { background: #080808; padding: 72px 0; }
+    .video-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0;
+      border-radius: 18px; overflow: hidden;
+      box-shadow: 0 24px 72px rgba(0,0,0,.7);
+    }
+    .video-wrapper iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; }
+
+    /* ── MÓDULOS ────────────────────────────────── */
+    .modules-section { background: #f0faf9; padding: 72px 0; }
+    .module-chip {
+      display: flex; align-items: flex-start; gap: .9rem;
+      background: #fff; border-radius: 14px;
+      padding: 1rem 1.1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,.07);
+      height: 100%;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .module-chip .icon { font-size: 1.9rem; line-height: 1; flex-shrink: 0; }
+    .module-chip strong { font-size: .95rem; color: #003d3d; }
+    .module-chip small { color: #666; font-size: .8rem; }
+    a.module-link { text-decoration: none; display: block; height: 100%; }
+    a.module-link .module-chip {
+      border: 2px solid transparent;
+      position: relative;
+    }
+    a.module-link .module-chip::after {
+      content: '→';
+      position: absolute; bottom: .5rem; right: .8rem;
+      font-size: .75rem; color: #004d4d; opacity: 0;
+      transition: opacity .2s;
+    }
+    a.module-link:hover .module-chip {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0,77,77,.16);
+      border-color: #004d4d;
+    }
+    a.module-link:hover .module-chip::after { opacity: 1; }
+
+    /* ── SECTORES ───────────────────────────────── */
+    .sectores-section { padding: 72px 0; background: #fff; }
+    .sector-card {
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 6px 28px rgba(0,0,0,.1);
+      transition: transform .3s, box-shadow .3s;
+      height: 100%;
+    }
+    .sector-card:hover { transform: translateY(-8px); box-shadow: 0 24px 56px rgba(0,0,0,.18); }
+    .sector-card img { width: 100%; height: 260px; object-fit: cover; object-position: top; display: block; }
+    .sector-label {
+      background: #004d4d; color: #fff;
+      padding: .65rem 1.1rem; font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+
+    /* ── SECTION TITLES ─────────────────────────── */
+    .section-title { font-weight: 900; color: #002e2e; }
+    .section-sub { color: #555; max-width: 600px; margin: .5rem auto 0; font-size: 1.05rem; }
+
+    /* ── SERVICIOS ───────────────────────────────── */
+    .srv-section { background: #f0f4f8; padding: 80px 0; }
+    .srv-badge {
+      display: inline-block; background: #e0f2f1; color: #004d4d;
+      border-radius: 50px; padding: 5px 20px; font-size: .82rem;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .srv-heading { font-size: 2.2rem; font-weight: 900; color: #002e2e; line-height: 1.2; }
+    .srv-sub { color: #64748b; font-size: 1.05rem; margin-top: .5rem; }
+    .srv-tabs {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 36px;
+    }
+    .srv-tab {
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      padding: 14px 16px; border-radius: 16px;
+      border: 2px solid #e2e8f0; background: #fff;
+      cursor: pointer; transition: all .25s ease;
+      min-width: 100px; font-size: .8rem; font-weight: 700;
+      color: #64748b; text-align: center; line-height: 1.2;
+    }
+    .srv-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: #e0f2f1; display: flex; align-items: center;
+      justify-content: center; font-size: 1.35rem; color: #006868;
+      transition: all .25s;
+    }
+    .srv-tab.active, .srv-tab:hover {
+      border-color: #004d4d;
+      background: linear-gradient(135deg, #002e2e, #006868);
+      color: #fff; box-shadow: 0 8px 24px rgba(0,78,78,.28);
+    }
+    .srv-tab.active .srv-icon, .srv-tab:hover .srv-icon {
+      background: rgba(255,255,255,.18); color: #fff;
+    }
+    .srv-panels { }
+    .srv-panel { display: none; }
+    .srv-panel.active { display: block; animation: fadeInUp .35s ease; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .srv-panel-header {
+      display: flex; align-items: flex-start; gap: 18px;
+      background: #fff; border-radius: 18px; padding: 24px 28px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.07);
+      margin-bottom: 4px;
+    }
+    .srv-panel-icon {
+      width: 62px; height: 62px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, #002e2e, #006868);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; color: #fff;
+    }
+    .srv-panel-title { font-size: 1.35rem; font-weight: 800; color: #002e2e; margin: 0 0 4px; }
+    .srv-panel-desc { color: #64748b; margin: 0; font-size: .95rem; }
+    .srv-feature {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: #fff; border-radius: 14px; padding: 16px 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      transition: box-shadow .2s, transform .2s;
+      height: 100%;
+    }
+    .srv-feature:hover {
+      box-shadow: 0 8px 24px rgba(0,78,78,.13);
+      transform: translateY(-2px);
+    }
+    .srv-ficon {
+      width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+      background: linear-gradient(135deg, #004d4d, #00a896);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: #fff;
+    }
+    .srv-feature strong { display: block; font-size: .95rem; color: #002e2e; margin-bottom: 2px; }
+    .srv-feature p { margin: 0; font-size: .83rem; color: #64748b; line-height: 1.4; }
+    .chatbot-platform-card {
+      display: flex; align-items: center; gap: 14px;
+      border-radius: 16px; padding: 18px 22px;
+      text-decoration: none; font-weight: 700; transition: all .25s;
+      box-shadow: 0 4px 16px rgba(0,0,0,.1);
+    }
+    .chatbot-platform-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,.18); }
+    .whatsapp-card { background: #25D366; color: #fff; }
+    .telegram-card { background: #229ED9; color: #fff; }
+    .chatbot-platform-card small { color: rgba(255,255,255,.85); font-weight: 400; }
+    .cp-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(255,255,255,.2); display: flex;
+      align-items: center; justify-content: center; font-size: 1.6rem;
+    }
+
+    /* ── CONTACTO ───────────────────────────────── */
+    .contacto-section { background: #f8f9fa; padding: 72px 0; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.3rem; }
+    .contact-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .contact-item a { color: #002e2e; font-weight: 600; text-decoration: none; }
+    .contact-item a:hover { color: #006868; }
+
+    /* ── CTA BANNER ─────────────────────────────── */
+    .cta-banner {
+      background: linear-gradient(90deg, #004d4d, #006868);
+      padding: 48px 0; color: #fff; text-align: center;
+    }
+    .cta-banner h3 { font-weight: 800; font-size: 1.8rem; }
+    .btn-cta {
+      background: #fff; color: #004d4d; font-weight: 700;
+      border-radius: 50px; padding: .75rem 2.5rem;
+      font-size: 1.05rem; border: none; transition: transform .2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-cta:hover { transform: scale(1.04); color: #004d4d; }
+  /* Campos requeridos — asterisco rojo vía CSS (inmune al i18n) */
+  .form-floating > input[required] ~ label::after,
+  .form-floating > select[required] ~ label::after { content: ' *'; color: red; }
+  label.req-lbl::after { content: ' *'; color: red; }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark site-nav fixed-top">
-    <div class="container-fluid px-3 px-lg-4">
-      <a class="navbar-brand brand-mark" href="#inicio">
-        <img src="./asset/logos/LogoH.webp" alt="ERP Bi2" height="42">
-        <span>ERP Bi2</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Alternar navegación">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMain">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-1">
-          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link" href="#cliente">Clientes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#sectores">Sectores</a></li>
-          <li class="nav-item"><a class="nav-link" href="#Ventajas">Ventajas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#Conocenos">Nosotros</a></li>
+
+<!-- ════ NAVBAR ════════════════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><img src="./asset/logos/LogoH.webp" height="50px"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="btn nav-link navBtn active" href="#servicios" data-i18n="nav-services">Servicios</a></li>
+        <li class="nav-item"><a class="btn nav-link navBtn active" href="#sectores" data-i18n="nav-sectors">Sectores</a></li>
+        <li class="nav-item"><a class="btn nav-link navBtn active" href="#cliente" data-i18n="nav-clients">Clientes</a></li>
+        <li class="nav-item"><a class="btn nav-link navBtn active" href="#Ventajas" data-i18n="nav-advantages">Ventajas</a></li>
+        <li class="nav-item"><a class="btn nav-link navBtn active" href="#Conocenos" data-i18n="nav-about">Nosotros</a></li>
+        <li class="nav-item dropdown">
+          <button class="btn nav-link dropdown-toggle navBtn text-dark" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false" data-i18n="nav-presentations">Presentaciones</button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="https://jasorglez.github.io/be/assets/documents/Brochure.pdf" target="_blank">Brochure</a></li>
+            <li><a class="dropdown-item" href="https://onedrive.live.com/view.aspx?resid=827DE2EB395595DB!s8afab14e69ee42f9b5b46731dea948b4&migratedtospo=true&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3AvYy84MjdkZTJlYjM5NTU5NWRiL0lRUk9zZnFLN21uNVFyVzBaekhlcVVpMEFTUHk2alRFNWJVZndNR3BBdk94V25NP2VtPTImd2RBcj0xLjMzMzMzMzMzMzMzMzMzMzMmd2RQcmV2aWV3PTE&wdSlideId=257&wdModeSwitchTime=1743792720113" target="_blank" data-i18n="nav-slides-pptx">Diapositivas PPTX</a></li>
+            <li><a class="dropdown-item" href="./asset/document/Presentacion ERP Bi 2025.pdf" target="_blank" data-i18n="nav-slides-pdf">Diapositivas PDF</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="btn nav-link navBtn active" href="./privacidad.html" data-i18n="nav-privacy">Aviso de privacidad</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <button id="langToggle" onclick="toggleLang()"
+          style="background:linear-gradient(135deg,#002e2e,#006868);border:none;border-radius:50px;padding:9px 24px;font-size:1rem;cursor:pointer;color:#fff;font-weight:800;letter-spacing:.5px;box-shadow:0 4px 14px rgba(0,104,104,.4);transition:all .25s;white-space:nowrap"
+          onmouseover="this.style.transform='scale(1.07)';this.style.boxShadow='0 6px 22px rgba(0,104,104,.6)'"
+          onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 14px rgba(0,104,104,.4)'">🇲🇽 ES</button>
+        <span style="font-size:.68rem;color:#94a3b8;line-height:1.2;text-align:right"><span data-i18n="nav-lastupdate">Última actualización</span><br><strong style="color:#006868">28 Mar 2026 — 14:00</strong></span>
+        <a id="btnDemo" class="p-2 rounded-pill text-white px-3" href="#hero">Demo</a>
+        <a id="btninicio" class="p-2 rounded-pill text-white px-3" href="https://www.biapp.com.mx/login" data-i18n="nav-login">Iniciar sesión</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ HERO + FORM ══════════════════════════════════════════════════════ -->
+<section class="hero-section" id="hero">
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+
+      <!-- Izquierda: copy + imagen -->
+      <div class="col-lg-6">
+        <span class="hero-badge" data-i18n="hero-badge">🚀 ERP 100 % en la Nube · Desde 2007</span>
+        <h1 class="hero-title mb-3" data-i18n-html="hero-title">
+          Inteligencia<br>Empresarial<br><span>en Tiempo Real</span>
+        </h1>
+        <p class="text-white-50 fs-5 mb-4" data-i18n-html="hero-sub">Dashboards · Reportes · Control Total.<br>Toma decisiones con datos reales.</p>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2 text-white"><span class="hero-check me-2">✔</span><span data-i18n="hero-li1">Módulos integrados: Proyectos, Almacenes, RH, Ventas, Nóminas y más</span></li>
+          <li class="mb-2 text-white"><span class="hero-check me-2">✔</span><span data-i18n="hero-li2">Bot de Telegram y WhatsApp 24/7 incluido</span></li>
+          <li class="mb-2 text-white"><span class="hero-check me-2">✔</span><span data-i18n="hero-li3">Multi-empresa · Multi-sucursal · Multi-proyecto</span></li>
+          <li class="mb-2 text-white"><span class="hero-check me-2">✔</span><span data-i18n="hero-li4">Implementación rápida · Costo ajustado · Soporte continuo</span></li>
         </ul>
-        <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-          <a class="btn btn-outline-light btn-sm px-3" href="./privacidad.html">Aviso de privacidad</a>
-          <a class="btn btn-accent btn-sm px-3" href="#Demo">Demo</a>
+        <img src="./asset/hero/hero.jpg" alt="ERP Bi2 — Inteligencia Empresarial en Tiempo Real" class="hero-img">
+      </div>
+
+      <!-- Derecha: formulario -->
+      <div class="col-lg-6">
+        <div class="form-card">
+          <h2 class="text-center mb-1" data-i18n="form-title">🗓️ Solicita tu Demo</h2>
+          <p class="text-center text-muted mb-3" style="font-size:.88rem" data-i18n="form-sub">Gratis · Sin compromiso · Respuesta en menos de 24 h</p>
+          <form id="demoForm">
+
+            <div class="form-floating mt-2">
+              <input type="text" class="form-control" id="name" data-i18n-ph="form-name-ph" placeholder="Nombre completo" required>
+              <label for="name" data-i18n="form-name-label">Nombre completo</label>
+            </div>
+            <span id="error-name" style="display:none;color:red;font-size:.85rem" data-i18n="form-name-error">Ingresa tu nombre</span>
+
+            <div class="row mt-2">
+              <div class="col-12 mb-1"><label class="text-muted req-lbl" style="font-size:.82rem" data-i18n="form-phone-lbl">Número de teléfono</label></div>
+              <div class="col-4">
+                <div class="form-floating">
+                  <select class="form-select" id="floatingSelectGrid" required>
+                    <option disabled value="" data-i18n="form-prefix-label">Prefijo</option>
+                    <option value="+93">Afganistán (+93)</option>
+                    <option value="+49">Alemania (+49)</option>
+                    <option value="+54">Argentina (+54)</option>
+                    <option value="+61">Australia (+61)</option>
+                    <option value="+43">Austria (+43)</option>
+                    <option value="+32">Bélgica (+32)</option>
+                    <option value="+591">Bolivia (+591)</option>
+                    <option value="+55">Brasil (+55)</option>
+                    <option value="+1">Canadá (+1)</option>
+                    <option value="+56">Chile (+56)</option>
+                    <option value="+86">China (+86)</option>
+                    <option value="+57">Colombia (+57)</option>
+                    <option value="+82">Corea del Sur (+82)</option>
+                    <option value="+506">Costa Rica (+506)</option>
+                    <option value="+53">Cuba (+53)</option>
+                    <option value="+45">Dinamarca (+45)</option>
+                    <option value="+593">Ecuador (+593)</option>
+                    <option value="+20">Egipto (+20)</option>
+                    <option value="+503">El Salvador (+503)</option>
+                    <option value="+34">España (+34)</option>
+                    <option value="+1">Estados Unidos (+1)</option>
+                    <option value="+63">Filipinas (+63)</option>
+                    <option value="+33">Francia (+33)</option>
+                    <option value="+502">Guatemala (+502)</option>
+                    <option value="+504">Honduras (+504)</option>
+                    <option value="+91">India (+91)</option>
+                    <option value="+39">Italia (+39)</option>
+                    <option value="+81">Japón (+81)</option>
+                    <option value="+52" selected>México (+52)</option>
+                    <option value="+505">Nicaragua (+505)</option>
+                    <option value="+47">Noruega (+47)</option>
+                    <option value="+64">Nueva Zelanda (+64)</option>
+                    <option value="+507">Panamá (+507)</option>
+                    <option value="+595">Paraguay (+595)</option>
+                    <option value="+51">Perú (+51)</option>
+                    <option value="+351">Portugal (+351)</option>
+                    <option value="+44">Reino Unido (+44)</option>
+                    <option value="+1">Rep. Dominicana (+1)</option>
+                    <option value="+7">Rusia (+7)</option>
+                    <option value="+27">Sudáfrica (+27)</option>
+                    <option value="+46">Suecia (+46)</option>
+                    <option value="+41">Suiza (+41)</option>
+                    <option value="+598">Uruguay (+598)</option>
+                    <option value="+58">Venezuela (+58)</option>
+                  </select>
+                  <label for="floatingSelectGrid" data-i18n="form-prefix-label">Prefijo</label>
+                </div>
+              </div>
+              <div class="col-8 d-flex align-items-center gap-1">
+                <input type="text" readonly class="form-control" id="prefixDisplay" value="" style="max-width:68px;flex-shrink:0">
+                <input type="tel" class="form-control" id="phone" data-i18n-ph="form-phone-ph" placeholder="Teléfono" required>
+              </div>
+            </div>
+            <span id="error-phone" style="display:none;color:red;font-size:.85rem" data-i18n="form-phone-error">Ingresa un número de teléfono</span>
+
+            <div class="form-floating mt-2">
+              <input type="email" class="form-control" id="email" placeholder="correo@empresa.com" required>
+              <label for="email" data-i18n="form-email-label">Correo electrónico</label>
+            </div>
+            <span id="error-email" style="display:none;color:red;font-size:.85rem" data-i18n="form-email-error">Correo inválido</span>
+
+            <div class="form-floating mt-2">
+              <input type="text" class="form-control" id="company" data-i18n-ph="form-company-ph" placeholder="Empresa" required>
+              <label for="company" data-i18n="form-company-label">Empresa</label>
+            </div>
+            <span id="error-company" style="display:none;color:red;font-size:.85rem" data-i18n="form-company-error">Ingresa tu empresa</span>
+
+            <div class="form-floating mt-2">
+              <select class="form-select" id="floatingSelectGrid2" required>
+                <option selected disabled value="" data-i18n="form-role-ph">Selecciona tu rol</option>
+                <option value="Dueño" data-i18n="form-role-1">Dueño / Director</option>
+                <option value="Contador" data-i18n="form-role-2">Contador / Finanzas</option>
+                <option value="Sistemas o TI" data-i18n="form-role-3">Sistemas o TI</option>
+                <option value="Asistente" data-i18n="form-role-4">Asistente / Administrativo</option>
+                <option value="Profesor" data-i18n="form-role-5">Profesor / Educación</option>
+                <option value="Otro" data-i18n="form-role-6">Otro</option>
+              </select>
+              <label for="floatingSelectGrid2" data-i18n="form-role-label">Rol con el que más te identificas</label>
+            </div>
+            <span id="error-role" class="msjError" style="display:none;color:red;font-size:.85rem" data-i18n="form-role-error">Selecciona tu rol</span>
+
+            <div class="mt-3">
+              <button type="submit" class="btn-agendar" data-i18n="form-submit">🗓️ Agendar mi Demo Gratis</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════ VIDEO ════════════════════════════════════════════════════════════ -->
+<section class="video-section">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title text-white mb-2" data-i18n="video-title">Mira cómo funciona el ERP Bi2</h2>
+      <p class="text-white-50" data-i18n="video-sub">Descubre todo lo que puedes controlar desde una sola plataforma</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/VJ6mp0-J-Gc"
+            title="ERP Bi2 — Inteligencia Empresarial en Tiempo Real"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
         </div>
       </div>
     </div>
-  </nav>
+    <div class="text-center mt-4">
+      <a href="https://www.youtube.com/@bi2mx" target="_blank"
+        class="btn btn-outline-light rounded-pill px-4 py-2">
+        <i class="bi bi-youtube me-2"></i><span data-i18n="video-yt">Ver más videos en YouTube @bi2mx</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-  <main id="inicio">
-    <section class="hero-section">
-      <div class="hero-grid container-fluid px-3 px-lg-4">
-        <div class="hero-copy">
-          <div class="eyebrow">
-            <span class="dot"></span>
-            ERP en la nube para operación, control y dirección
-          </div>
-          <h1>Una plataforma seria para gestionar tu empresa con control real.</h1>
-          <p class="hero-lead">
-            ERP Bi2 integra proyectos, almacenes, ventas, nómina y reportes ejecutivos en una sola operación.
-            Menos dispersión, más trazabilidad y decisiones con datos confiables.
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-accent btn-lg" href="#Demo">Solicitar Demo</a>
-            <a class="btn btn-outline-light btn-lg" href="#servicios">Ver Servicios</a>
-          </div>
-          <ul class="hero-points">
-            <li><i class="bi bi-check2-circle"></i> Operación multiempresa y multi-sucursal.</li>
-            <li><i class="bi bi-check2-circle"></i> Reportes gerenciales y control en tiempo real.</li>
-            <li><i class="bi bi-check2-circle"></i> Bot de Telegram y WhatsApp para seguimiento.</li>
-          </ul>
-        </div>
-
-        <div class="hero-panel">
-          <div class="hero-card hero-image-card">
-            <img src="./asset/hero/hero.jpg" alt="Vista general de ERP Bi2">
-            <div class="hero-badge-card">
-              <span>Operación centralizada</span>
-              <strong>Visión ejecutiva de toda la organización</strong>
-            </div>
-          </div>
-          <div class="metrics-grid">
-            <article class="metric-card">
-              <span>+18</span>
-              <p>Años desarrollando soluciones empresariales</p>
-            </article>
-            <article class="metric-card">
-              <span>24/7</span>
-              <p>Acceso remoto desde cualquier ubicación</p>
-            </article>
-            <article class="metric-card">
-              <span>100%</span>
-              <p>Integración entre módulos y procesos críticos</p>
-            </article>
-            <article class="metric-card">
-              <span>1</span>
-              <p>Plataforma para dirección, operación y control</p>
-            </article>
-          </div>
-        </div>
+<!-- ════ MÓDULOS ERP ══════════════════════════════════════════════════════ -->
+<section class="modules-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title" data-i18n="mod-title">Sistema ERP Integral</h2>
+      <p class="section-sub" data-i18n="mod-sub">Todo lo que tu empresa necesita, conectado en una sola plataforma</p>
+    </div>
+    <div class="row align-items-center g-4">
+      <div class="col-lg-5 text-center">
+        <img src="./asset/hero/erp-wheel.png" alt="Módulos ERP Bi2" style="max-width:400px;width:100%;">
       </div>
-    </section>
-
-    <section class="trust-strip" id="Ventajas">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="trust-grid">
-          <div class="trust-item">
-            <i class="bi bi-shield-check"></i>
-            <div>
-              <strong>Gobierno de procesos</strong>
-              <span>Estandarización y trazabilidad</span>
-            </div>
-          </div>
-          <div class="trust-item">
-            <i class="bi bi-diagram-3"></i>
-            <div>
-              <strong>Arquitectura modular</strong>
-              <span>Adopta solo lo que necesitas</span>
-            </div>
-          </div>
-          <div class="trust-item">
-            <i class="bi bi-graph-up-arrow"></i>
-            <div>
-              <strong>Decisiones con datos</strong>
-              <span>Tableros y reportes ejecutivos</span>
-            </div>
-          </div>
-          <div class="trust-item">
-            <i class="bi bi-headset"></i>
-            <div>
-              <strong>Soporte directo</strong>
-              <span>Acompañamiento de implementación</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block" id="servicios">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="section-heading">
-          <p class="section-kicker">Servicios</p>
-          <h2>Diseñado para equipos que necesitan orden, control y seguimiento.</h2>
-          <p>Una interfaz clara para dirección general, administración y operación diaria.</p>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-card">
-            <i class="bi bi-briefcase"></i>
-            <h3>Dirección ejecutiva</h3>
-            <p>Visibilidad consolidada para entender operación, costos, avance y rentabilidad.</p>
-          </article>
-          <article class="feature-card">
-            <i class="bi bi-box-seam"></i>
-            <h3>Control operativo</h3>
-            <p>Almacenes, movimientos, requisiciones y trazabilidad de materiales en un mismo flujo.</p>
-          </article>
-          <article class="feature-card">
-            <i class="bi bi-currency-dollar"></i>
-            <h3>Administración financiera</h3>
-            <p>Ingresos, egresos, bancos, facturación y reportes para lectura rápida de resultados.</p>
-          </article>
-          <article class="feature-card">
-            <i class="bi bi-people"></i>
-            <h3>Gestión de personal</h3>
-            <p>Expedientes, altas, bajas, asignaciones y nómina con estructura documental.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block section-dark" id="modulos">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="section-heading section-heading-dark">
-          <p class="section-kicker">Módulos</p>
-          <h2>Un sistema integral con módulos que sí hablan entre sí.</h2>
-          <p>Reduce duplicidad, acelera procesos y conserva consistencia entre áreas.</p>
-        </div>
-        <div class="module-grid">
-          <article class="module-card">
-            <span><i class="bi bi-building"></i></span>
-            <div>
-              <h3>Proyectos y obras</h3>
-              <p>Estimaciones, bitácoras, avances y control de ejecución.</p>
-            </div>
-          </article>
-          <article class="module-card">
-            <span><i class="bi bi-inboxes"></i></span>
-            <div>
-              <h3>Almacenes</h3>
-              <p>Entradas, salidas, inventario y requisiciones con trazabilidad.</p>
-            </div>
-          </article>
-          <article class="module-card">
-            <span><i class="bi bi-receipt"></i></span>
-            <div>
-              <h3>Administración</h3>
-              <p>Ingresos, egresos, bancos y facturación electrónica.</p>
-            </div>
-          </article>
-          <article class="module-card">
-            <span><i class="bi bi-person-badge"></i></span>
-            <div>
-              <h3>Recursos humanos</h3>
-              <p>Expediente, contratos, credenciales y control documental.</p>
-            </div>
-          </article>
-          <article class="module-card">
-            <span><i class="bi bi-shop"></i></span>
-            <div>
-              <h3>Ventas y punto de venta</h3>
-              <p>Cotizaciones, tickets, clientes y seguimiento comercial.</p>
-            </div>
-          </article>
-          <article class="module-card">
-            <span><i class="bi bi-robot"></i></span>
-            <div>
-              <h3>ChatBot</h3>
-              <p>Automatización y notificaciones en Telegram y WhatsApp.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block" id="sectores">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="section-heading">
-          <p class="section-kicker">Sectores</p>
-          <h2>Una base adaptable para distintas industrias.</h2>
-          <p>La plataforma se ajusta a los procesos y exigencias de cada operación.</p>
-        </div>
-        <div class="sector-grid">
-          <article class="sector-card">
-            <img src="./asset/sectores/construccion.png" alt="Sector construcción">
-            <div class="sector-card-body">
-              <h3>Construcción</h3>
-              <p>Obras, estimaciones, avances y control de materiales.</p>
-            </div>
-          </article>
-          <article class="sector-card">
-            <img src="./asset/sectores/clinicas.png" alt="Sector clínicas">
-            <div class="sector-card-body">
-              <h3>Clínicas</h3>
-              <p>Control administrativo y seguimiento operativo de servicios.</p>
-            </div>
-          </article>
-          <article class="sector-card">
-            <img src="./asset/sectores/educacion.png" alt="Sector educación">
-            <div class="sector-card-body">
-              <h3>Educación</h3>
-              <p>Gestión académica, administrativa y de atención interna.</p>
-            </div>
-          </article>
-          <article class="sector-card">
-            <img src="./asset/sectores/municipal.png" alt="Sector municipal">
-            <div class="sector-card-body">
-              <h3>Municipal</h3>
-              <p>Seguimiento institucional con estructura y control documental.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block section-dark" id="cliente">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="section-heading section-heading-dark">
-          <p class="section-kicker">Clientes</p>
-          <h2>Empresas que confían en ERP Bi2.</h2>
-          <p>Una muestra de organizaciones que operan con la plataforma.</p>
-        </div>
-        <div class="client-grid">
-          <article class="client-card"><img src="./asset/clientes/cotemar.png" alt="Cotemar"></article>
-          <article class="client-card"><img src="./asset/clientes/DIAVAZ.jpg" alt="DIAVAZ"></article>
-          <article class="client-card"><img src="./asset/clientes/GSP.png" alt="GSP"></article>
-          <article class="client-card"><img src="./asset/clientes/hmg.png" alt="HMG"></article>
-          <article class="client-card"><img src="./asset/clientes/comex.png" alt="Comex"></article>
-          <article class="client-card"><img src="./asset/clientes/tuxtepec.png" alt="Tuxtepec"></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block section-dark" id="Conocenos">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="section-heading section-heading-dark">
-          <p class="section-kicker">Nosotros</p>
-          <h2>Nuestra Historia</h2>
-          <p>
-            Empresa 100 % mexicana fundada en 2007, dedicada exclusivamente a la tecnología de la información.
-            A lo largo de estos años Bi se ha consolidado como una empresa cuya visión ha sido mantener
-            invariablemente la calidad de nuestros servicios, con el único fin de ser reconocida por nuestros
-            clientes como un proveedor rentable y confiable.
-          </p>
-          <p>
-            ERP Business Inteligent conecta diferentes departamentos, agiliza el tránsito de la información y
-            mejora la toma de decisiones. Cuenta con la tecnología, funcionalidad, rapidez y flexibilidad para
-            gestionar los recursos de toda la empresa, de forma integral y estratégica.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block section-dark" id="proceso">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="section-heading section-heading-dark">
-          <p class="section-kicker">Proceso</p>
-          <h2>Implementación clara, sin artificios ni fricción innecesaria.</h2>
-          <p>Un camino corto para llevar orden operativo a tu organización.</p>
-        </div>
-        <div class="process-grid">
-          <article class="process-step">
-            <span>01</span>
-            <h3>Diagnóstico</h3>
-            <p>Entendemos tus procesos, dolores y áreas prioritarias.</p>
-          </article>
-          <article class="process-step">
-            <span>02</span>
-            <h3>Configuración</h3>
-            <p>Ajustamos módulos, roles y estructura de operación.</p>
-          </article>
-          <article class="process-step">
-            <span>03</span>
-            <h3>Salida a producción</h3>
-            <p>Arranque controlado con acompañamiento del equipo.</p>
-          </article>
-          <article class="process-step">
-            <span>04</span>
-            <h3>Seguimiento</h3>
-            <p>Medición, mejora continua y soporte post-implementación.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block" id="Demo">
-      <div class="container-fluid px-3 px-lg-4">
-        <div class="demo-layout">
-          <div class="demo-copy">
-            <p class="section-kicker">Demo</p>
-            <h2>Solicita una revisión de ERP y adapta la plataforma a tu operación.</h2>
-            <p>
-              Te mostramos la plataforma con foco en tus procesos reales.
-              Sin discursos genéricos y sin perder tiempo en funciones que no necesitas.
-            </p>
-            <div class="demo-notes">
-              <div><i class="bi bi-clock"></i> Respuesta en menos de 24 horas.</div>
-              <div><i class="bi bi-check2"></i> Enfoque comercial y operativo.</div>
-              <div><i class="bi bi-chat-dots"></i> Seguimiento por correo o WhatsApp.</div>
-            </div>
-          </div>
-
-          <div class="demo-card" id="contacto">
-            <h3>Solicitar Demo</h3>
-            <p class="demo-card-sub">Completa tus datos para agendar una sesión.</p>
-            <form id="demoForm" class="demo-form">
-              <div class="floating-field">
-                <input type="text" id="name" class="form-control" placeholder="Nombre completo" required>
-                <label for="name">Nombre completo</label>
-                <small id="error-name" class="error-text">Ingresa tu nombre.</small>
+      <div class="col-lg-7">
+        <div class="row g-3">
+          <div class="col-6">
+            <a href="./proyectos/" class="module-link">
+              <div class="module-chip">
+                <span class="icon">🏗️</span>
+                <div><strong data-i18n="mod-1-t">Construcción &amp; Proyectos</strong><br><small data-i18n="mod-1-s">Bitácoras, estimaciones, convenios, reportes diarios</small></div>
               </div>
-
-              <div class="row g-2">
-                <div class="col-4">
-                  <div class="floating-field">
-                    <select id="floatingSelectGrid" class="form-select" aria-label="Prefijo">
-                      <option value="+52" selected>+52 MX</option>
-                      <option value="+1">+1 US</option>
-                      <option value="+57">+57 CO</option>
-                      <option value="+34">+34 ES</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-8">
-                  <div class="floating-field">
-                    <input type="tel" id="phone" class="form-control" placeholder="Teléfono" required>
-                    <label for="phone">Teléfono</label>
-                    <small id="error-phone" class="error-text">Ingresa un teléfono válido.</small>
-                  </div>
-                </div>
+            </a>
+          </div>
+          <div class="col-6">
+            <a href="./almacenes/" class="module-link">
+              <div class="module-chip">
+                <span class="icon">🏪</span>
+                <div><strong data-i18n="mod-2-t">Almacenes</strong><br><small data-i18n="mod-2-s">Inventario, entradas, salidas, materiales, requisiciones</small></div>
               </div>
-
-              <div class="floating-field">
-                <input type="email" id="email" class="form-control" placeholder="Correo electrónico" required>
-                <label for="email">Correo electrónico</label>
-                <small id="error-email" class="error-text">Ingresa un correo válido.</small>
+            </a>
+          </div>
+          <div class="col-6">
+            <div class="module-chip">
+              <span class="icon">👥</span>
+              <div><strong data-i18n="mod-3-t">Recursos Humanos</strong><br><small data-i18n="mod-3-s">Empleados, kardex, contratos, asignación de frentes</small></div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="module-chip">
+              <span class="icon">💼</span>
+              <div><strong data-i18n="mod-4-t">Administración</strong><br><small data-i18n="mod-4-s">Ingresos, egresos, bancos, facturación electrónica</small></div>
+            </div>
+          </div>
+          <div class="col-6">
+            <a href="./pv/" class="module-link">
+              <div class="module-chip">
+                <span class="icon">🛒</span>
+                <div><strong data-i18n="mod-5-t">Ventas &amp; Punto de Venta</strong><br><small data-i18n="mod-5-s">Cotizaciones, prospectos, seguimiento, tickets</small></div>
               </div>
-
-              <div class="floating-field">
-                <input type="text" id="company" class="form-control" placeholder="Empresa" required>
-                <label for="company">Empresa</label>
-                <small id="error-company" class="error-text">Ingresa el nombre de tu empresa.</small>
+            </a>
+          </div>
+          <div class="col-6">
+            <div class="module-chip">
+              <span class="icon">📋</span>
+              <div><strong data-i18n="mod-6-t">Nóminas</strong><br><small data-i18n="mod-6-s">Cálculo, variabilidad, finiquitos, ISPT, PTU</small></div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="module-chip">
+              <span class="icon">🤖</span>
+              <div><strong data-i18n="mod-7-t">ChatBot Telegram &amp; WhatsApp</strong><br><small data-i18n="mod-7-s">Asistente virtual 24/7, notificaciones automáticas</small></div>
+            </div>
+          </div>
+          <div class="col-6">
+            <a href="./mantenimiento/" class="module-link">
+              <div class="module-chip">
+                <span class="icon">🔧</span>
+                <div><strong data-i18n="mod-8-t">Mantenimiento</strong><br><small data-i18n="mod-8-s">Equipos, órdenes de trabajo, historial técnico</small></div>
               </div>
-
-              <div class="floating-field">
-                <select id="floatingSelectGrid2" class="form-select" required>
-                  <option value="" selected disabled>Selecciona tu perfil</option>
-                  <option value="Dueño / Dirección">Dueño / Dirección</option>
-                  <option value="Administración / Finanzas">Administración / Finanzas</option>
-                  <option value="Operación / Proyectos">Operación / Proyectos</option>
-                  <option value="TI / Sistemas">TI / Sistemas</option>
-                  <option value="Otro">Otro</option>
-                </select>
-                <small id="error-role" class="error-text">Selecciona tu perfil.</small>
+            </a>
+          </div>
+          <div class="col-6">
+            <a href="./logistica/" class="module-link">
+              <div class="module-chip">
+                <span class="icon">🚚</span>
+                <div><strong>Logística</strong><br><small>Pedidos, remisiones, clientes, entrega y distribución</small></div>
               </div>
-
-              <input type="hidden" id="prefixDisplay" value="+52">
-
-              <button type="submit" class="btn btn-accent btn-lg w-100">Enviar solicitud</button>
-              <p class="form-hint">Al enviar, recibirás seguimiento directo del equipo comercial.</p>
-            </form>
+            </a>
+          </div>
+          <div class="col-6">
+            <a href="./presupuesto/" class="module-link">
+              <div class="module-chip">
+                <span class="icon">📊</span>
+                <div><strong>Presupuesto</strong><br><small>Control presupuestal, preregistro de gastos, desempeño</small></div>
+              </div>
+            </a>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container-fluid px-3 px-lg-4">
-      <div class="footer-grid">
-        <div>
-          <div class="brand-mark brand-mark-footer">
-            <img src="./asset/logos/LogoH.webp" alt="ERP Bi2" height="36">
-            <span>ERP Bi2</span>
-          </div>
-          <p>Software de gestión empresarial con enfoque ejecutivo, operación ordenada y trazabilidad real.</p>
-        </div>
-        <div>
-          <h4>Contacto</h4>
-          <ul>
-            <li><a href="#Demo">Demo</a></li>
-            <li><a href="./privacidad.html">Aviso de privacidad</a></li>
-            <li><a href="https://www.biapp.com.mx/login" target="_blank" rel="noreferrer">Iniciar sesión</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Seguimiento</h4>
-          <ul>
-            <li><a href="https://t.me/biapp_bot" target="_blank" rel="noreferrer">Telegram</a></li>
-            <li><a href="https://wa.me/522292063157" target="_blank" rel="noreferrer">WhatsApp</a></li>
-            <li><a href="https://www.youtube.com/@bi2mx" target="_blank" rel="noreferrer">YouTube</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026 ERP Bi2. Todos los derechos reservados.</span>
-        <span>Gestión empresarial en la nube.</span>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script src="./script/bootstrap.bundle.min.js"></script>
-  <script type="module" src="./script/script.js"></script>
+<!-- ════ SECTORES ════════════════════════════════════════════════════════ -->
+<section class="sectores-section" id="sectores">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title" data-i18n="sec-title">Soluciones por Industria</h2>
+      <p class="section-sub" data-i18n="sec-sub">ERP Bi2 se adapta a las necesidades específicas de cada sector</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <a href="./proyectos/" class="text-decoration-none">
+          <div class="sector-card">
+            <img src="./asset/sectores/construccion.png" alt="ERP Construcción + Bot Telegram">
+            <div class="sector-label"><span>🏗️</span> <span data-i18n="sec-1">Construcción</span> <i class="bi bi-arrow-right-circle ms-auto"></i></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <a href="./clinica/" class="text-decoration-none">
+          <div class="sector-card">
+            <img src="./asset/sectores/clinicas.png" alt="MediControl BI — ERP Clínicas">
+            <div class="sector-label"><span>🏥</span> <span data-i18n="sec-2">MediControl BI</span> <i class="bi bi-arrow-right-circle ms-auto"></i></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <a href="./educacion/" class="text-decoration-none">
+          <div class="sector-card">
+            <img src="./asset/sectores/educacion.png" alt="Control de Educación — ERP Bi2">
+            <div class="sector-label"><span>🎓</span> <span data-i18n="sec-3">Control de Educación</span> <i class="bi bi-arrow-right-circle ms-auto"></i></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <a href="./municipio/" class="text-decoration-none">
+          <div class="sector-card">
+            <img src="./asset/sectores/municipal.png" alt="Control Municipal ERP Bi2">
+            <div class="sector-label"><span>🏛️</span> <span data-i18n="sec-4">Control Municipal</span> <i class="bi bi-arrow-right-circle ms-auto"></i></div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="#hero" class="btn-cta" data-i18n="sec-cta">Solicita tu Demo Gratis →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SERVICIOS ════════════════════════════════════════════════════════ -->
+<!-- ════ SERVICIOS ═════════════════════════════════════════════════════════ -->
+<section id="servicios" class="srv-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="srv-badge" data-i18n="srv-badge">Lo que ofrecemos</span>
+      <h2 class="srv-heading mt-3" data-i18n-html="srv-heading">Soluciones que impulsan<br>tu negocio al siguiente nivel</h2>
+      <p class="srv-sub" data-i18n="srv-sub">Módulos integrados, en la nube, multi-empresa y multi-sucursal</p>
+    </div>
+
+    <!-- TABS -->
+    <div class="srv-tabs" id="srvTabs">
+      <button class="srv-tab active" data-tab="1">
+        <div class="srv-icon"><i class="bi bi-building"></i></div>
+        <span data-i18n="tab-1">Obras &amp; Proyectos</span>
+      </button>
+      <button class="srv-tab" data-tab="2">
+        <div class="srv-icon"><i class="bi bi-box-seam"></i></div>
+        <span data-i18n="tab-2">Almacenes</span>
+      </button>
+      <button class="srv-tab" data-tab="3">
+        <div class="srv-icon"><i class="bi bi-bar-chart-line"></i></div>
+        <span data-i18n="tab-3">Administrativo</span>
+      </button>
+      <button class="srv-tab" data-tab="4">
+        <div class="srv-icon"><i class="bi bi-people"></i></div>
+        <span data-i18n="tab-4">Recursos Humanos</span>
+      </button>
+      <button class="srv-tab" data-tab="5">
+        <div class="srv-icon"><i class="bi bi-cart3"></i></div>
+        <span data-i18n="tab-5">Ventas</span>
+      </button>
+      <button class="srv-tab" data-tab="6">
+        <div class="srv-icon"><i class="bi bi-cash-stack"></i></div>
+        <span data-i18n="tab-6">Nóminas</span>
+      </button>
+      <button class="srv-tab" data-tab="7">
+        <div class="srv-icon"><i class="bi bi-robot"></i></div>
+        <span data-i18n="tab-7">ChatBot AI</span>
+      </button>
+    </div>
+
+    <!-- PANELS -->
+    <div class="srv-panels">
+
+      <!-- 1. Obras y Proyectos -->
+      <div class="srv-panel active" data-panel="1">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon"><i class="bi bi-building"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n="p1-title">Control y Seguimiento de Obras &amp; Proyectos</h3>
+            <p class="srv-panel-desc" data-i18n="p1-desc">Gestión integral desde la planeación hasta el cierre, con reportes en tiempo real.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon"><i class="bi bi-file-earmark-bar-graph"></i></div><div><strong data-i18n="p1-f1-t">Reportes diarios</strong><p data-i18n="p1-f1-d">Gráficas de seguimiento y productividad automatizadas</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon"><i class="bi bi-calculator"></i></div><div><strong data-i18n="p1-f2-t">Estimaciones</strong><p data-i18n="p1-f2-d">Elabora estimaciones y generadores según procedimientos del cliente</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon"><i class="bi bi-images"></i></div><div><strong data-i18n="p1-f3-t">Álbum fotográfico</strong><p data-i18n="p1-f3-d">Libro de proyectos y reportes gerenciales con fotografías</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon"><i class="bi bi-link-45deg"></i></div><div><strong data-i18n="p1-f4-t">Integración total</strong><p data-i18n="p1-f4-d">Enlace a Almacén y Administrativo para trazabilidad de materiales</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon"><i class="bi bi-clock-history"></i></div><div><strong data-i18n="p1-f5-t">Tiempos y costos</strong><p data-i18n="p1-f5-d">Reportes de tiempos inactivos, retenciones, penalizaciones y ajustes</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon"><i class="bi bi-cloud-check"></i></div><div><strong data-i18n="p1-f6-t">Multi-empresa en la nube</strong><p data-i18n="p1-f6-d">Multi-sucursales, multi-proyectos, acceso remoto 24/7</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- 2. Almacenes -->
+      <div class="srv-panel" data-panel="2">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-box-seam"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n="p2-title">Control de Almacenes</h3>
+            <p class="srv-panel-desc" data-i18n="p2-desc">Inventario inteligente con trazabilidad completa de materiales y proveedores.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-clipboard2-check"></i></div><div><strong data-i18n="p2-f1-t">Requisiciones y OC</strong><p data-i18n="p2-f1-d">Órdenes de compra y requisiciones digitales</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-star"></i></div><div><strong data-i18n="p2-f2-t">Mejores proveedores</strong><p data-i18n="p2-f2-d">Cotizaciones comparativas y recomendación automática</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-arrow-left-right"></i></div><div><strong data-i18n="p2-f3-t">Entradas y salidas</strong><p data-i18n="p2-f3-d">Control de movimientos con trazabilidad total de materiales</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-diagram-3"></i></div><div><strong data-i18n="p2-f4-t">N Almacenes</strong><p data-i18n="p2-f4-d">Administración de múltiples almacenes y ubicaciones</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-graph-up"></i></div><div><strong data-i18n="p2-f5-t">Control de inventario</strong><p data-i18n="p2-f5-d">Alertas de stock mínimo y reportes de existencias</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#1a5a9a,#2980b9)"><i class="bi bi-cloud-check"></i></div><div><strong data-i18n="p2-f6-t">Multi-empresa en la nube</strong><p data-i18n="p2-f6-d">Sincronización en tiempo real entre sucursales</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- 3. Administrativo -->
+      <div class="srv-panel" data-panel="3">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-bar-chart-line"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n="p3-title">Control Administrativo</h3>
+            <p class="srv-panel-desc" data-i18n="p3-desc">Finanzas bajo control: ingresos, egresos, bancos y facturación electrónica.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-currency-dollar"></i></div><div><strong data-i18n="p3-f1-t">Ingresos y egresos</strong><p data-i18n="p3-f1-d">Control financiero completo del proyecto o empresa</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-pie-chart"></i></div><div><strong data-i18n="p3-f2-t">Gráficas financieras</strong><p data-i18n="p3-f2-d">Dashboard del status financiero en tiempo real</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-receipt"></i></div><div><strong data-i18n="p3-f3-t">Facturación electrónica</strong><p data-i18n="p3-f3-d">CFDI automático integrado al sistema</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-bank"></i></div><div><strong data-i18n="p3-f4-t">Bancos y flujo de efectivo</strong><p data-i18n="p3-f4-d">Conciliación bancaria y control de estados</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-link-45deg"></i></div><div><strong data-i18n="p3-f5-t">Integración modular</strong><p data-i18n="p3-f5-d">Conectado con RH, Almacén y Proyectos</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="bi bi-cloud-check"></i></div><div><strong data-i18n="p3-f6-t">Multi-empresa en la nube</strong><p data-i18n="p3-f6-d">Reportes gerenciales consolidados multi-empresa</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- 4. Recursos Humanos -->
+      <div class="srv-panel" data-panel="4">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-people"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n="p4-title">Control de Recursos Humanos</h3>
+            <p class="srv-panel-desc" data-i18n="p4-desc">Todo el ciclo del empleado: contratación, asignación, credenciales y finiquitos.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-journal-text"></i></div><div><strong data-i18n="p4-f1-t">Kardex electrónico</strong><p data-i18n="p4-f1-d">Expediente digital completo de cada empleado</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-person-check"></i></div><div><strong data-i18n="p4-f2-t">Requisición de personal</strong><p data-i18n="p4-f2-d">Control de asignación de recursos por frente de trabajo</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-file-earmark-person"></i></div><div><strong data-i18n="p4-f3-t">Contratos y finiquitos</strong><p data-i18n="p4-f3-d">Generación automática de documentos legales</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-geo-alt"></i></div><div><strong data-i18n="p4-f4-t">Asignación de frentes</strong><p data-i18n="p4-f4-d">Control de empleados por proyecto, sucursal y área</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-credit-card"></i></div><div><strong data-i18n="p4-f5-t">Credenciales digitales</strong><p data-i18n="p4-f5-d">Cartas de recomendación y documentación del empleado</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="bi bi-cloud-check"></i></div><div><strong data-i18n="p4-f6-t">Multi-empresa en la nube</strong><p data-i18n="p4-f6-d">Integración con Nóminas y Administrativo</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- 5. Ventas -->
+      <div class="srv-panel" data-panel="5">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-cart3"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n-html="p5-title">Control de Ventas &amp; Punto de Venta</h3>
+            <p class="srv-panel-desc" data-i18n="p5-desc">Desde la cotización hasta la factura, con seguimiento de clientes y prospectos.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-receipt-cutoff"></i></div><div><strong data-i18n="p5-f1-t">Tickets y facturas</strong><p data-i18n="p5-f1-d">Procesamiento rápido con CFDI automático</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-file-earmark-text"></i></div><div><strong data-i18n="p5-f2-t">Cotizaciones</strong><p data-i18n="p5-f2-d">Generación y envío de cotizaciones profesionales</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-person-lines-fill"></i></div><div><strong data-i18n="p5-f3-t">CRM de clientes</strong><p data-i18n="p5-f3-d">Control y seguimiento de clientes y prospectos</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-graph-up-arrow"></i></div><div><strong data-i18n="p5-f4-t">Reportes gerenciales</strong><p data-i18n="p5-f4-d">Dashboard de ventas, conversión y métricas clave</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-link-45deg"></i></div><div><strong data-i18n="p5-f5-t">Integración con Almacén</strong><p data-i18n="p5-f5-d">Cotización enlazada a existencias en tiempo real</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="bi bi-cloud-check"></i></div><div><strong data-i18n="p5-f6-t">Multi-empresa en la nube</strong><p data-i18n="p5-f6-d">Multi-sucursales con acceso remoto 24/7</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- 6. Nóminas -->
+      <div class="srv-panel" data-panel="6">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-cash-stack"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n="p6-title">Control de Nóminas</h3>
+            <p class="srv-panel-desc" data-i18n="p6-desc">Cálculo preciso y automatizado de nómina, ISPT, aguinaldo y PTU.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-sliders"></i></div><div><strong data-i18n="p6-f1-t">Conceptos flexibles</strong><p data-i18n="p6-f1-d">Definición sencilla de percepciones y deducciones</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-person-plus"></i></div><div><strong data-i18n="p6-f2-t">Altas, bajas y cambios</strong><p data-i18n="p6-f2-d">Bitácora completa con usuario, fecha y hora</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-calculator"></i></div><div><strong data-i18n="p6-f3-t">Cálculo completo</strong><p data-i18n="p6-f3-d">Nómina, aguinaldo, ISPT, declaración anual y PTU</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-person-badge"></i></div><div><strong data-i18n="p6-f4-t">Expediente del empleado</strong><p data-i18n="p6-f4-d">Datos personales, documentos e imágenes adjuntas</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-file-earmark-spreadsheet"></i></div><div><strong data-i18n="p6-f5-t">Reportes e informes</strong><p data-i18n="p6-f5-d">Generador de informes personalizados y pólizas</p></div></div></div>
+          <div class="col-md-6"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#dc2626,#ef4444)"><i class="bi bi-cloud-check"></i></div><div><strong data-i18n="p6-f6-t">Multi-empresa en la nube</strong><p data-i18n="p6-f6-d">Multi-sucursales con clasificación por ubicación</p></div></div></div>
+        </div>
+      </div>
+
+      <!-- 7. ChatBot -->
+      <div class="srv-panel" data-panel="7">
+        <div class="srv-panel-header">
+          <div class="srv-panel-icon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-robot"></i></div>
+          <div>
+            <h3 class="srv-panel-title" data-i18n-html="p7-title">ChatBot AI — Telegram &amp; WhatsApp</h3>
+            <p class="srv-panel-desc" data-i18n="p7-desc">Asistente virtual 24/7 que automatiza tareas, atiende clientes y envía notificaciones inteligentes.</p>
+          </div>
+        </div>
+        <div class="row g-3 mt-1 mb-4">
+          <div class="col-md-4"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-clock"></i></div><div><strong data-i18n="p7-f1-t">Disponibilidad 24/7</strong><p data-i18n="p7-f1-d">Respuesta inmediata sin importar la hora</p></div></div></div>
+          <div class="col-md-4"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-lightning"></i></div><div><strong data-i18n="p7-f2-t">Automatización</strong><p data-i18n="p7-f2-d">Tareas repetitivas delegadas al bot</p></div></div></div>
+          <div class="col-md-4"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-person-heart"></i></div><div><strong data-i18n="p7-f3-t">Personalización</strong><p data-i18n="p7-f3-d">Flujos adaptativos por perfil de usuario</p></div></div></div>
+          <div class="col-md-4"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-bell"></i></div><div><strong data-i18n="p7-f4-t">Notificaciones</strong><p data-i18n="p7-f4-d">Alertas en tiempo real de tu ERP al teléfono</p></div></div></div>
+          <div class="col-md-4"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-people-fill"></i></div><div><strong data-i18n="p7-f5-t">Alcance masivo</strong><p data-i18n="p7-f5-d">Mensajes a cientos de usuarios simultáneamente</p></div></div></div>
+          <div class="col-md-4"><div class="srv-feature"><div class="srv-ficon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><i class="bi bi-piggy-bank"></i></div><div><strong data-i18n="p7-f6-t">Ahorro de costos</strong><p data-i18n="p7-f6-d">Reduce tiempos de atención y carga operativa</p></div></div></div>
+        </div>
+        <p class="text-center text-muted mb-3 fw-semibold" data-i18n="p7-try">Pruébalo tú mismo ahora mismo →</p>
+        <div class="row g-3 justify-content-center">
+          <div class="col-sm-5">
+            <a href="https://wa.me/14155238886" target="_blank" class="chatbot-platform-card whatsapp-card">
+              <div class="cp-icon"><i class="bi bi-whatsapp"></i></div>
+              <div><strong>WhatsApp Bot</strong><br><small>+1 (415) 523-8886</small></div>
+              <i class="bi bi-arrow-right ms-auto"></i>
+            </a>
+          </div>
+          <div class="col-sm-5">
+            <a href="https://t.me/biapp_bot" target="_blank" class="chatbot-platform-card telegram-card">
+              <div class="cp-icon"><i class="bi bi-telegram"></i></div>
+              <div><strong>Telegram Bot</strong><br><small>@biapp_bot</small></div>
+              <i class="bi bi-arrow-right ms-auto"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /srv-panels -->
+  </div>
+
+  <script>
+    (function(){
+      const tabs = document.querySelectorAll('.srv-tab');
+      const panels = document.querySelectorAll('.srv-panel');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function(){
+          const t = this.dataset.tab;
+          tabs.forEach(b => b.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+          document.querySelector('.srv-panel[data-panel="'+t+'"]').classList.add('active');
+        });
+      });
+    })();
+  </script>
+</section>
+
+<!-- ════ CLIENTES ════════════════════════════════════════════════════════ -->
+<div class="p-3" id="cliente">
+  <p class="text-center fs-2 fw-bold" data-i18n="clients-title">Clientes</p>
+  <div class="w-100 row justify-content-around align-items-center">
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/cotemar.png" alt="Cotemar" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/DIAVAZ.jpg" alt="Diavaz" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/oceanografia.jpeg" alt="Oceanografía" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/blue.png" alt="Blue Marine" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img style="background-color:gray;" src="./asset/clientes/tred.png" alt="Tred" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/othon.jpg" alt="Othon" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/utidel.png" alt="Utidel" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/Subsea.jpg" alt="Subsea" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/iecesa.png" alt="Iecesa" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/hmg.png" alt="HMG" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/cis.jpeg" alt="CIS" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/GSP.png" alt="GSP" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/BodegasDelicia.png" alt="Bodegas Delicia" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/comex.png" alt="Comex" class="img-fluid grayscale hover-grayscale-off"></div>
+    <div class="col-5 col-sm-2"><img src="./asset/clientes/tuxtepec.png" alt="Tuxtepec" class="img-fluid grayscale hover-grayscale-off"></div>
+  </div>
+</div>
+
+<!-- ════ VENTAJAS ════════════════════════════════════════════════════════ -->
+<div class="p-3 bgcolor text-white" id="Ventajas">
+  <div class="text-center fs-2 fw-bold" data-i18n="adv-title">Ventajas</div>
+  <div class="row text-white">
+    <div class="col-12 col-sm-6">
+      <div class="flex align-items-center mb-3"><img class="img-venta" src="./asset/icon/libro.png" alt=""><span data-i18n="adv-1">Fácil aprendizaje, uso e implementación</span></div>
+      <div class="flex align-items-center mb-3"><img class="img-venta" src="./asset/icon/ajustes.png" alt=""><span data-i18n="adv-2">Configurable al 100%</span></div>
+      <div class="flex align-items-center mb-3"><img class="img-venta" src="./asset/icon/rentable.png" alt=""><span data-i18n="adv-3">Costo ajustado</span></div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="flex align-items-center mb-3"><img class="img-venta" src="./asset/icon/conexion.png" alt=""><span data-i18n="adv-4">Conectividad integral</span></div>
+      <div class="flex align-items-center mb-3"><img class="img-venta" src="./asset/icon/flujo.png" alt=""><span data-i18n="adv-5">Rápido retorno de inversión</span></div>
+      <div class="flex align-items-center mb-3"><img class="img-venta" src="./asset/icon/ahorrar.png" alt=""><span data-i18n="adv-6">Bajo TCO (Bajo costo de propiedad)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CONOCENOS ════════════════════════════════════════════════════════ -->
+<div id="Conocenos" class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-4">
+      <p class="text-center fs-2 fw-bold" data-i18n="about-title">Nuestra Historia</p>
+    </div>
+    <div class="row align-items-center">
+      <div class="fs-5 col-sm-8 col-12">
+        <p data-i18n="about-p1">Empresa 100 % mexicana fundada en 2007, dedicada exclusivamente a la tecnología de la información. A lo largo de estos años Bi se ha consolidado como una empresa cuya visión ha sido mantener invariablemente la calidad de nuestros servicios, con el único fin de ser reconocida por nuestros clientes como un proveedor rentable y confiable.</p>
+        <p class="fw-bold" style="color:#004d4d;" data-i18n="about-q-title">¿Qué es ERP Business Inteligent?</p>
+        <p data-i18n="about-p2">Software de gestión empresarial que permite generar mayor valor dentro de las organizaciones al conectar diferentes departamentos, agilizando el tránsito de la información y mejorando la toma de decisiones. Cuenta con la tecnología, funcionalidad, rapidez y flexibilidad para gestionar los recursos de toda la empresa, de forma integral y estratégica.</p>
+      </div>
+      <div class="col-sm-4 col-12 text-center">
+        <img src="./asset/logos/Logo.webp" width="80%">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CTA BANNER ══════════════════════════════════════════════════════ -->
+<div class="cta-banner">
+  <div class="container">
+    <h3 class="mb-2" data-i18n="cta-title">¿Listo para transformar tu empresa?</h3>
+    <p class="text-white-50 mb-4" data-i18n="cta-sub">Agenda una demo gratuita y sin compromiso. Nuestro equipo te contacta en menos de 24 horas.</p>
+    <a href="#hero" class="btn-cta" data-i18n="cta-btn">🗓️ Solicitar Demo Gratis</a>
+  </div>
+</div>
+
+<!-- ════ CONTACTO ════════════════════════════════════════════════════════ -->
+<section class="contacto-section" id="contacto">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title" data-i18n="contact-title">Contáctanos</h2>
+      <p class="section-sub" data-i18n="contact-sub">Estamos listos para ayudarte a transformar tu empresa</p>
+    </div>
+    <div class="row justify-content-center g-4">
+      <div class="col-md-5">
+        <div class="contact-item">
+          <div class="contact-icon bg-success text-white"><i class="bi bi-whatsapp"></i></div>
+          <div><small class="text-muted d-block" data-i18n="contact-mx">WhatsApp México</small><a href="https://wa.me/522292063157" target="_blank">+52 229 206 3157</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon bg-primary text-white"><i class="bi bi-telephone-fill"></i></div>
+          <div><small class="text-muted d-block" data-i18n="contact-us">Estados Unidos</small><a href="tel:+17652684112">+1 765 268-4112</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon bg-danger text-white"><i class="bi bi-envelope-fill"></i></div>
+          <div><small class="text-muted d-block" data-i18n="contact-email-lbl">Correo electrónico</small><a href="mailto:info@bi2.mx">info@bi2.mx</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon text-white" style="background:#229ED9"><i class="bi bi-telegram"></i></div>
+          <div><small class="text-muted d-block" data-i18n="contact-telegram">Bot Telegram</small><a href="https://t.me/biapp_bot" target="_blank">@biapp_bot</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon bg-danger text-white"><i class="bi bi-youtube"></i></div>
+          <div><small class="text-muted d-block" data-i18n="contact-yt-lbl">YouTube</small><a href="https://www.youtube.com/@bi2mx" target="_blank">@bi2mx</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon text-white" style="background:#004d4d"><i class="bi bi-geo-alt-fill"></i></div>
+          <div><small class="text-muted d-block" data-i18n="contact-address-lbl">Dirección</small><span style="color:#002e2e;font-weight:600" data-i18n="contact-address-val">1903 Everett, Lafayette, Indiana 47905, EE. UU.</span></div>
+        </div>
+      </div>
+      <div class="col-md-4 d-flex align-items-center justify-content-center">
+        <img src="./asset/logos/Logo.webp" style="max-width:200px;opacity:.12">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ MAPA ═════════════════════════════════════════════════════════════ -->
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.8100858057364!2d-86.8748202!3d40.4130578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88131d3c58cb7b93%3A0x35b713cd8d46ad5a!2s1903%20Everett%20St%2C%20Lafayette%2C%20IN%2047905%2C%20EE.%20UU.!5e0!3m2!1ses-419!2smx!4v1743650759193!5m2!1ses-419!2smx"
+  width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+<!-- ════ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer class="py-4 bg-dark text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <img src="./asset/logos/LogoH.webp" height="40" class="mb-2">
+        <p class="text-white-50 mb-0" data-i18n="footer-tagline">ERP Business Inteligent</p>
+        <small class="text-white-50" data-i18n="footer-since">Soluciones tecnológicas para tu empresa desde 2007</small>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5 data-i18n="footer-contact">Contacto</h5>
+        <ul class="list-unstyled text-white-50">
+          <li><i class="bi bi-envelope me-2"></i>info@bi2.mx</li>
+          <li><i class="bi bi-telephone me-2"></i>+52 229 206 3157</li>
+          <li><i class="bi bi-globe me-2"></i>bi2.mx</li>
+          <li class="mt-2"><a class="text-white-50 text-decoration-none" href="./privacidad.html" data-i18n="footer-privacy">Aviso de privacidad</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5 data-i18n="footer-social">Redes sociales</h5>
+        <div class="d-flex gap-3 mt-2">
+          <a href="https://wa.me/522292063157" target="_blank" class="text-success fs-4"><i class="bi bi-whatsapp"></i></a>
+          <a href="https://t.me/biapp_bot" target="_blank" class="text-info fs-4"><i class="bi bi-telegram"></i></a>
+          <a href="https://www.youtube.com/@bi2mx" target="_blank" class="text-danger fs-4"><i class="bi bi-youtube"></i></a>
+        </div>
+        <small class="text-white-50 d-block mt-2" data-i18n="footer-yt-tag">YouTube: @bi2mx</small>
+      </div>
+    </div>
+    <hr class="border-secondary">
+    <p class="text-center text-white-50 mb-0" data-i18n="footer-copy">&copy; 2025 ERP Business Inteligent · Todos los derechos reservados</p>
+  </div>
+</footer>
+
+<script>
+  const T = {
+    es: {
+      'nav-services':       'Servicios',
+      'nav-sectors':        'Sectores',
+      'nav-clients':        'Clientes',
+      'nav-advantages':     'Ventajas',
+      'nav-about':          'Nosotros',
+      'nav-presentations':  'Presentaciones',
+      'nav-slides-pptx':    'Diapositivas PPTX',
+      'nav-slides-pdf':     'Diapositivas PDF',
+      'nav-privacy':        'Aviso de privacidad',
+      'nav-lastupdate':     'Última actualización',
+      'nav-login':          'Iniciar sesión',
+
+      'hero-badge':  '🚀 ERP 100 % en la Nube · Desde 2007',
+      'hero-title':  'Inteligencia<br>Empresarial<br><span>en Tiempo Real</span>',
+      'hero-sub':    'Dashboards · Reportes · Control Total.<br>Toma decisiones con datos reales.',
+      'hero-li1':    'Módulos integrados: Proyectos, Almacenes, RH, Ventas, Nóminas y más',
+      'hero-li2':    'Bot de Telegram y WhatsApp 24/7 incluido',
+      'hero-li3':    'Multi-empresa · Multi-sucursal · Multi-proyecto',
+      'hero-li4':    'Implementación rápida · Costo ajustado · Soporte continuo',
+
+      'form-title':       '🗓️ Solicita tu Demo',
+      'form-sub':         'Gratis · Sin compromiso · Respuesta en menos de 24 h',
+      'form-name-label':  'Nombre completo',
+      'form-name-ph':     'Nombre completo',
+      'form-name-error':  'Ingresa tu nombre',
+      'form-phone-lbl':   'Número de teléfono',
+      'form-prefix-label':'Prefijo',
+      'form-phone-ph':    'Teléfono',
+      'form-phone-error': 'Ingresa un número de teléfono',
+      'form-email-label': 'Correo electrónico',
+      'form-email-error': 'Correo inválido',
+      'form-company-label':'Empresa',
+      'form-company-ph':  'Empresa',
+      'form-company-error':'Ingresa tu empresa',
+      'form-role-ph':     'Selecciona tu rol',
+      'form-role-label':  'Rol con el que más te identificas',
+      'form-role-error':  'Selecciona tu rol',
+      'form-role-1':      'Dueño / Director',
+      'form-role-2':      'Contador / Finanzas',
+      'form-role-3':      'Sistemas o TI',
+      'form-role-4':      'Asistente / Administrativo',
+      'form-role-5':      'Profesor / Educación',
+      'form-role-6':      'Otro',
+      'form-submit':      '🗓️ Agendar mi Demo Gratis',
+
+      'video-title': 'Mira cómo funciona el ERP Bi2',
+      'video-sub':   'Descubre todo lo que puedes controlar desde una sola plataforma',
+      'video-yt':    'Ver más videos en YouTube @bi2mx',
+
+      'mod-title': 'Sistema ERP Integral',
+      'mod-sub':   'Todo lo que tu empresa necesita, conectado en una sola plataforma',
+      'mod-1-t':   'Construcción & Proyectos',
+      'mod-1-s':   'Bitácoras, estimaciones, convenios, reportes diarios',
+      'mod-2-t':   'Almacenes',
+      'mod-2-s':   'Inventario, entradas, salidas, materiales, requisiciones',
+      'mod-3-t':   'Recursos Humanos',
+      'mod-3-s':   'Empleados, kardex, contratos, asignación de frentes',
+      'mod-4-t':   'Administración',
+      'mod-4-s':   'Ingresos, egresos, bancos, facturación electrónica',
+      'mod-5-t':   'Ventas & Punto de Venta',
+      'mod-5-s':   'Cotizaciones, prospectos, seguimiento, tickets',
+      'mod-6-t':   'Nóminas',
+      'mod-6-s':   'Cálculo, variabilidad, finiquitos, ISPT, PTU',
+      'mod-7-t':   'ChatBot Telegram & WhatsApp',
+      'mod-7-s':   'Asistente virtual 24/7, notificaciones automáticas',
+      'mod-8-t':   'Mantenimiento',
+      'mod-8-s':   'Equipos, órdenes de trabajo, historial técnico',
+
+      'sec-title': 'Soluciones por Industria',
+      'sec-sub':   'ERP Bi2 se adapta a las necesidades específicas de cada sector',
+      'sec-1':     'Construcción',
+      'sec-2':     'MediControl BI',
+      'sec-3':     'Control de Educación',
+      'sec-4':     'Control Municipal',
+      'sec-cta':   'Solicita tu Demo Gratis →',
+
+      'srv-badge':   'Lo que ofrecemos',
+      'srv-heading': 'Soluciones que impulsan<br>tu negocio al siguiente nivel',
+      'srv-sub':     'Módulos integrados, en la nube, multi-empresa y multi-sucursal',
+      'tab-1': 'Obras & Proyectos',
+      'tab-2': 'Almacenes',
+      'tab-3': 'Administrativo',
+      'tab-4': 'Recursos Humanos',
+      'tab-5': 'Ventas',
+      'tab-6': 'Nóminas',
+      'tab-7': 'ChatBot AI',
+
+      'p1-title': 'Control y Seguimiento de Obras & Proyectos',
+      'p1-desc':  'Gestión integral desde la planeación hasta el cierre, con reportes en tiempo real.',
+      'p1-f1-t':  'Reportes diarios',
+      'p1-f1-d':  'Gráficas de seguimiento y productividad automatizadas',
+      'p1-f2-t':  'Estimaciones',
+      'p1-f2-d':  'Elabora estimaciones y generadores según procedimientos del cliente',
+      'p1-f3-t':  'Álbum fotográfico',
+      'p1-f3-d':  'Libro de proyectos y reportes gerenciales con fotografías',
+      'p1-f4-t':  'Integración total',
+      'p1-f4-d':  'Enlace a Almacén y Administrativo para trazabilidad de materiales',
+      'p1-f5-t':  'Tiempos y costos',
+      'p1-f5-d':  'Reportes de tiempos inactivos, retenciones, penalizaciones y ajustes',
+      'p1-f6-t':  'Multi-empresa en la nube',
+      'p1-f6-d':  'Multi-sucursales, multi-proyectos, acceso remoto 24/7',
+
+      'p2-title': 'Control de Almacenes',
+      'p2-desc':  'Inventario inteligente con trazabilidad completa de materiales y proveedores.',
+      'p2-f1-t':  'Requisiciones y OC',
+      'p2-f1-d':  'Órdenes de compra y requisiciones digitales',
+      'p2-f2-t':  'Mejores proveedores',
+      'p2-f2-d':  'Cotizaciones comparativas y recomendación automática',
+      'p2-f3-t':  'Entradas y salidas',
+      'p2-f3-d':  'Control de movimientos con trazabilidad total de materiales',
+      'p2-f4-t':  'N Almacenes',
+      'p2-f4-d':  'Administración de múltiples almacenes y ubicaciones',
+      'p2-f5-t':  'Control de inventario',
+      'p2-f5-d':  'Alertas de stock mínimo y reportes de existencias',
+      'p2-f6-t':  'Multi-empresa en la nube',
+      'p2-f6-d':  'Sincronización en tiempo real entre sucursales',
+
+      'p3-title': 'Control Administrativo',
+      'p3-desc':  'Finanzas bajo control: ingresos, egresos, bancos y facturación electrónica.',
+      'p3-f1-t':  'Ingresos y egresos',
+      'p3-f1-d':  'Control financiero completo del proyecto o empresa',
+      'p3-f2-t':  'Gráficas financieras',
+      'p3-f2-d':  'Dashboard del status financiero en tiempo real',
+      'p3-f3-t':  'Facturación electrónica',
+      'p3-f3-d':  'CFDI automático integrado al sistema',
+      'p3-f4-t':  'Bancos y flujo de efectivo',
+      'p3-f4-d':  'Conciliación bancaria y control de estados',
+      'p3-f5-t':  'Integración modular',
+      'p3-f5-d':  'Conectado con RH, Almacén y Proyectos',
+      'p3-f6-t':  'Multi-empresa en la nube',
+      'p3-f6-d':  'Reportes gerenciales consolidados multi-empresa',
+
+      'p4-title': 'Control de Recursos Humanos',
+      'p4-desc':  'Todo el ciclo del empleado: contratación, asignación, credenciales y finiquitos.',
+      'p4-f1-t':  'Kardex electrónico',
+      'p4-f1-d':  'Expediente digital completo de cada empleado',
+      'p4-f2-t':  'Requisición de personal',
+      'p4-f2-d':  'Control de asignación de recursos por frente de trabajo',
+      'p4-f3-t':  'Contratos y finiquitos',
+      'p4-f3-d':  'Generación automática de documentos legales',
+      'p4-f4-t':  'Asignación de frentes',
+      'p4-f4-d':  'Control de empleados por proyecto, sucursal y área',
+      'p4-f5-t':  'Credenciales digitales',
+      'p4-f5-d':  'Cartas de recomendación y documentación del empleado',
+      'p4-f6-t':  'Multi-empresa en la nube',
+      'p4-f6-d':  'Integración con Nóminas y Administrativo',
+
+      'p5-title': 'Control de Ventas &amp; Punto de Venta',
+      'p5-desc':  'Desde la cotización hasta la factura, con seguimiento de clientes y prospectos.',
+      'p5-f1-t':  'Tickets y facturas',
+      'p5-f1-d':  'Procesamiento rápido con CFDI automático',
+      'p5-f2-t':  'Cotizaciones',
+      'p5-f2-d':  'Generación y envío de cotizaciones profesionales',
+      'p5-f3-t':  'CRM de clientes',
+      'p5-f3-d':  'Control y seguimiento de clientes y prospectos',
+      'p5-f4-t':  'Reportes gerenciales',
+      'p5-f4-d':  'Dashboard de ventas, conversión y métricas clave',
+      'p5-f5-t':  'Integración con Almacén',
+      'p5-f5-d':  'Cotización enlazada a existencias en tiempo real',
+      'p5-f6-t':  'Multi-empresa en la nube',
+      'p5-f6-d':  'Multi-sucursales con acceso remoto 24/7',
+
+      'p6-title': 'Control de Nóminas',
+      'p6-desc':  'Cálculo preciso y automatizado de nómina, ISPT, aguinaldo y PTU.',
+      'p6-f1-t':  'Conceptos flexibles',
+      'p6-f1-d':  'Definición sencilla de percepciones y deducciones',
+      'p6-f2-t':  'Altas, bajas y cambios',
+      'p6-f2-d':  'Bitácora completa con usuario, fecha y hora',
+      'p6-f3-t':  'Cálculo completo',
+      'p6-f3-d':  'Nómina, aguinaldo, ISPT, declaración anual y PTU',
+      'p6-f4-t':  'Expediente del empleado',
+      'p6-f4-d':  'Datos personales, documentos e imágenes adjuntas',
+      'p6-f5-t':  'Reportes e informes',
+      'p6-f5-d':  'Generador de informes personalizados y pólizas',
+      'p6-f6-t':  'Multi-empresa en la nube',
+      'p6-f6-d':  'Multi-sucursales con clasificación por ubicación',
+
+      'p7-title': 'ChatBot AI — Telegram &amp; WhatsApp',
+      'p7-desc':  'Asistente virtual 24/7 que automatiza tareas, atiende clientes y envía notificaciones inteligentes.',
+      'p7-f1-t':  'Disponibilidad 24/7',
+      'p7-f1-d':  'Respuesta inmediata sin importar la hora',
+      'p7-f2-t':  'Automatización',
+      'p7-f2-d':  'Tareas repetitivas delegadas al bot',
+      'p7-f3-t':  'Personalización',
+      'p7-f3-d':  'Flujos adaptativos por perfil de usuario',
+      'p7-f4-t':  'Notificaciones',
+      'p7-f4-d':  'Alertas en tiempo real de tu ERP al teléfono',
+      'p7-f5-t':  'Alcance masivo',
+      'p7-f5-d':  'Mensajes a cientos de usuarios simultáneamente',
+      'p7-f6-t':  'Ahorro de costos',
+      'p7-f6-d':  'Reduce tiempos de atención y carga operativa',
+      'p7-try':   'Pruébalo tú mismo ahora mismo →',
+
+      'clients-title': 'Clientes',
+
+      'adv-title': 'Ventajas',
+      'adv-1': 'Fácil aprendizaje, uso e implementación',
+      'adv-2': 'Configurable al 100%',
+      'adv-3': 'Costo ajustado',
+      'adv-4': 'Conectividad integral',
+      'adv-5': 'Rápido retorno de inversión',
+      'adv-6': 'Bajo TCO (Bajo costo de propiedad)',
+
+      'about-title':   'Nuestra Historia',
+      'about-p1':      'Empresa 100 % mexicana fundada en 2007, dedicada exclusivamente a la tecnología de la información. A lo largo de estos años Bi se ha consolidado como una empresa cuya visión ha sido mantener invariablemente la calidad de nuestros servicios, con el único fin de ser reconocida por nuestros clientes como un proveedor rentable y confiable.',
+      'about-q-title': '¿Qué es ERP Business Inteligent?',
+      'about-p2':      'Software de gestión empresarial que permite generar mayor valor dentro de las organizaciones al conectar diferentes departamentos, agilizando el tránsito de la información y mejorando la toma de decisiones. Cuenta con la tecnología, funcionalidad, rapidez y flexibilidad para gestionar los recursos de toda la empresa, de forma integral y estratégica.',
+
+      'cta-title': '¿Listo para transformar tu empresa?',
+      'cta-sub':   'Agenda una demo gratuita y sin compromiso. Nuestro equipo te contacta en menos de 24 horas.',
+      'cta-btn':   '🗓️ Solicitar Demo Gratis',
+
+      'contact-title':       'Contáctanos',
+      'contact-sub':         'Estamos listos para ayudarte a transformar tu empresa',
+      'contact-mx':          'WhatsApp México',
+      'contact-us':          'Estados Unidos',
+      'contact-email-lbl':   'Correo electrónico',
+      'contact-telegram':    'Bot Telegram',
+      'contact-yt-lbl':      'YouTube',
+      'contact-address-lbl': 'Dirección',
+      'contact-address-val': '1903 Everett, Lafayette, Indiana 47905, EE. UU.',
+
+      'footer-tagline': 'ERP Business Inteligent',
+      'footer-since':   'Soluciones tecnológicas para tu empresa desde 2007',
+      'footer-contact': 'Contacto',
+      'footer-privacy': 'Aviso de privacidad',
+      'footer-social':  'Redes sociales',
+      'footer-yt-tag':  'YouTube: @bi2mx',
+      'footer-copy':    '© 2025 ERP Business Inteligent · Todos los derechos reservados'
+    },
+    en: {
+      'nav-services':       'Services',
+      'nav-sectors':        'Sectors',
+      'nav-clients':        'Clients',
+      'nav-advantages':     'Advantages',
+      'nav-about':          'About Us',
+      'nav-presentations':  'Presentations',
+      'nav-slides-pptx':    'Slides PPTX',
+      'nav-slides-pdf':     'Slides PDF',
+      'nav-privacy':        'Privacy Notice',
+      'nav-lastupdate':     'Last updated',
+      'nav-login':          'Log In',
+
+      'hero-badge':  '🚀 100% Cloud ERP · Since 2007',
+      'hero-title':  'Business<br>Intelligence<br><span>in Real Time</span>',
+      'hero-sub':    'Dashboards · Reports · Total Control.<br>Make decisions with real data.',
+      'hero-li1':    'Integrated modules: Projects, Warehouses, HR, Sales, Payroll and more',
+      'hero-li2':    'Telegram & WhatsApp Bot 24/7 included',
+      'hero-li3':    'Multi-company · Multi-branch · Multi-project',
+      'hero-li4':    'Quick setup · Tailored pricing · Continuous support',
+
+      'form-title':       '🗓️ Request Your Demo',
+      'form-sub':         'Free · No commitment · Response in less than 24 h',
+      'form-name-label':  'Full name',
+      'form-name-ph':     'Full name',
+      'form-name-error':  'Enter your name',
+      'form-phone-lbl':   'Phone number',
+      'form-prefix-label':'Prefix',
+      'form-phone-ph':    'Phone',
+      'form-phone-error': 'Enter a phone number',
+      'form-email-label': 'Email address',
+      'form-email-error': 'Invalid email',
+      'form-company-label':'Company',
+      'form-company-ph':  'Company',
+      'form-company-error':'Enter your company',
+      'form-role-ph':     'Select your role',
+      'form-role-label':  'Role you identify most with',
+      'form-role-error':  'Select your role',
+      'form-role-1':      'Owner / Director',
+      'form-role-2':      'Accountant / Finance',
+      'form-role-3':      'IT / Systems',
+      'form-role-4':      'Assistant / Administrative',
+      'form-role-5':      'Teacher / Education',
+      'form-role-6':      'Other',
+      'form-submit':      '🗓️ Schedule My Free Demo',
+
+      'video-title': 'See how ERP Bi2 works',
+      'video-sub':   'Discover everything you can control from a single platform',
+      'video-yt':    'Watch more videos on YouTube @bi2mx',
+
+      'mod-title': 'Comprehensive ERP System',
+      'mod-sub':   'Everything your company needs, connected in one platform',
+      'mod-1-t':   'Construction & Projects',
+      'mod-1-s':   'Logs, estimates, agreements, daily reports',
+      'mod-2-t':   'Warehouses',
+      'mod-2-s':   'Inventory, receipts, issues, materials, requisitions',
+      'mod-3-t':   'Human Resources',
+      'mod-3-s':   'Employees, records, contracts, work front assignment',
+      'mod-4-t':   'Administration',
+      'mod-4-s':   'Income, expenses, banks, electronic invoicing',
+      'mod-5-t':   'Sales & Point of Sale',
+      'mod-5-s':   'Quotes, prospects, follow-up, tickets',
+      'mod-6-t':   'Payroll',
+      'mod-6-s':   'Calculation, variability, settlements, taxes, profit sharing',
+      'mod-7-t':   'ChatBot Telegram & WhatsApp',
+      'mod-7-s':   'Virtual assistant 24/7, automatic notifications',
+      'mod-8-t':   'Maintenance',
+      'mod-8-s':   'Equipment, work orders, technical history',
+
+      'sec-title': 'Industry Solutions',
+      'sec-sub':   'ERP Bi2 adapts to the specific needs of each industry',
+      'sec-1':     'Construction',
+      'sec-2':     'MediControl BI',
+      'sec-3':     'Education Control',
+      'sec-4':     'Municipal Control',
+      'sec-cta':   'Request Your Free Demo →',
+
+      'srv-badge':   'What We Offer',
+      'srv-heading': 'Solutions that take<br>your business to the next level',
+      'srv-sub':     'Integrated modules, cloud-based, multi-company and multi-branch',
+      'tab-1': 'Works & Projects',
+      'tab-2': 'Warehouses',
+      'tab-3': 'Administrative',
+      'tab-4': 'Human Resources',
+      'tab-5': 'Sales',
+      'tab-6': 'Payroll',
+      'tab-7': 'ChatBot AI',
+
+      'p1-title': 'Works & Projects Management',
+      'p1-desc':  'Comprehensive management from planning to close-out, with real-time reports.',
+      'p1-f1-t':  'Daily Reports',
+      'p1-f1-d':  'Automated tracking and productivity charts',
+      'p1-f2-t':  'Estimates',
+      'p1-f2-d':  'Build estimates and generators per client procedures',
+      'p1-f3-t':  'Photo Album',
+      'p1-f3-d':  'Project book and management reports with photos',
+      'p1-f4-t':  'Full Integration',
+      'p1-f4-d':  'Linked to Warehouse and Admin for material traceability',
+      'p1-f5-t':  'Time & Costs',
+      'p1-f5-d':  'Reports on downtime, retentions, penalties and adjustments',
+      'p1-f6-t':  'Multi-company Cloud',
+      'p1-f6-d':  'Multi-branch, multi-project, remote access 24/7',
+
+      'p2-title': 'Warehouse Control',
+      'p2-desc':  'Smart inventory with full traceability of materials and suppliers.',
+      'p2-f1-t':  'Requisitions & PO',
+      'p2-f1-d':  'Digital purchase orders and requisitions',
+      'p2-f2-t':  'Best Suppliers',
+      'p2-f2-d':  'Comparative quotes and automatic recommendation',
+      'p2-f3-t':  'Receipts & Issues',
+      'p2-f3-d':  'Movement control with full material traceability',
+      'p2-f4-t':  'Multiple Warehouses',
+      'p2-f4-d':  'Management of multiple warehouses and locations',
+      'p2-f5-t':  'Inventory Control',
+      'p2-f5-d':  'Minimum stock alerts and stock reports',
+      'p2-f6-t':  'Multi-company Cloud',
+      'p2-f6-d':  'Real-time sync between branches',
+
+      'p3-title': 'Administrative Control',
+      'p3-desc':  'Finance under control: income, expenses, banks and electronic invoicing.',
+      'p3-f1-t':  'Income & Expenses',
+      'p3-f1-d':  'Full financial control of the project or company',
+      'p3-f2-t':  'Financial Charts',
+      'p3-f2-d':  'Real-time financial status dashboard',
+      'p3-f3-t':  'Electronic Invoicing',
+      'p3-f3-d':  'Automatic electronic invoicing integrated to the system',
+      'p3-f4-t':  'Banks & Cash Flow',
+      'p3-f4-d':  'Bank reconciliation and statement control',
+      'p3-f5-t':  'Modular Integration',
+      'p3-f5-d':  'Connected to HR, Warehouse and Projects',
+      'p3-f6-t':  'Multi-company Cloud',
+      'p3-f6-d':  'Consolidated multi-company management reports',
+
+      'p4-title': 'Human Resources Control',
+      'p4-desc':  'Full employee lifecycle: hiring, assignment, credentials and settlements.',
+      'p4-f1-t':  'Digital Employee Record',
+      'p4-f1-d':  'Complete digital file for each employee',
+      'p4-f2-t':  'Staffing Requisition',
+      'p4-f2-d':  'Resource assignment control by work front',
+      'p4-f3-t':  'Contracts & Settlements',
+      'p4-f3-d':  'Automatic generation of legal documents',
+      'p4-f4-t':  'Work Front Assignment',
+      'p4-f4-d':  'Employee control by project, branch and area',
+      'p4-f5-t':  'Digital Credentials',
+      'p4-f5-d':  'Recommendation letters and employee documentation',
+      'p4-f6-t':  'Multi-company Cloud',
+      'p4-f6-d':  'Integration with Payroll and Administrative',
+
+      'p5-title': 'Sales &amp; Point of Sale Control',
+      'p5-desc':  'From quote to invoice, with customer and prospect tracking.',
+      'p5-f1-t':  'Tickets & Invoices',
+      'p5-f1-d':  'Fast processing with automatic electronic invoicing',
+      'p5-f2-t':  'Quotes',
+      'p5-f2-d':  'Generation and delivery of professional quotes',
+      'p5-f3-t':  'Customer CRM',
+      'p5-f3-d':  'Control and tracking of customers and prospects',
+      'p5-f4-t':  'Management Reports',
+      'p5-f4-d':  'Sales dashboard, conversion and key metrics',
+      'p5-f5-t':  'Warehouse Integration',
+      'p5-f5-d':  'Quote linked to real-time inventory',
+      'p5-f6-t':  'Multi-company Cloud',
+      'p5-f6-d':  'Multi-branch with remote access 24/7',
+
+      'p6-title': 'Payroll Control',
+      'p6-desc':  'Precise and automated payroll calculation, taxes, bonuses and profit sharing.',
+      'p6-f1-t':  'Flexible Concepts',
+      'p6-f1-d':  'Simple definition of earnings and deductions',
+      'p6-f2-t':  'Hires, Terminations & Changes',
+      'p6-f2-d':  'Full log with user, date and time',
+      'p6-f3-t':  'Full Calculation',
+      'p6-f3-d':  'Payroll, bonuses, taxes, annual declaration and profit sharing',
+      'p6-f4-t':  'Employee File',
+      'p6-f4-d':  'Personal data, documents and attached images',
+      'p6-f5-t':  'Reports & Statements',
+      'p6-f5-d':  'Custom report generator and payroll policies',
+      'p6-f6-t':  'Multi-company Cloud',
+      'p6-f6-d':  'Multi-branch with location classification',
+
+      'p7-title': 'ChatBot AI — Telegram &amp; WhatsApp',
+      'p7-desc':  '24/7 virtual assistant that automates tasks, serves customers and sends smart notifications.',
+      'p7-f1-t':  '24/7 Availability',
+      'p7-f1-d':  'Instant response regardless of the time',
+      'p7-f2-t':  'Automation',
+      'p7-f2-d':  'Repetitive tasks delegated to the bot',
+      'p7-f3-t':  'Personalization',
+      'p7-f3-d':  'Adaptive flows by user profile',
+      'p7-f4-t':  'Notifications',
+      'p7-f4-d':  'Real-time ERP alerts to your phone',
+      'p7-f5-t':  'Mass Reach',
+      'p7-f5-d':  'Messages to hundreds of users simultaneously',
+      'p7-f6-t':  'Cost Savings',
+      'p7-f6-d':  'Reduces service time and operational load',
+      'p7-try':   'Try it yourself right now →',
+
+      'clients-title': 'Clients',
+
+      'adv-title': 'Advantages',
+      'adv-1': 'Easy learning, use and implementation',
+      'adv-2': '100% Configurable',
+      'adv-3': 'Tailored pricing',
+      'adv-4': 'Full connectivity',
+      'adv-5': 'Fast return on investment',
+      'adv-6': 'Low TCO (Total Cost of Ownership)',
+
+      'about-title':   'Our Story',
+      'about-p1':      '100% Mexican company founded in 2007, exclusively dedicated to information technology. Over the years, Bi has established itself as a company whose vision has been to consistently maintain the quality of our services, with the sole purpose of being recognized by our clients as a profitable and reliable provider.',
+      'about-q-title': 'What is ERP Business Inteligent?',
+      'about-p2':      'Enterprise management software that generates greater value within organizations by connecting different departments, streamlining information flow and improving decision-making. It features the technology, functionality, speed and flexibility to manage all company resources in a comprehensive and strategic way.',
+
+      'cta-title': 'Ready to transform your business?',
+      'cta-sub':   'Schedule a free, no-commitment demo. Our team will contact you in less than 24 hours.',
+      'cta-btn':   '🗓️ Request Free Demo',
+
+      'contact-title':       'Contact Us',
+      'contact-sub':         'We are ready to help you transform your business',
+      'contact-mx':          'WhatsApp Mexico',
+      'contact-us':          'United States',
+      'contact-email-lbl':   'Email',
+      'contact-telegram':    'Telegram Bot',
+      'contact-yt-lbl':      'YouTube',
+      'contact-address-lbl': 'Address',
+      'contact-address-val': '1903 Everett, Lafayette, Indiana 47905, USA',
+
+      'footer-tagline': 'ERP Business Inteligent',
+      'footer-since':   'Technology solutions for your business since 2007',
+      'footer-contact': 'Contact',
+      'footer-privacy': 'Privacy Notice',
+      'footer-social':  'Social Media',
+      'footer-yt-tag':  'YouTube: @bi2mx',
+      'footer-copy':    '© 2025 ERP Business Inteligent · All rights reserved'
+    }
+  };
+
+  function setLang(lang) {
+    const d = T[lang] || T['es'];
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      const key = el.getAttribute('data-i18n');
+      if (d[key] !== undefined) el.textContent = d[key];
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+      const key = el.getAttribute('data-i18n-html');
+      if (d[key] !== undefined) el.innerHTML = d[key];
+    });
+
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
+      const key = el.getAttribute('data-i18n-ph');
+      if (d[key] !== undefined) el.placeholder = d[key];
+    });
+
+    var htmlRoot = document.getElementById('htmlRoot');
+    if (htmlRoot) htmlRoot.lang = lang;
+
+    var toggle = document.getElementById('langToggle');
+    if (toggle) toggle.textContent = lang === 'es' ? '🇲🇽 ES' : '🇺🇸 EN';
+
+    localStorage.setItem('bi2lang', lang);
+  }
+
+  function toggleLang() {
+    var current = localStorage.getItem('bi2lang') || 'es';
+    setLang(current === 'es' ? 'en' : 'es');
+  }
+
+  window.toggleLang = toggleLang;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('bi2lang') || 'es';
+    setLang(saved);
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script type="module" src="./script/script.js"></script>
 </body>
 </html>
